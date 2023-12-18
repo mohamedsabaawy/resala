@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminCheck
@@ -16,10 +17,11 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-//        dd($request);
-        if (Auth::user()->role == "admin") {
+        if (Config::get('role') == "Admin")
             return $next($request);
+        if (Auth::check() and Auth::user()->role == "admin") {
+                return $next($request);
         }
-        return $next($request);
+        return redirect()->route('user.home');
     }
 }

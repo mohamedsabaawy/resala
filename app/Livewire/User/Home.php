@@ -12,25 +12,27 @@ use Livewire\WithPagination;
 class Home extends Component
 {
     use WithPagination;
-    public $isUpdate=false ,$id, $user_id,$event_id,$comment,$supervisor_comment,$activity_date,$type,$events;
+
+    public $isUpdate = false, $id, $user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
 
     public function render()
     {
-        $activities = Activity::where('user_id',Auth::id())->paginate(10);
-        $this->events = Event::where('from','>=',($this->activity_date ?? today()))->get();
-        return view('livewire.user.home',compact(['activities']));
+        $activities = Activity::where('user_id', Auth::id())->paginate(10);
+        $this->events = Event::where('to', '>=', ($this->activity_date ?? today()))->get();
+        return view('livewire.user.home', compact(['activities']));
     }
 
-    public function save(){
+    public function save()
+    {
 
         $this->valid();
         $activity = \App\Models\Activity::create([
-            'activity_date'=>$this->activity_date,
-            'comment'=>$this->comment,
-            'event_id'=>$this->event_id,
-            'user_id'=>Auth::id(),
+            'activity_date' => $this->activity_date,
+            'comment' => $this->comment,
+            'event_id' => $this->event_id,
+            'user_id' => Auth::id(),
         ]);
-        if ($activity){
+        if ($activity) {
             $this->resetInput();
             $this->dispatch('close');
             $this->dispatch('notify');
@@ -39,8 +41,9 @@ class Home extends Component
 
 
     //get one activity
-    public function show($id){
-        $this->isUpdate=true;
+    public function show($id)
+    {
+        $this->isUpdate = true;
         $activity = \App\Models\Activity::find($id);
         $this->id = $activity->id;
         $this->activity_date = $activity->activity_date;
@@ -49,37 +52,44 @@ class Home extends Component
         $this->event_id = $activity->event_id;
     }
 
-    public function update(){
+    public function update()
+    {
         $this->valid();
         $barnch = \App\Models\Activity::find($this->id);
-        if ($barnch){
+        if ($barnch) {
             $barnch->update([
-                'activity_date'=>$this->activity_date,
-                'comment'=>$this->comment,
-                'event_id'=>$this->event_id,
+                'activity_date' => $this->activity_date,
+                'comment' => $this->comment,
+                'event_id' => $this->event_id,
             ]);
         }
         $this->dispatch('close');
         $this->dispatch('notify');
     }
 
-    public function delete(){
+    public function delete()
+    {
         $activity = \App\Models\Activity::find($this->id);
         $activity->delete();
         $this->dispatch('close');
         $this->dispatch('notify');
     }
 
-    public function resetInput(){
+    public function resetInput()
+    {
         $this->reset();
     }
-    private function valid(){
+
+    private function valid()
+    {
         $validated = $this->validate([
             'type' => 'required',
             'activity_date' => 'required',
-        ],[
-            'activity_date.required'=>'برجاء ادخل تاريخ المشاركة',
-            'type.type'=>'اختر نوع المشاركة'
+            'comment' => 'required',
+        ], [
+            'activity_date.required' => 'برجاء ادخل تاريخ المشاركة',
+            'type.required' => 'اختر نوع المشاركة',
+            'comment.required' => 'برجاء كتابة تعليق',
         ]);
     }
 

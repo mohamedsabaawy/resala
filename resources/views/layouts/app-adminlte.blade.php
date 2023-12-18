@@ -176,9 +176,12 @@
                     <img src="{{asset(auth()->user()->photo)}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{auth()->user()->name}}</a>
+                    <a href="#" class="d-block text-right">{{auth()->user()->name}}</a>
                 </div>
-
+                <form action="{{route('logout')}}" method="post">
+                    @csrf
+                    <button class="btn btn-danger btn-sm">logout</button>
+                </form>
             </div>
 
             @include('layouts.navigation-adminlte')

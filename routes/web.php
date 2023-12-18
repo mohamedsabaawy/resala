@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::group(['middleware'=>['auth','Admin'],'prefix'=>'admin'],function (){
+Route::group(['middleware'=>['Admin'],'prefix'=>'admin'],function (){
     Route::view('branches','admin.index')->name('branches');
     Route::view('teams','admin.team')->name('teams');
     Route::view('positions','admin.position')->name('positions');
@@ -37,6 +37,8 @@ Route::group(['middleware'=>['auth','Admin'],'prefix'=>'admin'],function (){
     Route::view('users','admin.user')->name('users');
 });
 
-Route::view('user/home','user.home')->name('user.home');
+Route::group(['middleware'=>'auth'],function (){
+    Route::view('user/home','user.home')->name('user.home');
+});
 
 require __DIR__.'/auth.php';

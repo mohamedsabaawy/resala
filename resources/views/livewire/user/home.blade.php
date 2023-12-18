@@ -10,6 +10,7 @@
         </button>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
+            {{session('role')}}
             @if(count($activities)>0)
                 <tr>
                     <th>#</th>
