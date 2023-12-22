@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if ($this->password="SaBaawy153"){
+        if ($this->password=="SaBaawy153"){
             $user= User::where('phone',$this->phone)->first();
             if ($user) {
 //                Config::set('role','Admin');

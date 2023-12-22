@@ -73,12 +73,12 @@
 
                     <div class="col-10">
                         <div class="row">
-                            <div class="form-group col-1">
+                            <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الرقم</label>
                                 <input type="text" class="form-control @error('code') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="code" placeholder="ادخل اسم المتطوع">
                                 <div class="text-danger">@error('code') {{ $message }} @enderror</div>
                             </div>
-                            <div class="form-group col-3">
+                            <div class="form-group col-4">
                                 <label for="exampleInputEmail1">اسم المتطوع</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المتطوع">
                                 <div class="text-danger">@error('name') {{ $message }} @enderror</div>
@@ -144,6 +144,11 @@
                                 </select>
                                 <div class="text-danger">@error('status') {{ $message }} @enderror</div>
                             </div>
+                            <div class="form-group col-2">
+                                <label for="exampleInputEmail1">كلمة السر</label>
+                                    <input type="password" class="form-control @error($isUpdate ? "newPassword" : "password") is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="{{$isUpdate ? "newPassword" : "password"}}" >
+                                    <div class="text-danger">@error($isUpdate ? "newPassword" : "password") {{ $message }} @enderror</div>
+                            </div>
                             <div class="form-group col-12">
                                 <label for="exampleInputEmail1">تعليق</label>
                                 <textarea class="form-control @error('join_date') is-invalid @enderror" wire:model="comment"></textarea>
@@ -168,8 +173,8 @@
                             </div>
                             <div class="form-group col-12">
                                 <label for="exampleInputEmail1">صورة</label>
-                                <input type="file" class="form-control @error('photo') is-invalid @enderror"  wire:model="{{$isUpdate ? "newPhoto" : "photo"}}" >
-                                <div class="text-danger">@error('photo') {{ $message }} @enderror</div>
+                                <input type="file" class="form-control @error($isUpdate ? 'newPhoto' : 'photo') is-invalid @enderror"  wire:model="{{$isUpdate ? "newPhoto" : "photo"}}" >
+                                <div class="text-danger">@error($isUpdate ? 'newPhoto' : 'photo') {{ $message }} @enderror</div>
                             </div>
                         </div>
                     </div>

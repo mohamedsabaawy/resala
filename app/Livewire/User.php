@@ -14,7 +14,7 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password = 123456, $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
+    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password,$newPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
     public $showCreate = false;
     public $isUpdate = false;
 // activity
@@ -43,7 +43,7 @@ class User extends Component
             'phone' => $this->phone,
             'card_id' => $this->card_id,
             'photo' => $this->photo->store('users','public'),
-            'password' => bcrypt($this->password),
+            'password' => bcrypt(123456),
             'join_date' => $this->join_date,
             'comment' => $this->comment,
             'team_id' => $this->team_id,
@@ -76,20 +76,22 @@ class User extends Component
         $this->branch_id = $user->branch_id;
         $this->status = $user->status;
         $this->code = $user->code;
+//        $this->password = $user->password;
     }
 
     public function update()
     {
         $this->valid();
-        $barnch = \App\Models\User::find($this->id);
-        if ($barnch) {
-            $barnch->update([
+        $user = \App\Models\User::find($this->id);
+        $password = $user->password;
+        if ($user) {
+            $user->update([
                 'name' => $this->name,
                 'code' => $this->code,
                 'phone' => $this->phone,
                 'card_id' => $this->card_id,
                 'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
-                'password' => bcrypt(123456),
+                'password' => $this->newPassword ? bcrypt($this->newPassword):$password,
                 'join_date' => $this->join_date,
                 'comment' => $this->comment,
                 'team_id' => $this->team_id,
@@ -128,7 +130,7 @@ class User extends Component
             'phone' => "required",
             'card_id' => "required",
 //            'photo' => "required",
-//            'password'=>"required",
+            'password'=>$this->isUpdate ? "" : "required",
             'join_date' => "required",
             'comment' => "required",
             'team_id' => "required",
