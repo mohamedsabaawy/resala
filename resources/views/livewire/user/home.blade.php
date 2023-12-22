@@ -161,7 +161,6 @@
     <!-- /.modal-dialog delete -->
 
 </div>
-
 @push('style')
 
 
@@ -169,6 +168,7 @@
 
 @push('script')
     <script>
+
         // $(function () {
         //     $("#example1").DataTable();
         //     $('#example2').DataTable({

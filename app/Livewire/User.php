@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Exports\UsersExport;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -13,7 +14,7 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $phone, $card_id, $photo,$newPhoto, $password = 123456, $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
+    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password = 123456, $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
     public $showCreate = false;
     public $isUpdate = false;
 // activity
@@ -38,6 +39,7 @@ class User extends Component
         $this->valid();
         $branch = \App\Models\User::create([
             'name' => $this->name,
+            'code' => $this->code,
             'phone' => $this->phone,
             'card_id' => $this->card_id,
             'photo' => $this->photo->store('users','public'),
@@ -73,6 +75,7 @@ class User extends Component
         $this->position_id = $user->position_id;
         $this->branch_id = $user->branch_id;
         $this->status = $user->status;
+        $this->code = $user->code;
     }
 
     public function update()
@@ -82,6 +85,7 @@ class User extends Component
         if ($barnch) {
             $barnch->update([
                 'name' => $this->name,
+                'code' => $this->code,
                 'phone' => $this->phone,
                 'card_id' => $this->card_id,
                 'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
@@ -94,10 +98,11 @@ class User extends Component
                 'status' => $this->status,
             ]);
 
-            if(isset($this->newPhoto)){
+            if(isset($this->newPhoto) and isset($this->photo)){
                 Storage::disk('public')->delete($this->photo);
             }
         }
+        $this->resetInput();
         $this->dispatch('close');
         $this->dispatch('notify');
     }
@@ -122,7 +127,7 @@ class User extends Component
             'name' => "required",
             'phone' => "required",
             'card_id' => "required",
-            'photo' => "required",
+//            'photo' => "required",
 //            'password'=>"required",
             'join_date' => "required",
             'comment' => "required",
@@ -130,6 +135,9 @@ class User extends Component
             'position_id' => "required",
             'branch_id' => "required",
             'status' => "required",
+            'code' => ["required",
+                $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')
+                ],
         ]
 //            ,
 //            [
