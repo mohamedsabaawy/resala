@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الرقم</label>
-                                <input type="text" class="form-control @error('code') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="code" placeholder="ادخل اسم المتطوع">
+                                <input type="text" class="form-control @error('code') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="code" placeholder="كود">
                                 <div class="text-danger">@error('code') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-4">
