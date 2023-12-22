@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBiginteger('check_types_id')->unsigned();
             $table->tinyInteger('pass'); //0=> not pass 1=>pass
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

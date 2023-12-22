@@ -23,7 +23,7 @@ return new class extends Migration
             $table->bigInteger("branch_id");
             $table->bigInteger("team_id");
             $table->bigInteger("position_id");
-            $table->enum('status',['active','hold','out']);
+            $table->enum('status',['active','hold','out'])->default('active');
             $table->enum('role',['admin','supervisor','user'])->default('user');
             $table->rememberToken();
             $table->timestamps();

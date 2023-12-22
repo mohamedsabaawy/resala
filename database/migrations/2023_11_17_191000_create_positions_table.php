@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->string('name',150);
-            $table->softDeletes();
+            $table->enum('role',['admin','supervisor','user'])->default('user');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

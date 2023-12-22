@@ -13,6 +13,17 @@ class PositionSeeder extends Seeder
      */
     public function run(): void
     {
-
+        Position::create([
+            'name'=>'مدير',
+            'role'=>'admin',
+        ]);
+        Position::create([
+            'name'=>'مشرف',
+            'role'=>'supervisor',
+        ]);
+        Position::create([
+            'name'=>'مستخدم',
+            'role'=>'user',
+        ]);
     }
 }

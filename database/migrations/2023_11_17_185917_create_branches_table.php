@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name',150);
             $table->string('address')->nullable();
             $table->integer('manager_id')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

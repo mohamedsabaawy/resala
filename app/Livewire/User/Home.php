@@ -23,9 +23,11 @@ class Home extends Component
             $this->userId=Auth::id();
             $this->users = User::all()->pluck('name','id');
         }
+//        dd($this->users);
         $this->events = Event::where('to', '>=', ($this->activity_date ?? today()))->get();
         return view('livewire.user.home', compact(['activities']));
     }
+
 
     public function save()
     {
@@ -69,6 +71,7 @@ class Home extends Component
                 'event_id' => $this->event_id,
             ]);
         }
+        $this->resetInput();
         $this->dispatch('close');
         $this->dispatch('notify');
     }

@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     @stack('style')
     @livewireStyles
 </head>
@@ -284,9 +287,6 @@
 <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
-<!-- Select2 -->
-<link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
-<link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
 @livewireScripts
 <script>
     window.addEventListener('close', event => {

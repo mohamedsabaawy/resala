@@ -5,7 +5,8 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+        <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                data-target="#create-model">
             اضافة مشاركة
         </button>
         <table id="example1" class="table table-bordered table-striped">
@@ -28,8 +29,12 @@
                     <td>{{$activity->type}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$activity->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$activity->id}})">تعديل</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
+                                    wire:click="show({{$activity->id}})">مسح
+                            </button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#create-model" wire:click="show({{$activity->id}})">تعديل
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -43,6 +48,7 @@
             </tfoot>
         </table>
         {{$activities->links()}}
+
     </div>
     <!-- /.card-body -->
 
@@ -52,7 +58,7 @@
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -63,24 +69,28 @@
                 </div>
                 <div class="modal-body">
                     @if(auth()->user()->position->role !="user")
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">متطوع</label>
-                        <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="userId" >
-                            <option>اختر</option>
-                            @foreach($users as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">متطوع</label>
+                            <select class="form-control select2" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                    wire:model="userId">
+                                <option>اختر</option>
+                                @foreach($users as $key=>$value)
+                                    <option value="{{$key}}">{{$value}}</option>
                                 @endforeach
-                        </select>
-                    </div>
+                            </select>
+                        </div>
                     @endif
                     <div class="form-group">
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
-                        <input type="date" class="form-control @error('date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model.live="activity_date">
+                        <input type="date" class="form-control @error('date') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                               wire:model.live="activity_date">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">نوع المشاركة</label>
-                        <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="type" >
+                        <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                wire:model="type">
                             <option>اختر</option>
                             <option value="online">online</option>
                             <option value="offline">offline</option>
@@ -88,13 +98,15 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">تفاصيل</label>
-                        <textarea class="form-control textarea @error('comment') is-invalid @enderror" wire:model="comment"></textarea>
+                        <textarea class="form-control textarea @error('comment') is-invalid @enderror"
+                                  wire:model="comment" ></textarea>
                         <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">الاحداث</label>
-                        <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="event_id" >
+                        <select class="form-control select2-blue" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                wire:model="event_id" id="event_id">
                             <option>اختر</option>
                             @foreach($events as $event)
                                 <option value="{{$event->id}}">{{$event->name}}</option>
@@ -106,7 +118,9 @@
 
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
 
             </div>
@@ -120,7 +134,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -135,7 +149,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -172,7 +188,9 @@
         // });
         // });
     </script>
+
     <!-- DataTables -->
     {{--    <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>--}}
     {{--    <script src="{{asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
 @endpush
+

@@ -38,8 +38,7 @@ return [
     |
     */
 
-//    'layout' => 'components.layouts.app',
-    'layout' => 'layouts.app',
+    'layout' => 'components.layouts.app',
 
     /*
     |---------------------------------------------------------------------------
@@ -156,5 +155,5 @@ return [
     |
     */
 
-    'pagination_theme' => 'bootstrap',
+    'pagination_theme' => 'tailwind',
 ];
