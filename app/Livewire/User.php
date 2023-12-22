@@ -13,7 +13,7 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $phone, $card_id, $photo,$newPhoto, $password = 123456, $join_date, $comment, $team_id, $position_id, $status, $branch_id;
+    public $id, $name, $phone, $card_id, $photo,$newPhoto, $password = 123456, $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
     public $showCreate = false;
     public $isUpdate = false;
 // activity
@@ -130,10 +130,14 @@ class User extends Component
             'position_id' => "required",
             'branch_id' => "required",
             'status' => "required",
-        ], [
-            'name.required' => 'برجاء ادخل اسم الفريق',
-            'count.required' => 'برجاء ادخل عدد افراد الفريق',
-            'count.min' => 'برجاء ادخال رقم اكبر من او يساوي :min',
-        ]);
+        ]
+//            ,
+//            [
+//            'name.required' => 'برجاء ادخل اسم الفريق',
+//            'count.required' => 'برجاء ادخل عدد افراد الفريق',
+//            'count.min' => 'برجاء ادخال رقم اكبر من او يساوي :min',
+//            'phone.required' => 'هذا الحقل مطلوب ',
+//        ]
+        );
     }
 }

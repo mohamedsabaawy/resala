@@ -62,7 +62,17 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
+                    @if(auth()->user()->position->role !="user")
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">متطوع</label>
+                        <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="userId" >
+                            <option>اختر</option>
+                            @foreach($users as $key=>$value)
+                                <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <div class="form-group">
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
                         <input type="date" class="form-control @error('date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model.live="activity_date">

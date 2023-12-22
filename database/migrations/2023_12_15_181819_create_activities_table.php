@@ -16,6 +16,7 @@ return new class extends Migration
             $table->date('activity_date');
             $table->bigInteger('user_id');
             $table->bigInteger('event_id')->nullable();
+            $table->bigInteger('add_by');
             $table->enum('type',['online','offline']);
             $table->text('comment')->nullable();
             $table->text('supervisor_comment')->nullable();

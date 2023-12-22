@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 class Position extends Component
 {
     use WithPagination;
-    public $id, $name;
+    public $id, $name,$role;
     public $showCreate=false;
     public $isUpdate=false;
     public function render()
@@ -22,6 +22,7 @@ class Position extends Component
         $this->valid();
         $branch = \App\Models\Position::create([
             'name'=>$this->name,
+            'role'=>$this->role,
         ]);
         if ($branch){
             $this->resetInput();
@@ -37,6 +38,7 @@ class Position extends Component
         $branch = \App\Models\Position::find($id);
         $this->id = $branch->id;
         $this->name = $branch->name;
+        $this->role = $branch->role;
     }
 
     public function update(){
@@ -45,6 +47,7 @@ class Position extends Component
         if ($barnch){
             $barnch->update([
                 'name'=>$this->name,
+                'role'=>$this->role,
             ]);
         }
         $this->dispatch('close');
@@ -59,14 +62,12 @@ class Position extends Component
     }
 
     public function resetInput(){
-        $this->id = "";
-        $this->name = "";
+        $this->reset();
     }
     private function valid(){
         $validated = $this->validate([
             'name' => 'required|min:3',
-        ],[
-            'name.required'=>'برجاء ادخل اسم المستوي',
+            'role' => 'required|in:"admin","user","supervisor"',
         ]);
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',150);
             $table->longText('details');
+            $table->string('photo')->nullable();
             $table->bigInteger('team_id')->nullable();
             $table->date('from')->nullable();
             $table->date('to')->nullable();

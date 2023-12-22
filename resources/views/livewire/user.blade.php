@@ -71,81 +71,94 @@
                 </div>
                 <div class="modal-body row">
 
-                    <div class="form-group col-4">
-                        <label for="exampleInputEmail1">اسم المتطوع</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المتطوع">
-                        <div class="text-danger">@error('name') {{ $message }} @enderror</div>
+                    <div class="col-10">
+                        <div class="row">
+                            <div class="form-group col-4">
+                                <label for="exampleInputEmail1">اسم المتطوع</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المتطوع">
+                                <div class="text-danger">@error('name') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="exampleInputEmail1">رقم هاتف المتطوع</label>
+                                <input type="text" min="0" class="form-control @error('phone') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="phone" placeholder="ادخل عدد افراد المتطوع">
+                                <div class="text-danger">@error('phone') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="exampleInputEmail1">رقم قومي</label>
+                                <input type="text" class="form-control @error('card_id') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="card_id" placeholder="ادخل عدد افراد المتطوع">
+                                <div class="text-danger">@error('card_id') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="exampleInputEmail1">تاريخ الانضمام</label>
+                                <input type="date" class="form-control @error('join_date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="join_date" >
+                                <div class="text-danger">@error('join_date') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="exampleInputEmail1">الفرع</label>
+                                <select class="form-control select2  @error('branch_id') is-invalid @enderror"" style="width: 100%;" wire:model="branch_id">
+                                    <option>اختر فرع</option>
+                                    @forelse($branches as $branch)
+                                        <option value="{{$branch->id}}">{{$branch->name}}</option>
+                                    @empty
+                                        <option>لا يوجد فروع</option>
+                                    @endforelse
+                                </select>
+                                <div class="text-danger">@error('branch_id') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="exampleInputEmail1">الفريق</label>
+                                <select class="form-control select2  @error('team_id') is-invalid @enderror"" style="width: 100%;" wire:model="team_id">
+                                    <option>اختر فريق</option>
+                                    @forelse($teams as $team)
+                                        <option value="{{$team->id}}">{{$team->name}}</option>
+                                    @empty
+                                        <option>لا يوجد فرق</option>
+                                    @endforelse
+                                </select>
+                                <div class="text-danger">@error('team_id') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-3">
+                                <label for="exampleInputEmail1">المستوي</label>
+                                <select class="form-control select2  @error('position_id') is-invalid @enderror"" style="width: 100%;" wire:model="position_id">
+                                    <option>اختر مستوي</option>
+                                    @forelse($positions as $position)
+                                        <option value="{{$position->id}}">{{$position->name}}</option>
+                                    @empty
+                                        <option>لا يوجد مستويات</option>
+                                    @endforelse
+                                </select>
+                                <div class="text-danger">@error('position_id') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="exampleInputEmail1">الحالة</label>
+                                <select class="form-control select2  @error('status') is-invalid @enderror"" style="width: 100%;" wire:model="status">
+                                    <option>اختر حالة</option>
+                                    <option value="active">نشط</option>
+                                    <option value="hold">معلق</option>
+                                    <option value="out">خرج</option>
+                                </select>
+                                <div class="text-danger">@error('status') {{ $message }} @enderror</div>
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="exampleInputEmail1">تعليق</label>
+                                <textarea class="form-control @error('join_date') is-invalid @enderror" wire:model="comment"></textarea>
+                                <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group col-3">
-                        <label for="exampleInputEmail1">رقم هاتف المتطوع</label>
-                        <input type="text" min="0" class="form-control @error('phone') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="phone" placeholder="ادخل عدد افراد المتطوع">
-                        <div class="text-danger">@error('phone') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="exampleInputEmail1">رقم قومي</label>
-                        <input type="text" class="form-control @error('card_id') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="card_id" placeholder="ادخل عدد افراد المتطوع">
-                        <div class="text-danger">@error('card_id') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="exampleInputEmail1">صورة</label>
-                        <input type="file" class="form-control @error('photo') is-invalid @enderror"  wire:model="{{$isUpdate ? "newPhoto" : "photo"}}" >
-                        <div class="text-danger">@error('photo') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="exampleInputEmail1">تاريخ الانضمام</label>
-                        <input type="date" class="form-control @error('join_date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="join_date" >
-                        <div class="text-danger">@error('join_date') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="exampleInputEmail1">الفرع</label>
-                        <select class="form-control select2" style="width: 100%;" wire:model="branch_id">
-                            <option>اختر فرع</option>
-                            @forelse($branches as $branch)
-                                <option value="{{$branch->id}}">{{$branch->name}}</option>
-                            @empty
-                                <option>لا يوجد فروع</option>
-                            @endforelse
-                        </select>
-                        <div class="text-danger">@error('branch_id') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="exampleInputEmail1">الفريق</label>
-                        <select class="form-control select2" style="width: 100%;" wire:model="team_id">
-                            <option>اختر فريق</option>
-                            @forelse($teams as $team)
-                                <option value="{{$team->id}}">{{$team->name}}</option>
-                            @empty
-                                <option>لا يوجد فرق</option>
-                            @endforelse
-                        </select>
-                        <div class="text-danger">@error('team_id') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-3">
-                        <label for="exampleInputEmail1">المستوي</label>
-                        <select class="form-control select2" style="width: 100%;" wire:model="position_id">
-                            <option>اختر مستوي</option>
-                            @forelse($positions as $position)
-                                <option value="{{$position->id}}">{{$position->name}}</option>
-                            @empty
-                                <option>لا يوجد مستويات</option>
-                            @endforelse
-                        </select>
-                        <div class="text-danger">@error('position_id') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-2">
-                        <label for="exampleInputEmail1">الحالة</label>
-                        <select class="form-control select2" style="width: 100%;" wire:model="status">
-                            <option>اختر حالة</option>
-                            <option value="active">نشط</option>
-                            <option value="hold">معلق</option>
-                            <option value="out">خرج</option>
-                        </select>
-                        <div class="text-danger">@error('status') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group col-12">
-                        <label for="exampleInputEmail1">تعليق</label>
-                        <textarea class="form-control @error('join_date') is-invalid @enderror" wire:model="comment"></textarea>
-                        <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col">
+                                @if ($photo)
+                                    <img src="{{ $photo->temporaryUrl() }}" class="img-thumbnail">
+                                @endif
+                            </div>
+                            <div class="form-group col-12">
+                                <label for="exampleInputEmail1">صورة</label>
+                                <input type="file" class="form-control @error('photo') is-invalid @enderror"  wire:model="{{$isUpdate ? "newPhoto" : "photo"}}" >
+                                <div class="text-danger">@error('photo') {{ $message }} @enderror</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">

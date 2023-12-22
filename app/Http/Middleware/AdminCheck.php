@@ -17,9 +17,7 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Config::get('role') == "Admin")
-            return $next($request);
-        if (Auth::check() and Auth::user()->role == "admin") {
+        if (Auth::check() and Auth::user()->position->role == "admin") {
                 return $next($request);
         }
         return redirect()->route('user.home');

@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Models\Activity;
 use App\Models\Event;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,11 +14,15 @@ class Home extends Component
 {
     use WithPagination;
 
-    public $isUpdate = false, $id, $user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
+    public $isUpdate = false, $id,$users,$userId ,$user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
 
     public function render()
     {
         $activities = Activity::where('user_id', Auth::id())->paginate(10);
+        if (Auth::user()->position->role!="user"){
+            $this->userId=Auth::id();
+            $this->users = User::all()->pluck('name','id');
+        }
         $this->events = Event::where('to', '>=', ($this->activity_date ?? today()))->get();
         return view('livewire.user.home', compact(['activities']));
     }
@@ -30,7 +35,8 @@ class Home extends Component
             'activity_date' => $this->activity_date,
             'comment' => $this->comment,
             'event_id' => $this->event_id,
-            'user_id' => Auth::id(),
+            'user_id' => Auth::user()->position->role !="user" ? $this->userId : Auth::id(),
+            'add_by' => Auth::id(),
         ]);
         if ($activity) {
             $this->resetInput();
