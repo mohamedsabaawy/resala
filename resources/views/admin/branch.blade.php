@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('branch')
+    @livewire('admin.branch')
 </x-appAdminlte-layout>

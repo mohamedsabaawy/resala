@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('event')
+    @livewire('admin.event')
 </x-appAdminlte-layout>

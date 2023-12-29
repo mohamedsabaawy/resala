@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         User::create([
            'name'=>"مدير",
            'phone'=>"0111",
+           'code'=>"7001",
            'position_id'=>1,
            'branch_id'=>1,
            'team_id'=>1,

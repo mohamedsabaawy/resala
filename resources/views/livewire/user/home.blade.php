@@ -11,6 +11,10 @@
         </button>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
+            @php
+                $start = date_format(today(),"yy-m-01");
+                $end = date_format(today(),"yy-m-t");
+            @endphp
             {{session('role')}}
             @if(count($activities)>0)
                 <tr>
@@ -71,7 +75,8 @@
                     @if(auth()->user()->position->role !="user")
                         <div class="form-group">
                             <label for="exampleInputEmail1">متطوع</label>
-                            <select class="form-control select2" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                            <select class="form-control select2"
+                                    wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                     wire:model="userId">
                                 <option>اختر</option>
                                 @foreach($users as $key=>$value)
@@ -99,13 +104,14 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">تفاصيل</label>
                         <textarea class="form-control textarea @error('comment') is-invalid @enderror"
-                                  wire:model="comment" ></textarea>
+                                  wire:model="comment"></textarea>
                         <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
                     </div>
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">الاحداث</label>
-                        <select class="form-control select2-blue" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                        <select class="form-control select2-blue"
+                                wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                 wire:model="event_id" id="event_id">
                             <option>اختر</option>
                             @foreach($events as $event)

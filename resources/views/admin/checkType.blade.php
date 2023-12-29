@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('checkType')
+    @livewire('admin.checkType')
 </x-appAdminlte-layout>

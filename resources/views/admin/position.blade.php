@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('position')
+    @livewire('admin.position')
 </x-appAdminlte-layout>

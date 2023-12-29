@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Team extends Component
+class Position extends Component
 {
     use WithPagination;
-    public $id, $name, $manager,$count;
+    public $id, $name,$role;
     public $showCreate=false;
     public $isUpdate=false;
     public function render()
     {
-        $teams = \App\Models\Team::paginate(10); // branches paginate
-        return view('livewire.team',compact('teams'));
+        $positions = \App\Models\Position::paginate(10); // branches paginate
+        return view('livewire.admin.position',compact('positions'));
     }
 
 
     public function save(){
         $this->valid();
-        $branch = \App\Models\Team::create([
+        $branch = \App\Models\Position::create([
             'name'=>$this->name,
-            'count'=>$this->count,
+            'role'=>$this->role,
         ]);
         if ($branch){
             $this->resetInput();
@@ -35,18 +35,19 @@ class Team extends Component
     //get one branch
     public function show($id){
         $this->isUpdate=true;
-        $branch = \App\Models\Team::find($id);
+        $branch = \App\Models\Position::find($id);
         $this->id = $branch->id;
         $this->name = $branch->name;
+        $this->role = $branch->role;
     }
 
     public function update(){
         $this->valid();
-        $barnch = \App\Models\Team::find($this->id);
+        $barnch = \App\Models\Position::find($this->id);
         if ($barnch){
             $barnch->update([
                 'name'=>$this->name,
-                'count'=>$this->count,
+                'role'=>$this->role,
             ]);
         }
         $this->dispatch('close');
@@ -54,26 +55,19 @@ class Team extends Component
     }
 
     public function delete(){
-        $branch = \App\Models\Team::find($this->id);
+        $branch = \App\Models\Position::find($this->id);
         $branch->delete();
         $this->dispatch('close');
         $this->dispatch('notify');
     }
 
     public function resetInput(){
-        $this->id = "";
-        $this->name = "";
-        $this->manager = "";
-        $this->count = "";
+        $this->reset();
     }
     private function valid(){
         $validated = $this->validate([
             'name' => 'required|min:3',
-            'count' => 'required|numeric|min:1',
-        ],[
-            'name.required'=>'برجاء ادخل اسم الفريق',
-            'count.required'=>'برجاء ادخل عدد افراد الفريق',
-            'count.min'=>'برجاء ادخال رقم اكبر من او يساوي :min',
+            'role' => 'required|in:"admin","user","supervisor"',
         ]);
     }
 }

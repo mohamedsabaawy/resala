@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,7 +14,7 @@ class CheckType extends Component
     public function render()
     {
         $checkTypes = \App\Models\CheckType::paginate(10); // branches paginate
-        return view('livewire.check-type',compact('checkTypes'));
+        return view('livewire.admin.check-type',compact('checkTypes'));
     }
 
 

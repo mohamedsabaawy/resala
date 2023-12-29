@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use App\Exports\UsersExport;
 use Illuminate\Support\Facades\Storage;
@@ -14,18 +14,29 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password,$newPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user";
+    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password,$newPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date;
     public $showCreate = false;
     public $isUpdate = false;
+    public $withTrash = false;
 // activity
     public function render()
     {
         $teams = \App\Models\Team::select('id', 'name')->get();
+        $jobs = \App\Models\Job::select('id', 'name')->get();
+        $categories = \App\Models\Category::select('id', 'name')->get();
+        $statuses = \App\Models\Status::select('id', 'name')->get();
+        $qualifications = \App\Models\Qualification::select('id', 'name')->get();
+        $nationalities = \App\Models\Nationality::select('id', 'name')->get();
+        $maritalStatuses = \App\Models\MaritalStatus::select('id', 'name')->get();
+        $degrees = \App\Models\Degree::select('id', 'name')->get();
+        $teams = \App\Models\Team::select('id', 'name')->get();
         $positions = \App\Models\Position::select('id', 'name')->get();
         $branches = \App\Models\Branch::select('id', 'name')->get();
         $checkTypes = \App\Models\CheckType::select('id', 'name')->get();
-        $users = \App\Models\User::with(['branch','team'])->paginate(10); // branches paginate
-        return view('livewire.user', compact(['users', 'teams', 'positions', 'branches', 'checkTypes']));
+        $users = $this->withTrash ? \App\Models\User::withTrashed()->with(['branch','team'])->paginate(10) : \App\Models\User::with(['branch','team'])->paginate(10); // branches paginate
+        return view('livewire.admin.user', compact([
+            'users', 'teams','jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees', 'positions', 'branches', 'checkTypes'
+        ]));
     }
 
     public function export()
@@ -42,14 +53,24 @@ class User extends Component
             'code' => $this->code,
             'phone' => $this->phone,
             'card_id' => $this->card_id,
-            'photo' => $this->photo->store('users','public'),
+            'photo' => $this->photo ? $this->photo->store('users','public') : null,
             'password' => bcrypt(123456),
             'join_date' => $this->join_date,
             'comment' => $this->comment,
             'team_id' => $this->team_id,
             'position_id' => $this->position_id,
             'branch_id' => $this->branch_id,
-            'status' => $this->status,
+            'job_id' => $this->job_id,
+            'category_id' => $this->category_id,
+            'qualification_id' => $this->qualification_id,
+            'nationality_id' => $this->nationality_id,
+            'marital_status_id' => $this->marital_status_id,
+            'degree_id' => $this->degree_id,
+            'gender' => $this->gender,
+            'email' => $this->email,
+            'address' => $this->address,
+            'birth_date' => $this->birth_date,
+
         ]);
         if ($branch) {
             $this->resetInput();
@@ -74,8 +95,18 @@ class User extends Component
         $this->team_id = $user->team_id;
         $this->position_id = $user->position_id;
         $this->branch_id = $user->branch_id;
-        $this->status = $user->status;
         $this->code = $user->code;
+        $this->category_id =$user->category_id;
+        $this->status_id =$user->status_id;
+        $this->qualification_id =$user->qualification_id;
+        $this->nationality_id =$user->nationality_id;
+        $this->degree_id =$user->degree_id;
+        $this->gender =$user->gender;
+        $this->email =$user->email;
+        $this->address =$user->address;
+        $this->birth_date =$user->birth_date;
+        //$gender,$email,$address,$birth_date
+        //'jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees'
 //        $this->password = $user->password;
     }
 
@@ -98,6 +129,16 @@ class User extends Component
                 'position_id' => $this->position_id,
                 'branch_id' => $this->branch_id,
                 'status' => $this->status,
+                'job_id' => $this->job_id,
+                'category_id' => $this->category_id,
+                'qualification_id' => $this->qualification_id,
+                'nationality_id' => $this->nationality_id,
+                'marital_status_id' => $this->marital_status_id,
+                'degree_id' => $this->degree_id,
+                'gender' => $this->gender,
+                'email' => $this->email,
+                'address' => $this->address,
+                'birth_date' => $this->birth_date,
             ]);
 
             if(isset($this->newPhoto) and isset($this->photo)){

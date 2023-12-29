@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('admin.user')
+    @livewire('admin.qualification')
 </x-appAdminlte-layout>

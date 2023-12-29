@@ -1,3 +1,3 @@
 <x-appAdminlte-layout>
-    @livewire('team')
+    @livewire('admin.team')
 </x-appAdminlte-layout>

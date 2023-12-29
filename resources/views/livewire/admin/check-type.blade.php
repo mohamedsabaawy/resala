@@ -1,34 +1,34 @@
-@section('title','أدارة الفرق')
+@section('title','إدارة الاختبارات')
 <div class="card">
     <div class="card-header d-flex">
-        <h3 class="card-title ">الفرق</h3>
+        <h3 class="card-title ">الاختبارات</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
         <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-            اضافة فريق
+            اضافة اختبار
         </button>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
-            @if(count($teams)>0)
+            @if(count($checkTypes)>0)
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
-                    <th>العدد</th>
+                    <th>الحالة</th>
                     <th>اجراء</th>
                 </tr>
             @endif
             </thead>
             <tbody>
-            @forelse($teams as $team)
+            @forelse($checkTypes as $checkType)
                 <tr>
-                    <td>{{$team->id}}</td>
-                    <td>{{$team->name}}</td>
-                    <td>{{$team->count}}</td>
+                    <td>{{$checkType->id}}</td>
+                    <td>{{$checkType->name}}</td>
+                    <td class="badge {{$checkType->active == 1 ? "badge-success" : "badge-danger"}}">{{$checkType->active == 1 ? "نشط" : "غير نشط"}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$team->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$team->id}})">تعديل</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$checkType->id}})" >مسح</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$checkType->id}})">تعديل</button>
                         </div>
                     </td>
                 </tr>
@@ -41,13 +41,13 @@
             </div>
             </tfoot>
         </table>
-        {{$teams->links()}}
+        {{$checkTypes->links()}}
     </div>
     <!-- /.card-body -->
 
-    <!-- start create team model -->
+    <!-- start create checkType model -->
 {{--    wire:ignore.self--}}
-<!-- start team model -->
+<!-- start checkType model -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -55,7 +55,7 @@
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{$isUpdate ? "تعديل فريق" :"انشاء فريق جديد"}}</h4>
+                    <h4 class="modal-title">{{$isUpdate ? "تعديل اختبار" :"انشاء اختبار جديد"}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -63,14 +63,18 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">اسم الفريق</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الفريق">
+                        <label for="exampleInputEmail1">اسم الاختبار</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الاختبار">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">عدد الفريق</label>
-                        <input type="number" min="0" class="form-control @error('count') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="count" placeholder="ادخل عدد افراد الفريق">
-                        <div class="text-danger">@error('count') {{ $message }} @enderror</div>
+                        <label for="exampleInputEmail1">حالة الاختبار</label>
+
+                        <select class="form-control select2 @error('active') is-invalid @enderror" style="width: 100%;" wire:model="active">
+                            <option value="1">نشط</option>
+                            <option value="0">غير نشط</option>
+                        </select>
+                        <div class="text-danger">@error('active') {{ $message }} @enderror</div>
                     </div>
 
                 </div>
@@ -83,7 +87,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!--team model -->
+    <!--checkType model -->
 
     <!-- /.modal-dialog delete -->
     <div wire:ignore.self class="modal fade" id="delete-model">
@@ -117,6 +121,7 @@
 
 @push('style')
 
+
 @endpush
 
 @push('script')
@@ -134,9 +139,10 @@
         // });
 
 
+
         // document.addEventListener('livewire:initialized', () => {
         // @this.on('close-createBranch', (event) => {
-        //     $('#create-team').modal('hide');
+        //     $('#create-checkType').modal('hide');
         // });
         // });
     </script>

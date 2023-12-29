@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,7 +14,7 @@ class Event extends Component
     public function render()
     {
         $events = \App\Models\Event::paginate(10); // branches paginate
-        return view('livewire.event',compact('events'));
+        return view('livewire.admin.event',compact('events'));
     }
 
 

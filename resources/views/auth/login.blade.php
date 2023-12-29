@@ -15,14 +15,14 @@
                 <form method="POST" action="{{ route('login') }}" autocomplete="off">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="phone" class="form-control" placeholder="phone" required autofocus name="phone">
+                        <input type="code" class="form-control" placeholder="code" required autofocus name="code">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
                             </div>
                         </div>
                     </div>
-                    @error('phone')
+                    @error('code')
                     <div>{{$message}}</div>
                     @enderror
                     <div class="input-group mb-3">

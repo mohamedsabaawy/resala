@@ -29,7 +29,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::group(['middleware'=>['Admin'],'prefix'=>'admin'],function (){
-    Route::view('branches','admin.index')->name('branches');
+    Route::view('branches','admin.branch')->name('branches');
+    Route::view('jobs','admin.job')->name('jobs');
+    Route::view('statuses','admin.status')->name('statuses');
+    Route::view('categories','admin.category')->name('categories');
+    Route::view('nationalities','admin.nationality')->name('nationalities');
+    Route::view('maritalStatuses','admin.maritalStatus')->name('maritalStatuses');
+    Route::view('qualifications','admin.qualification')->name('qualifications');
+    Route::view('degrees','admin.degree')->name('degrees');
     Route::view('teams','admin.team')->name('teams');
     Route::view('positions','admin.position')->name('positions');
     Route::view('events','admin.event')->name('events');

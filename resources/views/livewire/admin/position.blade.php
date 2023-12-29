@@ -1,12 +1,12 @@
-@section('title','أدارة المستويات')
+@section('title','إدارة الصفات')
 <div class="card">
     <div class="card-header d-flex">
-        <h3 class="card-title ">المستويات</h3>
+        <h3 class="card-title ">الصفات</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
         <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-            اضافة مستوي
+            اضافة صفة
         </button>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
@@ -65,7 +65,7 @@
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{$isUpdate ? "تعديل مستوي" :"انشاء مستوي جديد"}}</h4>
+                    <h4 class="modal-title">{{$isUpdate ? "تعديل صفة" :"انشاء صفة جديد"}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -73,8 +73,8 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">اسم المستوي</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المستوي">
+                        <label for="exampleInputEmail1">اسم الصفة</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الصفة">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">

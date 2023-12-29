@@ -1,38 +1,43 @@
-@section('title','أدارة الاحداث')
+@section('title','إدارة الحالة الاجتماعية')
 <div class="card">
     <div class="card-header d-flex">
-        <h3 class="card-title ">الاحداث</h3>
+        <h3 class="card-title ">الحالة الاجتماعية</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-            اضافة حدث
-        </button>
+        <div class="row">
+            <div class="col-6">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+                    اضافة حالة اجتماعية
+                </button>
+            </div>
+            <div class="form-group clearfix col-6">
+                <div class="icheck-primary">
+                    <input type="checkbox" id="checkboxPrimary1" wire:model.live="withTrash">
+                    <label for="checkboxPrimary1" class="float-right">
+                    </label>
+                </div>
+            </div>
+        </div>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
-            @if(count($events)>0)
+            @if(count($maritalStatuses)>0)
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
-                    <th>التفاصيل</th>
-                    <th>من</th>
-                    <th>الي</th>
                     <th>اجراء</th>
                 </tr>
             @endif
             </thead>
             <tbody>
-            @forelse($events as $event)
-                <tr>
-                    <td>{{$event->id}}</td>
-                    <td>{{$event->name}}</td>
-                    <td>{{$event->details}}</td>
-                    <td>{{$event->from}}</td>
-                    <td>{{$event->to}}</td>
+            @forelse($maritalStatuses as $maritalStatus)
+                <tr class="{{$maritalStatus->deleted_at ? 'bg-gradient-gray':''}}">
+                    <td>{{$maritalStatus->id}}</td>
+                    <td >{{$maritalStatus->name}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$event->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$event->id}})">تعديل</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$maritalStatus->id}})" ><i class="fa fa-trash"></i>مسح</button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$maritalStatus->id}})"><i class="fa fa-edit"></i>تعديل</button>
                         </div>
                     </td>
                 </tr>
@@ -45,13 +50,13 @@
             </div>
             </tfoot>
         </table>
-        {{$events->links()}}
+        {{$maritalStatuses->links()}}
     </div>
     <!-- /.card-body -->
 
-    <!-- start create event model -->
+    <!-- start create maritalStatus model -->
 {{--    wire:ignore.self--}}
-<!-- start event model -->
+<!-- start maritalStatus model -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -59,7 +64,7 @@
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{$isUpdate ? "تعديل حدث" :"انشاء حدث جديد"}}</h4>
+                    <h4 class="modal-title">{{$isUpdate ? "تعديل حالة اجتماعية" :"انشاء حالة اجتماعية جديد"}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -67,25 +72,11 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">اسم الحدث</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الحدث">
+                        <label for="exampleInputEmail1">اسم الحالة اجتماعية</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الحالة اجتماعية">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">تفاصيل الحدث</label>
-                        <textarea class="form-control textarea @error('details') is-invalid @enderror" wire:model="details"></textarea>
-                        <div class="text-danger">@error('details') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">من</label>
-                        <input type="date" class="form-control @error('from') is-invalid @enderror" wire:model="from">
-                        <div class="text-danger">@error('from') {{ $message }} @enderror</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">الي</label>
-                        <input type="date" class="form-control @error('to') is-invalid @enderror" wire:model="to">
-                        <div class="text-danger">@error('to') {{ $message }} @enderror</div>
-                    </div>
+
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
@@ -96,7 +87,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!--event model -->
+    <!--maritalStatus model -->
 
     <!-- /.modal-dialog delete -->
     <div wire:ignore.self class="modal fade" id="delete-model">
@@ -112,8 +103,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{--                    <h3></h3>--}}
                     <h4>{{$name}}</h4>
+                    @if($deleted_at )
+                        <h5 class="bg-gradient-gray">لا يمكن استرجعها مرة اخري</h5>
+                    @endif
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
@@ -148,14 +141,9 @@
         // });
 
 
-        // $(function () {
-        //     // Summernote
-        //     $('.textarea').summernote()
-        // })
-
         // document.addEventListener('livewire:initialized', () => {
         // @this.on('close-createBranch', (event) => {
-        //     $('#create-event').modal('hide');
+        //     $('#create-maritalStatus').modal('hide');
         // });
         // });
     </script>

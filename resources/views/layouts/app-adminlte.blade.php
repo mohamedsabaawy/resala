@@ -30,9 +30,8 @@
     <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
-    <!-- Select2 -->
-    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
-    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
     @stack('style')
     @livewireStyles
 </head>
@@ -158,6 +157,47 @@
 {{--                    <i class="fas fa-th-large"></i>--}}
 {{--                </a>--}}
 {{--            </li>--}}
+            <li class="nav-item dropdown user-menu">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                    <img src="{{asset(auth()->user()->photo)}}" class="user-image img-circle elevation-2" alt="User Image">
+                    <span class="d-none d-md-inline">{{auth()->user()->name}}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <!-- User image -->
+                    <li class="user-header bg-primary">
+                        <img src="{{asset(auth()->user()->photo)}}" class="img-circle elevation-2" alt="User Image">
+
+                        <p>
+                            {{auth()->user()->name}} - {{auth()->user()->position->name}}
+                            <small> تم الانضمام منذ {{auth()->user()->join_date}}</small>
+                        </p>
+                    </li>
+                    <!-- Menu Body -->
+{{--                    <li class="user-body">--}}
+{{--                        <div class="row">--}}
+{{--                            <div class="col-4 text-center">--}}
+{{--                                <a href="#">Followers</a>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-4 text-center">--}}
+{{--                                <a href="#">Sales</a>--}}
+{{--                            </div>--}}
+{{--                            <div class="col-4 text-center">--}}
+{{--                                <a href="#">Friends</a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                        <!-- /.row -->--}}
+{{--                    </li>--}}
+                    <!-- Menu Footer-->
+                    <li class="user-footer">
+                        <a href="#" class="btn btn-default btn-flat">صفحة شخصية</a>
+                        <a href="#" class="btn btn-default btn-flat float-right" onclick="event.preventDefault();
+                           $('#logout').submit();">خروج</a>
+                        <form action="{{route('logout')}}" method="post" id="logout">
+                            @csrf
+                        </form>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -174,18 +214,6 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="{{asset(auth()->user()->photo)}}" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block text-right">{{auth()->user()->name}}</a>
-                </div>
-                <form action="{{route('logout')}}" method="post">
-                    @csrf
-                    <button class="btn btn-danger btn-sm">logout</button>
-                </form>
-            </div>
 
             @include('layouts.navigation-adminlte')
         </div>
@@ -238,7 +266,7 @@
     <!-- /.control-sidebar -->
 
 </div>
-
+@livewireScripts
 <!-- ./wrapper -->
 
 <!-- jQuery -->
@@ -268,7 +296,7 @@
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Summernote -->
-<script src="{{asset('adminlte/plugins/summernote/summernote-bs4.min.js')}}"></script>
+{{--<script src="{{asset('adminlte/plugins/summernote/summernote-bs4.min.js')}}"></script>--}}
 <!-- overlayScrollbars -->
 <script src="{{asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
@@ -279,15 +307,7 @@
 <script src="{{asset('adminlte/dist/js/demo.js')}}"></script>
 <!-- Toastr -->
 <script src="{{asset('adminlte/plugins/toastr/toastr.min.js')}}"></script>
-<!-- SweetAlert2 -->
-<script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
-<!-- Select2 -->
-<script src="{{asset('adminlte/plugins/select2/js/select2.full.min.js')}}"></script>
-<!-- Toastr -->
-<link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
-<!-- SweetAlert2 -->
-<link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
-@livewireScripts
+
 <script>
     window.addEventListener('close', event => {
         const Toast = Swal.mixin({
@@ -305,11 +325,6 @@
             type: 'success',
             title: 'تم الحفظ بنجاح'
         })
-    })
-
-    //Initialize Select2 Elements
-    $('.select2').select2({
-        theme: 'bootstrap4'
     })
 
 </script>
