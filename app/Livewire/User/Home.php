@@ -15,13 +15,15 @@ use Livewire\WithPagination;
 class Home extends Component
 {
     use WithPagination;
-
-    public $isUpdate = false, $id, $users, $userId, $user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
+    public $isUpdate = false,$isApologize=false, $id, $users, $userId, $user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
 
     public function render()
     {
         $activities = Activity::where('user_id', Auth::id())->paginate(10);
-        $this->users = User::with('position')->get(); //
+        $this->users = User::with(['position','activities'])->where([
+            ['branch_id',Auth::user()->branch_id],
+            ['team_id',Auth::user()->team_id]
+        ])->get(); //
 
         //select users if user role not 'user' and check if it admin or not
         if (Auth::user()->role == "user") {
@@ -47,6 +49,7 @@ class Home extends Component
             'event_id' => $this->event_id,
             'user_id' => Auth::user()->role != "user" ? $this->userId : Auth::id(),
             'add_by' => Auth::id(),
+            'apologize' => $this->isApologize,
         ]);
         if ($activity) {
             $this->resetInput();
@@ -100,7 +103,7 @@ class Home extends Component
     private function valid()
     {
         $validated = $this->validate([
-            'type' => 'required',
+            'type' => $this->isApologize ? 'nullable' : "required",
             'activity_date' => 'required',
             'comment' => 'required',
         ], [

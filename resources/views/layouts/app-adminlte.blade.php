@@ -32,8 +32,8 @@
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
-    @stack('style')
     @livewireStyles
+    @stack('style')
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper">
@@ -310,13 +310,14 @@
 
 <script>
     window.addEventListener('close', event => {
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-start',
-            showConfirmButton: false,
-            // timerProgressBar: true,
-            timer: 3000
-        });
+        // alert('s sdfsdf ')
+        // const Toast = Swal.mixin({
+        //     toast: true,
+        //     position: 'top-start',
+        //     showConfirmButton: false,
+        //     // timerProgressBar: true,
+        //     timer: 3000
+        // });
 
         $('#create-model').modal('hide');
         // $('#edit-branch').modal('hide');

@@ -152,6 +152,8 @@
         //     $('#create-branch').modal('hide');
         // });
         // });
+
+
     </script>
     <!-- DataTables -->
 {{--    <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>--}}
