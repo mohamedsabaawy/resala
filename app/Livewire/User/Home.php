@@ -7,6 +7,7 @@ use App\Models\Event;
 use App\Models\Position;
 use App\Models\User;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -33,9 +34,10 @@ class Home extends Component
         if (Auth::user()->role == "supervisor") {
             $this->users = $this->users->where('role','<>','admin');
         }
+        $allUsers= $this->users;
         $this->users = $this->users->pluck('name','id');
         $this->events = Event::where('to', '>=', ($this->activity_date ?? today()))->get();
-        return view('livewire.user.home', compact(['activities']));
+        return view('livewire.user.home', compact(['activities','allUsers']));
     }
 
 
@@ -49,7 +51,8 @@ class Home extends Component
             'event_id' => $this->event_id,
             'user_id' => Auth::user()->role != "user" ? $this->userId : Auth::id(),
             'add_by' => Auth::id(),
-            'apologize' => $this->isApologize,
+            'type' => $this->type,
+            'apologize' => $this->isApologize ? '1':'0',
         ]);
         if ($activity) {
             $this->resetInput();
@@ -74,12 +77,13 @@ class Home extends Component
     public function update()
     {
         $this->valid();
-        $barnch = \App\Models\Activity::find($this->id);
-        if ($barnch) {
-            $barnch->update([
+        $activity = \App\Models\Activity::find($this->id);
+        if ($activity) {
+            $activity->update([
                 'activity_date' => $this->activity_date,
                 'comment' => $this->comment,
                 'event_id' => $this->event_id,
+                'type' => $this->type,
             ]);
         }
         $this->resetInput();
@@ -104,8 +108,9 @@ class Home extends Component
     {
         $validated = $this->validate([
             'type' => $this->isApologize ? 'nullable' : "required",
-            'activity_date' => 'required',
+            'activity_date' => ['required'],
             'comment' => 'required',
+            'userId' => 'required',
         ], [
             'activity_date.required' => 'برجاء ادخل تاريخ المشاركة',
             'type.required' => 'اختر نوع المشاركة',

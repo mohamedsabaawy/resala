@@ -42,6 +42,7 @@ class User extends Authenticatable
         'status_id',
         'category_id',
         'role',
+        'apologize',
     ];
 
     /**

@@ -9,42 +9,38 @@
                 data-target="#create-model">
             اضافة مشاركة
         </button>
-        <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                data-target="#create-apologize-model">
-            اضافة عذر
-        </button>
-        <table id="example1" class="table table-bordered table-striped">
+        <table id="example1" class="table table-bordered table-responsive">
             <thead>
             @php
-                $start = date_format(today(),"yy-m-01");
-                $end = date_format(today(),"yy-m-t");
+                $start = date_format(today(),"Y-m-01");
+                $end = date_format(today(),"y-m-t");
+                function getActivity($i,$user){
+                    if (count($user->activities->where('activity_date',"$i"))>0){
+                        if (!$user->activities->where('activity_date',"$i")->first()->apologize)
+                            return $user->activities->where('activity_date',"$i")->first()->type;
+                        return "عذر";
+                    }
+                }
             @endphp
             {{session('role')}}
-            @if(count($activities)>0)
+{{--            @if(count($activities)>0)--}}
                 <tr>
                     <th>#</th>
-                    <th>تاريخ المشاركة</th>
-                    <th>نوع المشاركة</th>
-                    <th>اجراء</th>
+                    <th>الاسم</th>
+                    @for($i =date("Y-m-01") ; $i<=date("Y-m-t"); $i++)
+                        <th>{{$i}}</th>
+                        @endfor
                 </tr>
-            @endif
+{{--            @endif--}}
             </thead>
             <tbody>
-            @forelse($activities as $activity)
+            @forelse($allUsers as $user)
                 <tr>
-                    <td>{{$activity->id}}</td>
-                    <td>{{$activity->activity_date}}</td>
-                    <td>{{$activity->type}}</td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
-                                    wire:click="show({{$activity->id}})">مسح
-                            </button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal"
-                                    data-target="#create-model" wire:click="show({{$activity->id}})">تعديل
-                            </button>
-                        </div>
-                    </td>
+                    <td>{{$user->id}}</td>
+                    <td>{{$user->name}}</td>
+                    @for($i =date("Y-m-01") ; $i<=date("Y-m-t"); $i++)
+                        <td>{{getActivity($i,$user)}}</td>
+                    @endfor
                 </tr>
             @empty
                 <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
@@ -55,8 +51,6 @@
             </div>
             </tfoot>
         </table>
-        {{$activities->links()}}
-
     </div>
     <!-- /.card-body -->
 
@@ -80,7 +74,6 @@
                         <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">
                         <label for="apologize" class="form-check-label">عذر</label>
                     </div>
-                    @if(auth()->user()->position->role !="user")
                         <div class="form-group">
                             <label for="userId">متطوع</label>
                             <select class="form-control select2" id="userId"
@@ -92,7 +85,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    @endif
+                        <div class="text-danger">@error('userId') {{ $message }} @enderror</div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
                         <input type="date" class="form-control @error('date') is-invalid @enderror"
