@@ -27,9 +27,10 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Bootstrap 4 RTL -->
-    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">
+{{--    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">--}}
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/bootstrap-4.2.1-dist/css/rtl/bootstrap.min.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
     @livewireStyles
