@@ -14,7 +14,7 @@
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
-                    <th>النوع</th>
+{{--                    <th>النوع</th>--}}
                     <th>اجراء</th>
                 </tr>
             @endif
@@ -24,17 +24,17 @@
                 <tr>
                     <td>{{$position->id}}</td>
                     <td>{{$position->name}}</td>
-                    <td>@switch($position->role)
-                            @case('admin')
-                            مدير النظام
-                        @break
-                        @case('supervisor')
-                        مشرف
-                            @break
-                            @default
-                            مستخدم عادي
-                        @endswitch
-                    </td>
+{{--                    <td>@switch($position->role)--}}
+{{--                            @case('admin')--}}
+{{--                            مدير النظام--}}
+{{--                        @break--}}
+{{--                        @case('supervisor')--}}
+{{--                        مشرف--}}
+{{--                            @break--}}
+{{--                            @default--}}
+{{--                            مستخدم عادي--}}
+{{--                        @endswitch--}}
+{{--                    </td>--}}
                     <td>
                         <div class="btn-group">
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$position->id}})" >مسح</button>
@@ -77,16 +77,16 @@
                         <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الصفة">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">نوع المستخدم</label>
-                        <select class="form-control select2" style="width: 100%;" wire:model="role">
-                            <option>اختر</option>
-                            <option value="admin">مدير النظام</option>
-                            <option value="supervisor">مشرف</option>
-                            <option value="user">مستخدم عادي</option>
-                        </select>
-                        <div class="text-danger">@error('role') {{ $message }} @enderror</div>
-                    </div>
+{{--                    <div class="form-group">--}}
+{{--                        <label for="exampleInputEmail1">نوع المستخدم</label>--}}
+{{--                        <select class="form-control select2" style="width: 100%;" wire:model="role">--}}
+{{--                            <option>اختر</option>--}}
+{{--                            <option value="admin">مدير النظام</option>--}}
+{{--                            <option value="supervisor">مشرف</option>--}}
+{{--                            <option value="user">مستخدم عادي</option>--}}
+{{--                        </select>--}}
+{{--                        <div class="text-danger">@error('role') {{ $message }} @enderror</div>--}}
+{{--                    </div>--}}
 
                 </div>
                 <div class="modal-footer justify-content-between">
