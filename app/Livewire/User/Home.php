@@ -118,4 +118,10 @@ class Home extends Component
         ]);
     }
 
+    public function createApologize(){
+        $this->resetInput();
+        $this->isApologize = true;
+    }
+
+
 }

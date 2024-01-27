@@ -6,8 +6,12 @@
     <!-- /.card-header -->
     <div class="card-body">
         <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                data-target="#create-model">
+                data-target="#create-model" wire:click="resetInput">
             اضافة مشاركة
+        </button>
+        <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                data-target="#create-model" wire:click="createApologize">
+            اضافة عذر
         </button>
         <table id="example1" class="table table-bordered table-responsive">
             <thead>
@@ -70,10 +74,10 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-check">
-                        <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">
-                        <label for="apologize" class="form-check-label">عذر</label>
-                    </div>
+{{--                    <div class="form-check">--}}
+{{--                        <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">--}}
+{{--                        <label for="apologize" class="form-check-label">عذر</label>--}}
+{{--                    </div>--}}
                         <div class="form-group">
                             <label for="userId">متطوع</label>
                             <select class="form-control select2" id="userId"
@@ -112,7 +116,6 @@
                     </div>
 
 
-                    @if(!$isApologize)
                         <div class="form-group">
                             <label for="exampleInputEmail1">الاحداث</label>
                             <select class="form-control select2-blue"
@@ -125,7 +128,6 @@
                             </select>
                         </div>
 
-                    @endif
                 </div>
 
                 <div class="modal-footer justify-content-between">

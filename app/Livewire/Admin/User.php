@@ -14,7 +14,7 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $code , $phone, $card_id, $photo,$newPhoto, $password,$newPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date;
+    public $id, $name, $code , $phone, $national_id, $photo,$newPhoto, $password,$newPassword,$oldPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date;
     public $showCreate = false;
     public $isUpdate = false;
     public $withTrash = false;
@@ -52,14 +52,15 @@ class User extends Component
             'name' => $this->name,
             'code' => $this->code,
             'phone' => $this->phone,
-            'card_id' => $this->card_id,
-            'photo' => $this->photo ? $this->photo->store('users','public') : null,
-            'password' => bcrypt(123456),
+            'national_id' => $this->national_id,
+            'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
+            'password' => $this->password,
             'join_date' => $this->join_date,
             'comment' => $this->comment,
             'team_id' => $this->team_id,
             'position_id' => $this->position_id,
             'branch_id' => $this->branch_id,
+            'status_id' => $this->status_id,
             'job_id' => $this->job_id,
             'category_id' => $this->category_id,
             'qualification_id' => $this->qualification_id,
@@ -88,7 +89,7 @@ class User extends Component
         $this->id = $user->id;
         $this->name = $user->name;
         $this->phone = $user->phone;
-        $this->card_id = $user->card_id;
+        $this->national_id = $user->national_id;
         $this->photo = $user->photo;
         $this->join_date = $user->join_date;
         $this->comment = $user->comment;
@@ -105,6 +106,9 @@ class User extends Component
         $this->email =$user->email;
         $this->address =$user->address;
         $this->birth_date =$user->birth_date;
+        $this->role =$user->role;
+        $this->oldPassword =$user->password;
+        $this->job_id =$user->job_id;
         //$gender,$email,$address,$birth_date
         //'jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees'
 //        $this->password = $user->password;
@@ -120,15 +124,15 @@ class User extends Component
                 'name' => $this->name,
                 'code' => $this->code,
                 'phone' => $this->phone,
-                'card_id' => $this->card_id,
+                'national_id' => $this->national_id,
                 'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
-                'password' => $this->newPassword ? bcrypt($this->newPassword):$password,
+                'password' => $this->newPassword ? bcrypt($this->newPassword):$this->oldPassword,
                 'join_date' => $this->join_date,
                 'comment' => $this->comment,
                 'team_id' => $this->team_id,
                 'position_id' => $this->position_id,
                 'branch_id' => $this->branch_id,
-                'status' => $this->status,
+                'status_id' => $this->status_id,
                 'job_id' => $this->job_id,
                 'category_id' => $this->category_id,
                 'qualification_id' => $this->qualification_id,
@@ -139,6 +143,7 @@ class User extends Component
                 'email' => $this->email,
                 'address' => $this->address,
                 'birth_date' => $this->birth_date,
+                'role' => $this->role,
             ]);
 
             if(isset($this->newPhoto) and isset($this->photo)){
@@ -169,7 +174,7 @@ class User extends Component
         $validated = $this->validate([
             'name' => "required",
             'phone' => "required",
-            'card_id' => "required",
+            'national_id' => "required",
 //            'photo' => "required",
             'password'=>$this->isUpdate ? "" : "required",
             'join_date' => "required",

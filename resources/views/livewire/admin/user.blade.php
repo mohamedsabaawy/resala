@@ -90,8 +90,8 @@
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">رقم قومي</label>
-                                <input type="text" class="form-control @error('card_id') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="card_id" placeholder="ادخل عدد افراد المتطوع">
-                                <div class="text-danger">@error('card_id') {{ $message }} @enderror</div>
+                                <input type="text" class="form-control @error('national_id') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="national_id" placeholder="ادخل عدد افراد المتطوع">
+                                <div class="text-danger">@error('national_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">كلمة السر</label>
@@ -149,7 +149,7 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">النشاط</label>
-                                <select class="form-control select2  @error('position_id') is-invalid @enderror" wire:model="position_id">
+                                <select class="form-control select2  @error('job_id') is-invalid @enderror" wire:model="job_id">
                                     <option>اختر نشاط</option>
                                     @forelse($jobs as $job)
                                         <option value="{{$job->id}}">{{$job->name}}</option>
