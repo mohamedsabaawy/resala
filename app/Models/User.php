@@ -35,7 +35,7 @@ class User extends Authenticatable
         'qualification_id',
         'nationality_id',
         'branch_id',
-        'jop_id',
+        'job_id',
         'team_id',
         'position_id',
         'degree_id',

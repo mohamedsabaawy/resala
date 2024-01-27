@@ -180,6 +180,7 @@ class User extends Component
             'join_date' => "required",
             'comment' => "required",
             'team_id' => "required",
+            'job_id' => "required",
             'position_id' => "required",
             'branch_id' => "required",
             'status' => "required",
