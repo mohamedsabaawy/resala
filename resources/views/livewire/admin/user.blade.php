@@ -156,7 +156,7 @@
                                     @empty
                                     @endforelse
                                 </select>
-                                <div class="text-danger">@error('position_id') {{ $message }} @enderror</div>
+                                <div class="text-danger">@error('job_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الحالة</label>
