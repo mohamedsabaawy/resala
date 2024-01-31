@@ -6,17 +6,29 @@ use App\Models\Activity;
 use App\Models\Event;
 use App\Models\Position;
 use App\Models\User;
+use App\Rules\Check;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Home extends Component
 {
     use WithPagination;
-    public $isUpdate = false,$isApologize=false, $id, $users, $userId, $user_id, $event_id, $comment, $supervisor_comment, $activity_date, $type, $events;
+    public $isUpdate = false,
+        $isApologize=false,
+        $id, $users, $userId,
+        $user_id, $event_id,
+        $comment, $supervisor_comment,
+        $activity_date, $type, $events,
+    $event_from=null,
+    $event_to=null,
+    $filter_from=null, //filter
+    $filter_to=null
+;
 
     public function render()
     {
@@ -40,10 +52,14 @@ class Home extends Component
         return view('livewire.user.home', compact(['activities','allUsers']));
     }
 
+    public function mount(){
+        $this->filter_from=date_format(today(),"Y-m-01");
+        $this->filter_to=date_format(today(),"Y-m-t");
+    }
+
 
     public function save()
     {
-
         $this->valid();
         $activity = \App\Models\Activity::create([
             'activity_date' => $this->activity_date,
@@ -106,11 +122,13 @@ class Home extends Component
 
     private function valid()
     {
+
         $validated = $this->validate([
             'type' => $this->isApologize ? 'nullable' : "required",
-            'activity_date' => ['required'],
+            'activity_date' => ['required',new Check($this->user_id)],
             'comment' => 'required',
             'userId' => 'required',
+            'event_id' => 'required',
         ], [
             'activity_date.required' => 'برجاء ادخل تاريخ المشاركة',
             'type.required' => 'اختر نوع المشاركة',
@@ -121,6 +139,12 @@ class Home extends Component
     public function createApologize(){
         $this->resetInput();
         $this->isApologize = true;
+    }
+
+    public function check(){
+        $event = Event::find($this->event_id);
+        $this->event_from=$event->from;
+        $this->event_to=$event->to;
     }
 
 

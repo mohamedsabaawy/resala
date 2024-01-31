@@ -54,7 +54,6 @@ class Category extends Component
         if ($category){
             $category->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();

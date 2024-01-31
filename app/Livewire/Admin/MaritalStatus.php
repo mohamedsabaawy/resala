@@ -54,7 +54,6 @@ class MaritalStatus extends Component
         if ($maritalStatus){
             $maritalStatus->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();

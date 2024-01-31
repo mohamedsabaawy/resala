@@ -54,7 +54,6 @@ class Qualification extends Component
         if ($qualification){
             $qualification->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();

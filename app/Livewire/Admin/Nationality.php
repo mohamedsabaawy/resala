@@ -54,7 +54,6 @@ class Nationality extends Component
         if ($nationality){
             $nationality->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();

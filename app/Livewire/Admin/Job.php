@@ -54,7 +54,6 @@ class Job extends Component
         if ($job){
             $job->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();

@@ -5,14 +5,38 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                data-target="#create-model" wire:click="resetInput">
-            اضافة مشاركة
-        </button>
-        <button type="button" class="btn btn-outline-info" data-toggle="modal"
-                data-target="#create-model" wire:click="createApologize">
-            اضافة عذر
-        </button>
+        <div class="row">
+            <div class="col-6">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                        data-target="#create-model" wire:click="resetInput">
+                    اضافة مشاركة
+                </button>
+                <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                        data-target="#create-model" wire:click="createApologize">
+                    اضافة عذر
+                </button>
+            </div>
+            <div class="col-3">
+            </div>
+            <div class="col-3">
+                <div class="row">
+                    <div class="col-1">
+                        <label class="col-form-label">من</label>
+                    </div>
+                    <div class="col-10">
+                        <input class="form-control" dir="rtl" type="date" wire:model.live="filter_from" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <label class="col-form-label">الي</label>
+                    </div>
+                    <div class="col-10">
+                        <input class="form-control" dir="rtl" type="date" wire:model.live="filter_to" >
+                    </div>
+                </div>
+            </div>
+        </div>
         <table id="example1" class="table table-bordered table-responsive">
             <thead>
             @php
@@ -25,25 +49,33 @@
                         return "عذر";
                     }
                 }
+                function getActivityEvent($i,$user){
+                    if (count($user->activities->where('activity_date',"$i"))>0){
+                        if (!$user->activities->where('activity_date',"$i")->first()->apologize)
+                            return $user->activities->where('activity_date',"$i")->first()->event->name;
+                        return "عذر";
+                    }
+                }
             @endphp
             {{session('role')}}
-{{--            @if(count($activities)>0)--}}
-                <tr>
-                    <th>#</th>
-                    <th>الاسم</th>
-                    @for($i =date("Y-m-01") ; $i<=date("Y-m-t"); $i++)
-                        <th>{{$i}}</th>
-                        @endfor
-                </tr>
-{{--            @endif--}}
+            {{--            @if(count($activities)>0)--}}
+            <tr>
+                <th>#</th>
+                <th>الاسم</th>
+                @for($i =$filter_from ; $i<=$filter_to; $i++)
+                    <th colspan="2">{{$i}}</th>
+                @endfor
+            </tr>
+            {{--            @endif--}}
             </thead>
             <tbody>
             @forelse($allUsers as $user)
                 <tr>
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
-                    @for($i =date("Y-m-01") ; $i<=date("Y-m-t"); $i++)
+                    @for($i =$filter_from ; $i<=$filter_to; $i++)
                         <td>{{getActivity($i,$user)}}</td>
+                        <td>{{getActivityEvent($i,$user)}}</td>
                     @endfor
                 </tr>
             @empty
@@ -74,27 +106,41 @@
                     </button>
                 </div>
                 <div class="modal-body">
-{{--                    <div class="form-check">--}}
-{{--                        <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">--}}
-{{--                        <label for="apologize" class="form-check-label">عذر</label>--}}
-{{--                    </div>--}}
-                        <div class="form-group">
-                            <label for="userId">متطوع</label>
-                            <select class="form-control select2" id="userId"
-                                    wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
-                                    wire:model="userId">
-                                <option>اختر</option>
-                                @foreach($users as $key=>$value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    {{--                    <div class="form-check">--}}
+                    {{--                        <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">--}}
+                    {{--                        <label for="apologize" class="form-check-label">عذر</label>--}}
+                    {{--                    </div>--}}
+                    <div class="form-group">
+                        <label for="userId">متطوع</label>
+                        <select class="form-control select2" id="userId"
+                                wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                wire:model="userId">
+                            <option>اختر</option>
+                            @foreach($users as $key=>$value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
                         <div class="text-danger">@error('userId') {{ $message }} @enderror</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الاحداث</label>
+                        <select class="form-control select2-blue"
+{{--                                {{$isUpdate ? "update()" : "save()"}}  --}}
+                                wire:keydown.outside="check()"
+                                wire:model.live="event_id" id="event_id">
+                            <option>اختر</option>
+                            @foreach($events as $event)
+                                <option value="{{$event->id}}">{{$event->name}}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">@error('event_id') {{ $message }} @enderror</div>
+                    </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
-                        <input type="date" class="form-control @error('date') is-invalid @enderror"
-                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
-                               wire:model.live="activity_date">
+                        <input type="date" min="{{$event_from}}" max="{{$event_to}}" class="form-control @error('date') is-invalid @enderror"
+                               wire:click="check"
+                               wire:model.live="activity_date" placeholder="dd-mm-yyyy">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
                     @if(!$isApologize)
@@ -114,19 +160,6 @@
                                   wire:model="comment"></textarea>
                         <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
                     </div>
-
-
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">الاحداث</label>
-                            <select class="form-control select2-blue"
-                                    wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
-                                    wire:model="event_id" id="event_id">
-                                <option>اختر</option>
-                                @foreach($events as $event)
-                                    <option value="{{$event->id}}">{{$event->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
                 </div>
 

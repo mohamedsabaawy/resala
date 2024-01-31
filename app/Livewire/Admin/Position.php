@@ -22,7 +22,6 @@ class Position extends Component
         $this->valid();
         $branch = \App\Models\Position::create([
             'name'=>$this->name,
-            'role'=>$this->role,
         ]);
         if ($branch){
             $this->resetInput();
@@ -38,7 +37,7 @@ class Position extends Component
         $branch = \App\Models\Position::find($id);
         $this->id = $branch->id;
         $this->name = $branch->name;
-        $this->role = $branch->role;
+//        $this->role = $branch->role;
     }
 
     public function update(){
@@ -47,7 +46,7 @@ class Position extends Component
         if ($barnch){
             $barnch->update([
                 'name'=>$this->name,
-                'role'=>$this->role,
+                'role'=>'user',
             ]);
         }
         $this->dispatch('close');
@@ -67,7 +66,6 @@ class Position extends Component
     private function valid(){
         $validated = $this->validate([
             'name' => 'required|min:3',
-            'role' => 'required|in:"admin","user","supervisor"',
         ]);
     }
 }

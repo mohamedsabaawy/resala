@@ -54,7 +54,6 @@ class Degree extends Component
         if ($barnch){
             $barnch->update([
                 'name'=>$this->name,
-                'address'=>$this->address,
             ]);
         }
         $this->resetInput();
