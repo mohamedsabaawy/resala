@@ -41,7 +41,12 @@ class User extends Component
 
     public function export()
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        $filter_from=date_format(today(),"Y-m-01");
+        $filter_to=date_format(today(),"Y-m-t");
+        $users = \App\Models\User::with(['team','position','activities'=>function ($query) use ($filter_from){
+            $query->where('activity_date','>=',$filter_from);
+        }])->get()->sortBy('team_id');
+        return Excel::download(new UsersExport($users,$filter_from,$filter_to), 'users.xlsx');
     }
 
 
