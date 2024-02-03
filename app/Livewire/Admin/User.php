@@ -14,7 +14,7 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $code , $phone, $national_id, $photo,$newPhoto, $password,$newPassword,$oldPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date;
+    public $id, $name, $code , $phone, $national_id, $photo,$newPhoto, $password,$newPassword,$oldPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date,$filter_from,$filter_to;
     public $showCreate = false;
     public $isUpdate = false;
     public $withTrash = false;
@@ -41,8 +41,9 @@ class User extends Component
 
     public function export()
     {
-        $filter_from=date_format(today(),"Y-m-01");
-        $filter_to=date_format(today(),"Y-m-t");
+        $filter_from=$this->filter_from?? date_format(today(),"Y-m-01");
+        $filter_to=$this->filter_to?? date_format(today(),"Y-m-t");
+//        dd($filter_from);
         $users = \App\Models\User::with(['team','position','activities'=>function ($query) use ($filter_from){
             $query->where('activity_date','>=',$filter_from);
         }])->get()->sortBy('team_id');

@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
             $table->date('activity_date');
-            $table->bigInteger('user_id');
-            $table->bigInteger('event_id')->nullable();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade')->onUpdate('cascade')->nullable();
             $table->bigInteger('add_by');
             $table->enum('type',['online','offline'])->nullable();
+            $table->enum('apologize',['1','0'])->nullable();
             $table->text('comment')->nullable();
             $table->text('supervisor_comment')->nullable();
             $table->timestamps();

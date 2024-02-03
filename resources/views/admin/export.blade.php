@@ -35,8 +35,8 @@
         <tr>
             <td>{{$user->id}}</td>
             <td>{{$user->name}}</td>
-            <td>{{$user->team->name}}</td>
-            <td>{{$user->position->name}}</td>
+            <td>{{$user->team->name ?? null}}</td>
+            <td>{{$user->position->name ?? null}}</td>
             @for($i =$filter_from ; $i<=$filter_to; $i++)
                 <td>{{getActivity($i,$user)}}</td>
                 <td>{{getActivityEvent($i,$user)}}</td>

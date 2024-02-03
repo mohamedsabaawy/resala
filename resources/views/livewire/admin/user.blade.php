@@ -4,13 +4,29 @@
         <h3 class="card-title ">المتطوعين</h3>
     </div>
     <!-- /.card-header -->
-    <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-            اضافة متطوع
-        </button>
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="export()" >
-            تصدير
-        </button>
+    <div class="card-body row">
+        <div class="col">
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+                اضافة متطوع
+            </button>
+        </div>
+            <div class="form-inline col">
+                <div class="form-group">
+                        <label class="col-form-label">من</label>
+                    <div class="col-10">
+                        <input class="form-control" dir="rtl" type="date" wire:model="filter_from" >
+                    </div>
+                </div>
+                <div class="form-group">
+                        <label class="form-text">الي</label>
+                    <div class="col-10">
+                        <input class="form-control" dir="rtl" type="date" wire:model="filter_to" >
+                    </div>
+                </div>
+                <button type="button" class="form-control" data-toggle="modal" wire:click="export()" >
+                    تصدير
+                </button>
+            </div>
         <table id="example1" class="table table-bordered table-striped">
             <thead>
             @if(count($users)>0)

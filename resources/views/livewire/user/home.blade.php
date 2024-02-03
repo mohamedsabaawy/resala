@@ -6,7 +6,7 @@
     <!-- /.card-header -->
     <div class="card-body">
         <div class="row">
-            <div class="col-6">
+            <div class="col col-6">
                 <button type="button" class="btn btn-outline-info" data-toggle="modal"
                         data-target="#create-model" wire:click="resetInput">
                     اضافة مشاركة
@@ -16,9 +16,9 @@
                     اضافة عذر
                 </button>
             </div>
-            <div class="col-3">
+            <div class="col col-3">
             </div>
-            <div class="col-3">
+            <div class="col col-3">
                 <div class="row">
                     <div class="col-1">
                         <label class="col-form-label">من</label>

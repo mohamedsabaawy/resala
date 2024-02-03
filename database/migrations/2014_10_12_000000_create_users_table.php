@@ -35,7 +35,7 @@ return new class extends Migration
             $table->TinyInteger("degree_id")->nullable();//درجة التطوع//
             $table->TinyInteger('status_id')->nullable();//حالة التطوع//
             $table->TinyInteger("category_id")->nullable();//التصنيف داخل المتابعة او خارج المتابعة//
-            $table->enum('role',['admin','supervisor','user'])->default('user');
+            $table->enum('role',['superAdmin','admin','supervisor','user'])->default('user');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

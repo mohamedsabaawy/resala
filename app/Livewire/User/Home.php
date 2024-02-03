@@ -117,7 +117,7 @@ class Home extends Component
 
     public function resetInput()
     {
-        $this->reset();
+        $this->resetExcept(['filter_from','filter_to']);
     }
 
     private function valid()

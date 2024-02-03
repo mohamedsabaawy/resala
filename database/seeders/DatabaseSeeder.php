@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
            'position_id'=>1,
            'branch_id'=>1,
            'team_id'=>1,
+           'role'=>'admin',
            'join_date'=>today(),
         ]);
     }
