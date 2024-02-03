@@ -5,7 +5,8 @@
 
     <div class="login-box">
         <div class="login-logo">
-            <a href="../../index2.html"><b>رسالة</b></a>
+            <img src="{{asset('Resala-logo.png')}}">
+{{--            <a href="../../index2.html"><b>رسالة</b></a>--}}
         </div>
         <!-- /.login-logo -->
         <div class="card">
