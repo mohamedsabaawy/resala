@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('name',150);
             $table->longText('details');
             $table->string('photo')->nullable();
+            $table->boolean('type')->default(0)->nullable();//0 =>event with date 1 => event without date
+            $table->boolean('active')->default(1)->nullable();//0 =>event not active 1 => event active
             $table->bigInteger('team_id')->nullable();
             $table->date('from')->nullable();
             $table->date('to')->nullable();

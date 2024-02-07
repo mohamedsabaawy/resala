@@ -32,7 +32,6 @@ class Home extends Component
 
     public function render()
     {
-        $activities = Activity::where('user_id', Auth::id())->paginate(10);
         $this->users = User::with(['position','activities'])->where([
             ['branch_id',Auth::user()->branch_id],
             ['team_id',Auth::user()->team_id]
@@ -48,8 +47,11 @@ class Home extends Component
         }
         $allUsers= $this->users;
         $this->users = $this->users->pluck('name','id');
-        $this->events = Event::where('to', '>=', ($this->activity_date ?? today()))->get();
-        return view('livewire.user.home', compact(['activities','allUsers']));
+        $this->events = Event::where([
+            ['to', '>=', ($this->activity_date ?? today())],
+            ['active',1]
+        ])->orWhere([['type',1],['active',1]])->get();
+        return view('livewire.user.home', compact(['allUsers']));
     }
 
     public function mount(){
@@ -142,9 +144,11 @@ class Home extends Component
     }
 
     public function check(){
-        $event = Event::find($this->event_id);
-        $this->event_from=$event->from;
-        $this->event_to=$event->to;
+        if ($event = Event::find($this->event_id))
+        if ($event->type == 0) {
+            $this->event_from = $event->from;
+            $this->event_to = $event->to;
+        }
     }
 
 

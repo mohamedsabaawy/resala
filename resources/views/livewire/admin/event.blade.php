@@ -77,15 +77,26 @@
                         <div class="text-danger">@error('details') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">من</label>
-                        <input type="date" class="form-control @error('from') is-invalid @enderror" wire:model="from">
-                        <div class="text-danger">@error('from') {{ $message }} @enderror</div>
+                        <div class="icheck-primary">
+                            <label for="checkboxPrimary1" class="">
+                                حدث عام
+                            </label>
+{{--                            {{$type}}--}}
+                            <input type="checkbox" id="checkboxPrimary1" wire:model.live="type">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">الي</label>
-                        <input type="date" class="form-control @error('to') is-invalid @enderror" wire:model="to">
-                        <div class="text-danger">@error('to') {{ $message }} @enderror</div>
-                    </div>
+                    @if($type==0)
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">من</label>
+                            <input type="date" class="form-control @error('from') is-invalid @enderror" wire:model="from">
+                            <div class="text-danger">@error('from') {{ $message }} @enderror</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">الي</label>
+                            <input type="date" class="form-control @error('to') is-invalid @enderror" wire:model="to">
+                            <div class="text-danger">@error('to') {{ $message }} @enderror</div>
+                        </div>
+                        @endif
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>

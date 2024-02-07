@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 class Event extends Component
 {
     use WithPagination;
-    public $id, $name, $details,$from=null,$to=null,$team_id,$date;
+    public $id, $name, $details,$from=null,$to=null,$team_id,$date,$type=false,$active;
     public $showCreate=false;
     public $isUpdate=false;
     public function render()
@@ -25,6 +25,8 @@ class Event extends Component
             'details'=>$this->details,
             'from'=>$this->from ,
             'to'=>$this->to,
+            'type'=>$this->type,
+            'active'=>$this->active,
 //            'team_id'=>$this->team_id,
         ]);
         if ($branch){
@@ -38,12 +40,14 @@ class Event extends Component
     //get one branch
     public function show($id){
         $this->isUpdate=true;
-        $branch = \App\Models\Event::find($id);
-        $this->id = $branch->id;
-        $this->name = $branch->name;
-        $this->details = $branch->details;
-        $this->from = $branch->from;
-        $this->to = $branch->to;
+        $event = \App\Models\Event::find($id);
+        $this->id = $event->id;
+        $this->name = $event->name;
+        $this->details = $event->details;
+        $this->from = $event->from;
+        $this->to = $event->to;
+        $this->type = $event->type;
+        $this->active = $event->active;
     }
 
     public function update(){
@@ -55,6 +59,8 @@ class Event extends Component
                 'details'=>$this->details,
                 'from'=>$this->from,
                 'to'=>$this->to,
+                'type'=>$this->type,
+                'active'=>$this->active,
 //                'team_id'=>$this->team_id,
             ]);
         }
@@ -76,8 +82,8 @@ class Event extends Component
         $validated = $this->validate([
             'name' => 'required|min:3',
             'details'=>'required|min:3',
-            'from'=>'required|date',
-            'to'=>'required|date|after_or_equal:from',
+            'from'=>$this->type?'nullable' : 'required'.'|date',
+            'to'=>$this->type?'nullable' : 'required'.'|date|after_or_equal:from',
         ],[
             'name.required'=>'برجاء ادخل اسم الحدث',
             'details.required'=>'برجاء ادخل تفاصيل الحدث',

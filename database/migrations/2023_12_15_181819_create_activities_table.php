@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->date('activity_date');
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('event_id')->constrained()->onDelete('cascade')->onUpdate('cascade')->nullable();
-            $table->bigInteger('add_by');
+            $table->foreignId('manager_id')->nullable()->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('event_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->bigInteger('add_by')->nullable();
+            $table->boolean('approval')->default(0)->nullable();
             $table->enum('type',['online','offline'])->nullable();
             $table->enum('apologize',['1','0'])->nullable();
             $table->text('comment')->nullable();

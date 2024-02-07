@@ -6,28 +6,29 @@
     <!-- /.card-header -->
     <div class="card-body row">
         <div class="col">
-            <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()"
+                    data-target="#create-model">
                 اضافة متطوع
             </button>
         </div>
-            <div class="form-inline col">
-                <div class="form-group">
-                        <label class="col-form-label">من</label>
-                    <div class="col-10">
-                        <input class="form-control" dir="rtl" type="date" wire:model="filter_from" >
-                    </div>
+        <div class="form-inline col border">
+            <div class="form-group">
+                <label class="col-form-label">من</label>
+                <div class="col-10">
+                    <input class="form-control" dir="rtl" type="date" wire:model="filter_from">
                 </div>
-                <div class="form-group">
-                        <label class="form-text">الي</label>
-                    <div class="col-10">
-                        <input class="form-control" dir="rtl" type="date" wire:model="filter_to" >
-                    </div>
-                </div>
-                <button type="button" class="form-control" data-toggle="modal" wire:click="export()" >
-                    تصدير
-                </button>
             </div>
-        <table id="example1" class="table table-bordered table-striped">
+            <div class="form-group">
+                <label class="form-text">الي</label>
+                <div class="col-10">
+                    <input class="form-control" dir="rtl" type="date" wire:model="filter_to">
+                </div>
+            </div>
+            <button type="button" class="form-control btn btn-info" data-toggle="modal" wire:click="export()">
+                تصدير
+            </button>
+        </div>
+        <table id="example1" class="table table-bordered table-striped ">
             <thead>
             @if(count($users)>0)
                 <tr>
@@ -52,8 +53,12 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$user->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$user->id}})">تعديل</button>
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
+                                    wire:click="show({{$user->id}})">مسح
+                            </button>
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#create-model" wire:click="show({{$user->id}})">تعديل
+                            </button>
                         </div>
                     </td>
                 </tr>
@@ -76,7 +81,7 @@
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -91,47 +96,66 @@
                         <div class="row">
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الرقم</label>
-                                <input type="text" class="form-control @error('code') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="code" placeholder="كود">
+                                <input type="text" class="form-control @error('code') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="code"
+                                       placeholder="كود">
                                 <div class="text-danger">@error('code') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-4">
                                 <label for="exampleInputEmail1">اسم المتطوع</label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المتطوع">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name"
+                                       placeholder="ادخل اسم المتطوع">
                                 <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">رقم هاتف المتطوع</label>
-                                <input type="text" min="0" class="form-control @error('phone') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="phone" placeholder="ادخل عدد افراد المتطوع">
+                                <input type="text" min="0" class="form-control @error('phone') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="phone"
+                                       placeholder="ادخل عدد افراد المتطوع">
                                 <div class="text-danger">@error('phone') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">رقم قومي</label>
-                                <input type="text" class="form-control @error('national_id') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="national_id" placeholder="ادخل عدد افراد المتطوع">
+                                <input type="text" class="form-control @error('national_id') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                       wire:model="national_id" placeholder="ادخل عدد افراد المتطوع">
                                 <div class="text-danger">@error('national_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">كلمة السر</label>
-                                <input type="password" class="form-control @error($isUpdate ? "newPassword" : "password") is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="{{$isUpdate ? "newPassword" : "password"}}" >
-                                <div class="text-danger">@error($isUpdate ? "newPassword" : "password") {{ $message }} @enderror</div>
+                                <input type="password"
+                                       class="form-control @error($isUpdate ? "newPassword" : "password") is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                       wire:model="{{$isUpdate ? "newPassword" : "password"}}">
+                                <div
+                                    class="text-danger">@error($isUpdate ? "newPassword" : "password") {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">تاريخ الانضمام</label>
-                                <input type="date" class="form-control @error('join_date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="join_date" >
+                                <input type="date" class="form-control @error('join_date') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                       wire:model="join_date">
                                 <div class="text-danger">@error('join_date') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">تاريخ الميلاد</label>
-                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="birth_date" >
+                                <input type="date" class="form-control @error('birth_date') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                       wire:model="birth_date">
                                 <div class="text-danger">@error('birth_date') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">العنوان</label>
-                                <input type="text" class="form-control @error('address') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="address" placeholder="ادخل عدد افراد المتطوع">
+                                <input type="text" class="form-control @error('address') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="address"
+                                       placeholder="ادخل عدد افراد المتطوع">
                                 <div class="text-danger">@error('address') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">الفرع</label>
-                                <select class="form-control select2  @error('branch_id') is-invalid @enderror" wire:model="branch_id">
+                                <select class="form-control select2  @error('branch_id') is-invalid @enderror"
+                                        wire:model="branch_id">
                                     <option>اختر فرع</option>
                                     @forelse($branches as $branch)
                                         <option value="{{$branch->id}}">{{$branch->name}}</option>
@@ -142,7 +166,8 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">اللجنة</label>
-                                <select class="form-control select2  @error('team_id') is-invalid @enderror" wire:model="team_id">
+                                <select class="form-control select2  @error('team_id') is-invalid @enderror"
+                                        wire:model="team_id">
                                     <option>اختر لجنة</option>
                                     @forelse($teams as $team)
                                         <option value="{{$team->id}}">{{$team->name}}</option>
@@ -154,7 +179,8 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الصفة</label>
-                                <select class="form-control select2  @error('position_id') is-invalid @enderror" wire:model="position_id">
+                                <select class="form-control select2  @error('position_id') is-invalid @enderror"
+                                        wire:model="position_id">
                                     <option>اختر صفة</option>
                                     @forelse($positions as $position)
                                         <option value="{{$position->id}}">{{$position->name}}</option>
@@ -165,7 +191,8 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">النشاط</label>
-                                <select class="form-control select2  @error('job_id') is-invalid @enderror" wire:model="job_id">
+                                <select class="form-control select2  @error('job_id') is-invalid @enderror"
+                                        wire:model="job_id">
                                     <option>اختر نشاط</option>
                                     @forelse($jobs as $job)
                                         <option value="{{$job->id}}">{{$job->name}}</option>
@@ -176,73 +203,80 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الحالة</label>
-                                <select class="form-control select2  @error('status_id') is-invalid @enderror" wire:model="status_id">
+                                <select class="form-control select2  @error('status_id') is-invalid @enderror"
+                                        wire:model="status_id">
                                     <option>اختر حالة</option>
-                                @forelse($statuses as $status)
-                                    <option value="{{$status->id}}">{{$status->name}}</option>
-                                @empty
+                                    @forelse($statuses as $status)
+                                        <option value="{{$status->id}}">{{$status->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('status_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">درجة التطوع</label>
-                                <select class="form-control select2  @error('degree_id') is-invalid @enderror" wire:model="degree_id">
+                                <select class="form-control select2  @error('degree_id') is-invalid @enderror"
+                                        wire:model="degree_id">
                                     <option>اختر</option>
-                                @forelse($degrees as $degree)
-                                    <option value="{{$degree->id}}">{{$degree->name}}</option>
-                                @empty
+                                    @forelse($degrees as $degree)
+                                        <option value="{{$degree->id}}">{{$degree->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('degree_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">التصنيف</label>
-                                <select class="form-control select2  @error('category_id') is-invalid @enderror" wire:model="category_id">
+                                <select class="form-control select2  @error('category_id') is-invalid @enderror"
+                                        wire:model="category_id">
                                     <option>اختر</option>
-                                @forelse($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
-                                @empty
+                                    @forelse($categories as $category)
+                                        <option value="{{$category->id}}">{{$category->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('category_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الجنسية</label>
-                                <select class="form-control select2  @error('nationality_id') is-invalid @enderror" wire:model="nationality_id">
+                                <select class="form-control select2  @error('nationality_id') is-invalid @enderror"
+                                        wire:model="nationality_id">
                                     <option>اختر</option>
-                                @forelse($nationalities as $nationality)
-                                    <option value="{{$nationality->id}}">{{$nationality->name}}</option>
-                                @empty
+                                    @forelse($nationalities as $nationality)
+                                        <option value="{{$nationality->id}}">{{$nationality->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('nationality_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">المؤهل</label>
-                                <select class="form-control select2  @error('qualification_id') is-invalid @enderror" wire:model="qualification_id">
+                                <select class="form-control select2  @error('qualification_id') is-invalid @enderror"
+                                        wire:model="qualification_id">
                                     <option>اختر</option>
-                                @forelse($qualifications as $qualification)
-                                    <option value="{{$qualification->id}}">{{$qualification->name}}</option>
-                                @empty
+                                    @forelse($qualifications as $qualification)
+                                        <option value="{{$qualification->id}}">{{$qualification->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('qualification_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الحالة الاجتماعية</label>
-                                <select class="form-control select2  @error('marital_status_id') is-invalid @enderror" wire:model="marital_status_id">
+                                <select class="form-control select2  @error('marital_status_id') is-invalid @enderror"
+                                        wire:model="marital_status_id">
                                     <option>اختر</option>
-                                @forelse($maritalStatuses as $marital_status)
-                                    <option value="{{$marital_status->id}}">{{$marital_status->name}}</option>
-                                @empty
+                                    @forelse($maritalStatuses as $marital_status)
+                                        <option value="{{$marital_status->id}}">{{$marital_status->name}}</option>
+                                    @empty
                                     @endforelse
                                 </select>
                                 <div class="text-danger">@error('qualification_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">النوع</label>
-                                <select class="form-control select2  @error('gender') is-invalid @enderror" wire:model="gender">
+                                <select class="form-control select2  @error('gender') is-invalid @enderror"
+                                        wire:model="gender">
                                     <option>اختر</option>
                                     <option value="male">male</option>
                                     <option value="female">female</option>
@@ -251,7 +285,8 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">نوع المستخدم</label>
-                                <select class="form-control select2  @error('role') is-invalid @enderror" wire:model="role">
+                                <select class="form-control select2  @error('role') is-invalid @enderror"
+                                        wire:model="role">
                                     <option>اختر</option>
                                     <option value="admin">admin</option>
                                     <option value="supervisor">supervisor</option>
@@ -261,12 +296,15 @@
                             </div>
                             <div class="form-group col-2">
                                 <label for="exampleInputEmail1">الاميل</label>
-                                <input type="text" class="form-control @error('email') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="email" placeholder="ادخل عدد افراد المتطوع">
+                                <input type="text" class="form-control @error('email') is-invalid @enderror"
+                                       wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="email"
+                                       placeholder="ادخل عدد افراد المتطوع">
                                 <div class="text-danger">@error('email') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-12">
                                 <label for="exampleInputEmail1">تعليق</label>
-                                <textarea class="form-control @error('join_date') is-invalid @enderror" wire:model="comment"></textarea>
+                                <textarea class="form-control @error('join_date') is-invalid @enderror"
+                                          wire:model="comment"></textarea>
                                 <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
                             </div>
                         </div>
@@ -282,21 +320,26 @@
                                     @endif
                                     @if($newPhoto)
                                         <label>الصورة الجديدة</label>
-                                            <img src="{{ $newPhoto->temporaryUrl() }}" class="img-thumbnail">
-                                        @endif
+                                        <img src="{{ $newPhoto->temporaryUrl() }}" class="img-thumbnail">
+                                    @endif
                                 @endif
                             </div>
                             <div class="form-group col-12">
                                 <label for="exampleInputEmail1">صورة</label>
-                                <input type="file" class="form-control @error($isUpdate ? 'newPhoto' : 'photo') is-invalid @enderror"  wire:model="{{$isUpdate ? "newPhoto" : "photo"}}" >
-                                <div class="text-danger">@error($isUpdate ? 'newPhoto' : 'photo') {{ $message }} @enderror</div>
+                                <input type="file"
+                                       class="form-control @error($isUpdate ? 'newPhoto' : 'photo') is-invalid @enderror"
+                                       wire:model="{{$isUpdate ? "newPhoto" : "photo"}}">
+                                <div
+                                    class="text-danger">@error($isUpdate ? 'newPhoto' : 'photo') {{ $message }} @enderror</div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -309,7 +352,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -324,7 +367,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -353,7 +398,6 @@
         //         "autoWidth": false,
         //     });
         // });
-
 
 
         // document.addEventListener('livewire:initialized', () => {

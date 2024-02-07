@@ -140,7 +140,7 @@
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
                         <input type="date" min="{{$event_from}}" max="{{$event_to}}" class="form-control @error('date') is-invalid @enderror"
                                wire:click="check"
-                               wire:model.live="activity_date" placeholder="dd-mm-yyyy">
+                               wire:model="activity_date" placeholder="dd-mm-yyyy">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
                     @if(!$isApologize)

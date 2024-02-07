@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Activity extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $guarded;
+    protected $fillable = ['activity_date','user_id','event_id','add_by','type','apologize','comment','supervisor_comment','approval','manager_id'];
 
 
     public function user(){
