@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 class Event extends Component
 {
     use WithPagination;
-    public $id, $name, $details,$from=null,$to=null,$team_id,$date,$type=false,$active;
+    public $id, $name, $details,$from=null,$to=null,$team_id,$date,$type=false,$active=1;
     public $showCreate=false;
     public $isUpdate=false;
     public function render()

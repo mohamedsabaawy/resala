@@ -146,12 +146,13 @@
                     @if(!$isApologize)
                         <div class="form-group">
                             <label for="exampleInputEmail1">نوع المشاركة</label>
-                            <select class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                     wire:model="type">
                                 <option>اختر</option>
                                 <option value="online">online</option>
                                 <option value="offline">offline</option>
                             </select>
+                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>
                         </div>
                     @endif
                     <div class="form-group">

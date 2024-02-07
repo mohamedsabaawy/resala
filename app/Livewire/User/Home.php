@@ -71,6 +71,8 @@ class Home extends Component
             'add_by' => Auth::id(),
             'type' => $this->type,
             'apologize' => $this->isApologize ? '1':'0',
+            'approval' => 0,
+//            'manager' => ,
         ]);
         if ($activity) {
             $this->resetInput();
