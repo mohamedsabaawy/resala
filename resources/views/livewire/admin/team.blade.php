@@ -14,6 +14,7 @@
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
+                    <th>المدير</th>
                     <th>العدد</th>
                     <th>اجراء</th>
                 </tr>
@@ -24,6 +25,7 @@
                 <tr>
                     <td>{{$team->id}}</td>
                     <td>{{$team->name}}</td>
+                    <td>{{$team->manager->name ?? ''}}</td>
                     <td>{{$team->count}}</td>
                     <td>
                         <div class="btn-group">
@@ -71,6 +73,17 @@
                         <label for="exampleInputEmail1">عدد اللجنة</label>
                         <input type="number" min="0" class="form-control @error('count') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="count" placeholder="ادخل عدد افراد اللجنة">
                         <div class="text-danger">@error('count') {{ $message }} @enderror</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="manager_id">المدير</label>
+                        <select class="form-control" wire:model="manager_id" id="manager_id">
+                            <option value="">اختر</option>
+                            @forelse($managers as $manager)
+                                <option value="{{$manager->id}}">{{$manager->name}}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                        <div class="text-danger">@error('manager_id') {{ $message }} @enderror</div>
                     </div>
 
                 </div>

@@ -31,6 +31,7 @@
     <!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
     <link rel="stylesheet" href="{{asset('adminlte/plugins/bootstrap-4.2.1-dist/css/rtl/bootstrap.min.css')}}">
+{{--    <link rel="stylesheet" href="{{asset('build/assets/app-6c7380a2.css')}}">--}}
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
     @livewireStyles
@@ -190,7 +191,7 @@
 {{--                    </li>--}}
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <a href="#" class="btn btn-default btn-flat">صفحة شخصية</a>
+                        <a href="{{route('profile.show')}}" class="btn btn-default btn-flat">صفحة شخصية</a>
                         <a href="#" class="btn btn-default btn-flat float-right" onclick="event.preventDefault();
                            $('#logout').submit();">خروج</a>
                         <form action="{{route('logout')}}" method="post" id="logout">

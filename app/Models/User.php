@@ -75,6 +75,18 @@ class User extends Authenticatable
     public function position(){
         return $this->belongsTo(Position::class);
     }
+    public function maritalStatus(){
+        return $this->belongsTo(MaritalStatus::class);
+    }
+    public function qualification(){
+        return $this->belongsTo(Qualification::class);
+    }
+    public function nationality(){
+        return $this->belongsTo(Nationality::class);
+    }
+    public function job(){
+        return $this->belongsTo(Job::class);
+    }
     public function activities(){
         return $this->hasMany(Activity::class);
     }

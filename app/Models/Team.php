@@ -10,4 +10,8 @@ class Team extends Model
 {
     use HasFactory ,SoftDeletes;
     protected $fillable =['name','manager_id','count'];
+
+    public function manager(){
+        return $this->belongsTo(User::class,'manager_id','id');
+    }
 }

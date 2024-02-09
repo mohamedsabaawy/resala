@@ -18,61 +18,65 @@ use Livewire\WithPagination;
 class Home extends Component
 {
     use WithPagination;
+
     public $isUpdate = false,
-        $isApologize=false,
+        $isApologize = false,
         $id, $users, $userId,
         $user_id, $event_id,
         $comment, $supervisor_comment,
         $activity_date, $type, $events,
-    $event_from=null,
-    $event_to=null,
-    $filter_from=null, //filter
-    $filter_to=null
-;
+        $event_from = null,
+        $event_to = null,
+        $filter_from = null, //filter
+        $filter_to = null;
 
     public function render()
     {
-        $this->users = User::with(['position','activities'])->where([
-            ['branch_id',Auth::user()->branch_id],
-            ['team_id',Auth::user()->team_id]
+        $this->users = User::with(['position', 'activities'])->where([
+            ['branch_id', Auth::user()->branch_id],
+            ['team_id', Auth::user()->team_id]
         ])->get(); //
 
         //select users if user role not 'user' and check if it admin or not
         if (Auth::user()->role == "user") {
             $this->userId = Auth::id();
-            $this->users = $this->users->where('id',$this->userId);
+            $this->users = $this->users->where('id', $this->userId);
         }
         if (Auth::user()->role == "supervisor") {
-            $this->users = $this->users->where('role','<>','admin');
+            $this->users = $this->users->where('role', '<>', 'admin');
         }
-        $allUsers= $this->users;
-        $this->users = $this->users->pluck('name','id');
+        $allUsers = $this->users;
+        $this->users = $this->users->pluck('name', 'id');
         $this->events = Event::where([
             ['to', '>=', ($this->activity_date ?? today())],
-            ['active',1]
-        ])->orWhere([['type',1],['active',1]])->get();
+            ['active', 1]
+        ])->orWhere([['type', 1], ['active', 1]])->get();
         return view('livewire.user.home', compact(['allUsers']));
     }
 
-    public function mount(){
-        $this->filter_from=date_format(today(),"Y-m-01");
-        $this->filter_to=date_format(today(),"Y-m-t");
+    public function mount()
+    {
+        $this->filter_from = date_format(today(), "Y-m-01");
+        $this->filter_to = date_format(today(), "Y-m-t");
     }
 
 
     public function save()
     {
         $this->valid();
-        $activity = \App\Models\Activity::create([
+        $manager = null;
+        if (User::Find($this->userId)->team->manager_id )
+            $manager = User::Find($this->userId)->team->manager_id;
+        $activity = Activity::create([
             'activity_date' => $this->activity_date,
             'comment' => $this->comment,
             'event_id' => $this->event_id,
             'user_id' => Auth::user()->role != "user" ? $this->userId : Auth::id(),
             'add_by' => Auth::id(),
             'type' => $this->type,
-            'apologize' => $this->isApologize ? '1':'0',
+            'apologize' => $this->isApologize ? '1' : '0',
             'approval' => 0,
-//            'manager' => ,
+            'manager_id' =>$manager ,
         ]);
         if ($activity) {
             $this->resetInput();
@@ -121,7 +125,7 @@ class Home extends Component
 
     public function resetInput()
     {
-        $this->resetExcept(['filter_from','filter_to']);
+        $this->resetExcept(['filter_from', 'filter_to']);
     }
 
     private function valid()
@@ -129,7 +133,7 @@ class Home extends Component
 
         $validated = $this->validate([
             'type' => $this->isApologize ? 'nullable' : "required",
-            'activity_date' => ['required',new Check($this->user_id)],
+            'activity_date' => ['required', new Check($this->user_id)],
             'comment' => 'required',
             'userId' => 'required',
             'event_id' => 'required',
@@ -140,17 +144,19 @@ class Home extends Component
         ]);
     }
 
-    public function createApologize(){
+    public function createApologize()
+    {
         $this->resetInput();
         $this->isApologize = true;
     }
 
-    public function check(){
+    public function check()
+    {
         if ($event = Event::find($this->event_id))
-        if ($event->type == 0) {
-            $this->event_from = $event->from;
-            $this->event_to = $event->to;
-        }
+            if ($event->type == 0) {
+                $this->event_from = $event->from;
+                $this->event_to = $event->to;
+            }
     }
 
 

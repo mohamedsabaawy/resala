@@ -112,14 +112,14 @@
                                 <label for="exampleInputEmail1">رقم هاتف المتطوع</label>
                                 <input type="text" min="0" class="form-control @error('phone') is-invalid @enderror"
                                        wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="phone"
-                                       placeholder="ادخل عدد افراد المتطوع">
+                                       placeholder="ادخل رقم الهاتف">
                                 <div class="text-danger">@error('phone') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
                                 <label for="exampleInputEmail1">رقم قومي</label>
                                 <input type="text" class="form-control @error('national_id') is-invalid @enderror"
                                        wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
-                                       wire:model="national_id" placeholder="ادخل عدد افراد المتطوع">
+                                       wire:model="national_id" placeholder="ادخل الرقم القومي">
                                 <div class="text-danger">@error('national_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
@@ -149,7 +149,7 @@
                                 <label for="exampleInputEmail1">العنوان</label>
                                 <input type="text" class="form-control @error('address') is-invalid @enderror"
                                        wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="address"
-                                       placeholder="ادخل عدد افراد المتطوع">
+                                       placeholder="عنوان المتطوع">
                                 <div class="text-danger">@error('address') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-3">
@@ -168,7 +168,7 @@
                                 <label for="exampleInputEmail1">اللجنة</label>
                                 <select class="form-control select2  @error('team_id') is-invalid @enderror"
                                         wire:model="team_id">
-                                    <option>اختر لجنة</option>
+                                    <option value="">اختر لجنة</option>
                                     @forelse($teams as $team)
                                         <option value="{{$team->id}}">{{$team->name}}</option>
                                     @empty
@@ -181,7 +181,7 @@
                                 <label for="exampleInputEmail1">الصفة</label>
                                 <select class="form-control select2  @error('position_id') is-invalid @enderror"
                                         wire:model="position_id">
-                                    <option>اختر صفة</option>
+                                    <option value="">اختر صفة</option>
                                     @forelse($positions as $position)
                                         <option value="{{$position->id}}">{{$position->name}}</option>
                                     @empty
@@ -193,7 +193,7 @@
                                 <label for="exampleInputEmail1">النشاط</label>
                                 <select class="form-control select2  @error('job_id') is-invalid @enderror"
                                         wire:model="job_id">
-                                    <option>اختر نشاط</option>
+                                    <option value="">اختر نشاط</option>
                                     @forelse($jobs as $job)
                                         <option value="{{$job->id}}">{{$job->name}}</option>
                                     @empty
@@ -205,7 +205,7 @@
                                 <label for="exampleInputEmail1">الحالة</label>
                                 <select class="form-control select2  @error('status_id') is-invalid @enderror"
                                         wire:model="status_id">
-                                    <option>اختر حالة</option>
+                                    <option value="">اختر حالة</option>
                                     @forelse($statuses as $status)
                                         <option value="{{$status->id}}">{{$status->name}}</option>
                                     @empty
@@ -217,7 +217,7 @@
                                 <label for="exampleInputEmail1">درجة التطوع</label>
                                 <select class="form-control select2  @error('degree_id') is-invalid @enderror"
                                         wire:model="degree_id">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     @forelse($degrees as $degree)
                                         <option value="{{$degree->id}}">{{$degree->name}}</option>
                                     @empty
@@ -229,7 +229,7 @@
                                 <label for="exampleInputEmail1">التصنيف</label>
                                 <select class="form-control select2  @error('category_id') is-invalid @enderror"
                                         wire:model="category_id">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     @forelse($categories as $category)
                                         <option value="{{$category->id}}">{{$category->name}}</option>
                                     @empty
@@ -241,7 +241,7 @@
                                 <label for="exampleInputEmail1">الجنسية</label>
                                 <select class="form-control select2  @error('nationality_id') is-invalid @enderror"
                                         wire:model="nationality_id">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     @forelse($nationalities as $nationality)
                                         <option value="{{$nationality->id}}">{{$nationality->name}}</option>
                                     @empty
@@ -253,7 +253,7 @@
                                 <label for="exampleInputEmail1">المؤهل</label>
                                 <select class="form-control select2  @error('qualification_id') is-invalid @enderror"
                                         wire:model="qualification_id">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     @forelse($qualifications as $qualification)
                                         <option value="{{$qualification->id}}">{{$qualification->name}}</option>
                                     @empty
@@ -265,7 +265,7 @@
                                 <label for="exampleInputEmail1">الحالة الاجتماعية</label>
                                 <select class="form-control select2  @error('marital_status_id') is-invalid @enderror"
                                         wire:model="marital_status_id">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     @forelse($maritalStatuses as $marital_status)
                                         <option value="{{$marital_status->id}}">{{$marital_status->name}}</option>
                                     @empty
@@ -277,7 +277,7 @@
                                 <label for="exampleInputEmail1">النوع</label>
                                 <select class="form-control select2  @error('gender') is-invalid @enderror"
                                         wire:model="gender">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     <option value="male">male</option>
                                     <option value="female">female</option>
                                 </select>
@@ -287,7 +287,7 @@
                                 <label for="exampleInputEmail1">نوع المستخدم</label>
                                 <select class="form-control select2  @error('role') is-invalid @enderror"
                                         wire:model="role">
-                                    <option>اختر</option>
+                                    <option value="">اختر</option>
                                     <option value="admin">admin</option>
                                     <option value="supervisor">supervisor</option>
                                     <option value="user">user</option>
@@ -295,10 +295,10 @@
                                 <div class="text-danger">@error('qualification_id') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-2">
-                                <label for="exampleInputEmail1">الاميل</label>
+                                <label for="exampleInputEmail1">البريد الالكتروني</label>
                                 <input type="text" class="form-control @error('email') is-invalid @enderror"
                                        wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="email"
-                                       placeholder="ادخل عدد افراد المتطوع">
+                                       placeholder="البريد الالكتروني">
                                 <div class="text-danger">@error('email') {{ $message }} @enderror</div>
                             </div>
                             <div class="form-group col-12">
