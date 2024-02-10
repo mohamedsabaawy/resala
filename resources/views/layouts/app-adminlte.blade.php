@@ -11,7 +11,8 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Tempusdominus Bbootstrap 4 -->
-    <link rel="stylesheet" href="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
+    <link rel="stylesheet"
+          href="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{asset('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css')}}">
     <!-- JQVMap -->
@@ -27,11 +28,14 @@
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     <!-- Bootstrap 4 RTL -->
-{{--    <link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css">--}}
-    <!-- Custom style for RTL -->
+{{--    <link rel="stylesheet" href="https://cdn.rtlc   ss.com/bootstrap/v4.2.1/css/bootstrap.min.css">--}}
+<!-- Custom style for RTL -->
     <link rel="stylesheet" href="{{asset('adminlte/dist/css/custom.css')}}">
     <link rel="stylesheet" href="{{asset('adminlte/plugins/bootstrap-4.2.1-dist/css/rtl/bootstrap.min.css')}}">
 {{--    <link rel="stylesheet" href="{{asset('build/assets/app-6c7380a2.css')}}">--}}
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
     <!-- Toastr -->
     <link rel="stylesheet" href="{{asset('adminlte/plugins/toastr/toastr.min.css')}}">
     @livewireStyles
@@ -47,27 +51,27 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
-{{--            <li class="nav-item d-none d-sm-inline-block">--}}
-{{--                <a href="" class="nav-link">Home</a>--}}
-{{--            </li>--}}
-{{--            <li class="nav-item d-none d-sm-inline-block">--}}
-{{--                <a href="#" class="nav-link">Contact</a>--}}
-{{--            </li>--}}
+            {{--            <li class="nav-item d-none d-sm-inline-block">--}}
+            {{--                <a href="" class="nav-link">Home</a>--}}
+            {{--            </li>--}}
+            {{--            <li class="nav-item d-none d-sm-inline-block">--}}
+            {{--                <a href="#" class="nav-link">Contact</a>--}}
+            {{--            </li>--}}
         </ul>
 
         <!-- SEARCH FORM -->
-{{--        <form class="form-inline ml-3">--}}
-{{--            <div class="input-group input-group-sm">--}}
-{{--                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">--}}
-{{--                <div class="input-group-append">--}}
-{{--                    <button class="btn btn-navbar" type="submit">--}}
-{{--                        <i class="fas fa-search"></i>--}}
-{{--                    </button>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </form>--}}
+    {{--        <form class="form-inline ml-3">--}}
+    {{--            <div class="input-group input-group-sm">--}}
+    {{--                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">--}}
+    {{--                <div class="input-group-append">--}}
+    {{--                    <button class="btn btn-navbar" type="submit">--}}
+    {{--                        <i class="fas fa-search"></i>--}}
+    {{--                    </button>--}}
+    {{--                </div>--}}
+    {{--            </div>--}}
+    {{--        </form>--}}
 
-        <!-- Right navbar links -->
+    <!-- Right navbar links -->
         <ul class="navbar-nav mr-auto-navbav">
             <!-- Messages Dropdown Menu -->
             <li class="nav-item dropdown">
@@ -79,7 +83,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="{{asset('adminlte/dist/img/user1-128x128.jpg')}}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                            <img src="{{asset('adminlte/dist/img/user1-128x128.jpg')}}" alt="User Avatar"
+                                 class="img-size-50 mr-3 img-circle">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Brad Diesel
@@ -95,7 +100,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="{{asset('adminlte/dist/img/user8-128x128.jpg')}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <img src="{{asset('adminlte/dist/img/user8-128x128.jpg')}}" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     John Pierce
@@ -111,7 +117,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="{{asset('adminlte/dist/img/user3-128x128.jpg')}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <img src="{{asset('adminlte/dist/img/user3-128x128.jpg')}}" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Nora Silvester
@@ -154,14 +161,15 @@
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
             </li>
-{{--            <li class="nav-admin">--}}
-{{--                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">--}}
-{{--                    <i class="fas fa-th-large"></i>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            {{--            <li class="nav-admin">--}}
+            {{--                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">--}}
+            {{--                    <i class="fas fa-th-large"></i>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                    <img src="{{asset(auth()->user()->photo)}}" class="user-image img-circle elevation-2" alt="User Image">
+                    <img src="{{asset(auth()->user()->photo)}}" class="user-image img-circle elevation-2"
+                         alt="User Image">
                     <span class="d-none d-md-inline">{{auth()->user()->name}}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -175,21 +183,21 @@
                         </p>
                     </li>
                     <!-- Menu Body -->
-{{--                    <li class="user-body">--}}
-{{--                        <div class="row">--}}
-{{--                            <div class="col-4 text-center">--}}
-{{--                                <a href="#">Followers</a>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-4 text-center">--}}
-{{--                                <a href="#">Sales</a>--}}
-{{--                            </div>--}}
-{{--                            <div class="col-4 text-center">--}}
-{{--                                <a href="#">Friends</a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <!-- /.row -->--}}
-{{--                    </li>--}}
-                    <!-- Menu Footer-->
+                {{--                    <li class="user-body">--}}
+                {{--                        <div class="row">--}}
+                {{--                            <div class="col-4 text-center">--}}
+                {{--                                <a href="#">Followers</a>--}}
+                {{--                            </div>--}}
+                {{--                            <div class="col-4 text-center">--}}
+                {{--                                <a href="#">Sales</a>--}}
+                {{--                            </div>--}}
+                {{--                            <div class="col-4 text-center">--}}
+                {{--                                <a href="#">Friends</a>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                        <!-- /.row -->--}}
+                {{--                    </li>--}}
+                <!-- Menu Footer-->
                     <li class="user-footer">
                         <a href="{{route('profile.show')}}" class="btn btn-default btn-flat">صفحة شخصية</a>
                         <a href="#" class="btn btn-default btn-flat float-right" onclick="event.preventDefault();
@@ -208,7 +216,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
-            <img src="{{asset('Resala-logo.png')}}" alt="Resala Logo" class="brand-image img-circle elevation-3 bg-white"
+            <img src="{{asset('Resala-logo.png')}}" alt="Resala Logo"
+                 class="brand-image img-circle elevation-3 bg-white"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">جمعية رسالة</span>
         </a>
@@ -234,10 +243,10 @@
                         @endif
                     </div><!-- /.col -->
                     <div class="col-sm-6">
-{{--                        <ol class="breadcrumb float-sm-right">--}}
-{{--                            <li class="breadcrumb-admin"><a href="#">Home</a></li>--}}
-{{--                            <li class="breadcrumb-admin">Dashboard v1</li>--}}
-{{--                        </ol>--}}
+                        {{--                        <ol class="breadcrumb float-sm-right">--}}
+                        {{--                            <li class="breadcrumb-admin"><a href="#">Home</a></li>--}}
+                        {{--                            <li class="breadcrumb-admin">Dashboard v1</li>--}}
+                        {{--                        </ol>--}}
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.container-fluid -->
@@ -298,7 +307,7 @@
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="{{asset('adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js')}}"></script>
 <!-- Summernote -->
-{{--<script src="{{asset('adminlte/plugins/summernote/summernote-bs4.min.js')}}"></script>--}}
+<script src="{{asset('adminlte/plugins/summernote/summernote-bs4.min.js')}}"></script>
 <!-- overlayScrollbars -->
 <script src="{{asset('adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
 <!-- AdminLTE App -->
@@ -309,17 +318,19 @@
 <script src="{{asset('adminlte/dist/js/demo.js')}}"></script>
 <!-- Toastr -->
 <script src="{{asset('adminlte/plugins/toastr/toastr.min.js')}}"></script>
+<!-- SweetAlert2 -->
+<script src="{{asset('adminlte/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
 
 <script>
     window.addEventListener('close', event => {
         // alert('s sdfsdf ')
-        // const Toast = Swal.mixin({
-        //     toast: true,
-        //     position: 'top-start',
-        //     showConfirmButton: false,
-        //     // timerProgressBar: true,
-        //     timer: 3000
-        // });
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top',
+            showConfirmButton: false,
+            timerProgressBar: true,
+            timer: 3000
+        });
 
         $('#create-model').modal('hide');
         // $('#edit-branch').modal('hide');
