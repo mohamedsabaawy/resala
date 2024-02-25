@@ -20,7 +20,7 @@ class Approval extends Component
         $activities = Activity::with(['user', 'event'])->orderBy('activity_date'); // activity paginate
         if (auth()->user()->role == 'supervisor')
             $activities = $activities->where('manager_id', auth()->id);
-        $activities->paginate(10);
+        $activities = $activities->paginate(10);
         return view('livewire.admin.approval', compact('activities'));
     }
 
