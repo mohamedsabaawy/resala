@@ -45,7 +45,10 @@ class User extends Component
         $filter_to=$this->filter_to?? date_format(today(),"Y-m-t");
 //        dd($filter_from);
         $users = \App\Models\User::with(['team','position','activities'=>function ($query) use ($filter_from){
-            $query->where('activity_date','>=',$filter_from);
+            $query->where([
+                ['activity_date','>=',$filter_from],
+                ['approval',1]
+            ]);
         }])->get()->sortBy('team_id');
         return Excel::download(new UsersExport($users,$filter_from,$filter_to), 'users.xlsx');
     }
@@ -115,6 +118,8 @@ class User extends Component
         $this->role =$user->role;
         $this->oldPassword =$user->password;
         $this->job_id =$user->job_id;
+        $this->marital_status_id = $user->marital_status_id;
+//        dd($this->role);
         //$gender,$email,$address,$birth_date
         //'jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees'
 //        $this->password = $user->password;

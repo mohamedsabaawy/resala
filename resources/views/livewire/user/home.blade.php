@@ -112,10 +112,10 @@
                     {{--                    </div>--}}
                     <div class="form-group">
                         <label for="userId">متطوع</label>
-                        <select class="form-control select2" id="userId"
+                        <select class="form-control select2" id="userId" multiple
                                 wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                 wire:model="userId">
-                            <option>اختر</option>
+{{--                            <option>اختر</option>--}}
                             @foreach($users as $key=>$value)
                                 <option value="{{$key}}">{{$value}}</option>
                             @endforeach

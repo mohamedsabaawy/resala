@@ -8,7 +8,7 @@ use Livewire\WithPagination;
 class Job extends Component
 {
     use WithPagination;
-    public $id;
+    public $id , $manager_id=null,$managers;
     public string $name;
     public $deleted_at;
     public bool $showCreate=false;
@@ -19,17 +19,21 @@ class Job extends Component
     public function render()
     {
         if ($this->withTrash){
-            $jobs = \App\Models\Job::withTrashed()->paginate(10); // jobs paginate
+            $jobs = \App\Models\Job::with('manager')->withTrashed()->paginate(10); // jobs paginate
         }else{
-            $jobs = \App\Models\Job::paginate(10); // jobs paginate
+            $jobs = \App\Models\Job::with('manager')->paginate(10); // jobs paginate
         }
         return view('livewire.admin.job',compact('jobs'));
+    }
+    public function mount(){
+        $this->managers = \App\Models\User::all();
     }
 
     public function save(){
         $this->valid();
         $job = \App\Models\Job::create([
             'name'=>$this->name,
+            'manager_id'=>strlen($this->manager_id)>0 ?? null,
         ]);
         if ($job){
             $this->resetInput();
@@ -46,6 +50,7 @@ class Job extends Component
         $this->id = $job->id;
         $this->name = $job->name;
         $this->deleted_at = $job->deleted_at;
+        $this->manager_id = $job->manager_id;
     }
 
     public function update(){
@@ -54,6 +59,7 @@ class Job extends Component
         if ($job){
             $job->update([
                 'name'=>$this->name,
+                'manager_id'=>strlen($this->manager_id)>0 ?? null,
             ]);
         }
         $this->resetInput();
@@ -77,7 +83,7 @@ class Job extends Component
 
 
     public function resetInput(){
-        $this->reset(['name','id','showCreate','isUpdate','deleted_at']);
+        $this->reset(['name','id','showCreate','isUpdate','deleted_at','manager_id']);
     }
     private function valid(){
         $validated = $this->validate([

@@ -10,5 +10,9 @@ class Job extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable =['name'];
+    protected $fillable =['name','manager_id'];
+
+    public function manager(){
+        return $this->belongsTo(User::class,'manager_id');
+    }
 }

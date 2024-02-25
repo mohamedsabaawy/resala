@@ -32,9 +32,11 @@ class Home extends Component
 
     public function render()
     {
-        $this->users = User::with(['position', 'activities'])->where([
+        $this->users = User::with(['position', 'activities' => function($quary){
+            $quary->where('approval',1);
+        }])->where([
             ['branch_id', Auth::user()->branch_id],
-            ['team_id', Auth::user()->team_id]
+            ['job_id', Auth::user()->job_id],
         ])->get(); //
 
         //select users if user role not 'user' and check if it admin or not
@@ -64,20 +66,24 @@ class Home extends Component
     public function save()
     {
         $this->valid();
-        $manager = null;
-        if (User::Find($this->userId)->team->manager_id )
-            $manager = User::Find($this->userId)->team->manager_id;
-        $activity = Activity::create([
-            'activity_date' => $this->activity_date,
-            'comment' => $this->comment,
-            'event_id' => $this->event_id,
-            'user_id' => Auth::user()->role != "user" ? $this->userId : Auth::id(),
-            'add_by' => Auth::id(),
-            'type' => $this->type,
-            'apologize' => $this->isApologize ? '1' : '0',
-            'approval' => 0,
-            'manager_id' =>$manager ,
-        ]);
+
+        foreach($this->userId as $userId){
+            $manager = null;//
+            if (User::Find($userId)->job->manager_id )
+                $manager = User::Find($userId)->team->manager_id;
+            $activity = Activity::create([
+                'activity_date' => $this->activity_date,
+                'comment' => $this->comment,
+                'event_id' => $this->event_id,
+                'user_id' => Auth::user()->role != "user" ? $userId : Auth::id(),
+                'add_by' => Auth::id(),
+                'type' => $this->type,
+                'apologize' => $this->isApologize ? '1' : '0',
+                'approval' => 0,
+                'manager_id' =>$manager ,
+            ]);
+        }
+
         if ($activity) {
             $this->resetInput();
             $this->dispatch('close');
@@ -136,11 +142,8 @@ class Home extends Component
             'activity_date' => ['required', new Check($this->user_id)],
             'comment' => 'required',
             'userId' => 'required',
+            'userId.*' => [Rule::in(User::all()->pluck('id'))],
             'event_id' => 'required',
-        ], [
-            'activity_date.required' => 'برجاء ادخل تاريخ المشاركة',
-            'type.required' => 'اختر نوع المشاركة',
-            'comment.required' => 'برجاء كتابة تعليق',
         ]);
     }
 

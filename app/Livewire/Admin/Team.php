@@ -40,18 +40,18 @@ class Team extends Component
     //get one branch
     public function show($id){
         $this->isUpdate=true;
-        $branch = \App\Models\Team::find($id);
-        $this->id = $branch->id;
-        $this->name = $branch->name;
-        $this->count = $branch->count;
-        $this->manager_id = $branch->manager_id;
+        $team = \App\Models\Team::find($id);
+        $this->id = $team->id;
+        $this->name = $team->name;
+        $this->count = $team->count;
+        $this->manager_id = $team->manager_id;
     }
 
     public function update(){
         $this->valid();
-        $barnch = \App\Models\Team::find($this->id);
-        if ($barnch){
-            $barnch->update([
+        $team = \App\Models\Team::find($this->id);
+        if ($team){
+            $team->update([
                 'name'=>$this->name,
                 'count'=>$this->count,
                 'manager_id'=>strlen($this->manager_id)>0 ?? null,
@@ -79,10 +79,6 @@ class Team extends Component
             'name' => 'required|min:3',
             'count' => 'required|numeric|min:1',
             'manager_id' => ['nullable',Rule::in($this->managers->pluck('id'))],
-        ],[
-            'name.required'=>'برجاء ادخل اسم الفريق',
-            'count.required'=>'برجاء ادخل عدد افراد الفريق',
-            'count.min'=>'برجاء ادخال رقم اكبر من او يساوي :min',
         ]);
     }
 }

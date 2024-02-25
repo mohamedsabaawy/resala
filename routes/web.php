@@ -42,6 +42,7 @@ Route::group(['middleware'=>['Admin'],'prefix'=>'admin'],function (){
     Route::view('events','admin.event')->name('events');
     Route::view('check-types','admin.checkType')->name('checkTypes');
     Route::view('users','admin.user')->name('users');
+    Route::view('approval','admin.approval')->name('approval');
 });
 
 Route::group(['middleware'=>'auth'],function (){

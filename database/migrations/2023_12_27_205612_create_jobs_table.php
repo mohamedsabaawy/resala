@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('jobs', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name');
+            $table->bigInteger('manager_id');
             $table->timestamps();
             $table->softDeletes();
         });

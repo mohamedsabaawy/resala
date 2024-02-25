@@ -1,45 +1,35 @@
-@section('title','إدارة الانشطة')
+@section('title','إدارة الموافقات')
 <div class="card">
     <div class="card-header d-flex">
-        <h3 class="card-title ">الانشطة</h3>
+        <h3 class="card-title ">الموافقات</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <div class="row">
-            <div class="col-6">
-                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-                    اضافة نشاط
-                </button>
-            </div>
-            <div class="form-group clearfix col-6">
-                <div class="icheck-primary">
-                    <input type="checkbox" id="checkboxPrimary1" wire:model.live="withTrash">
-                    <label for="checkboxPrimary1" class="float-right">
-                    </label>
-                </div>
-            </div>
-        </div>
-        <table id="example1" class="table table-bordered table-striped">
+        <table id="example1" class="table table-bordered table-striped table-responsive-sm">
             <thead>
-            @if(count($jobs)>0)
+            @if(count($activities)>0)
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
-                    <th>المدير</th>
+                    <th>التاريخ</th>
+                    <th>الحدث</th>
                     <th>اجراء</th>
                 </tr>
             @endif
             </thead>
             <tbody>
-            @forelse($jobs as $job)
-                <tr class="{{$job->deleted_at ? 'bg-gradient-gray':''}}">
-                    <td>{{$job->id}}</td>
-                    <td >{{$job->name}}</td>
-                    <td>{{$job->manager->name ?? ''}}</td>
+            @forelse($activities as $activity)
+                <tr class="{{$activity->approval ==1 ? 'bg-green':($activity->approval==2 ? 'bg-yellow': '')}}">
+                    <td>{{$loop->index+1}}</td>
+                    <td>{{$activity->user->name}}</td>
+                    <td>{{$activity->activity_date}}</td>
+                    <td>{{$activity->event->name}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$job->id}})" ><i class="fa fa-trash"></i>مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$job->id}})"><i class="fa fa-edit"></i>تعديل</button>
+                            @if($activity->approval ==0)
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$activity->id}})" >مسح</button>
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="" wire:click="approve({{$activity->id}})">تأكيد</button>
+                            @endif
                         </div>
                     </td>
                 </tr>
@@ -52,13 +42,13 @@
             </div>
             </tfoot>
         </table>
-        {{$jobs->links()}}
+        {{$activities->links()}}
     </div>
     <!-- /.card-body -->
 
-    <!-- start create job model -->
+    <!-- start create activity model -->
 {{--    wire:ignore.self--}}
-<!-- start job model -->
+<!-- start activity model -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -66,7 +56,7 @@
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
-                    <h4 class="modal-title">{{$isUpdate ? "تعديل نشاط" :"انشاء نشاط جديد"}}</h4>
+                    <h4 class="modal-title">{{$isUpdate ? "تعديل مشاركة" :"انشاء مشاركة جديد"}}</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -74,20 +64,14 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="exampleInputEmail1">اسم النشاط</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم النشاط">
+                        <label for="exampleInputEmail1">اسم المشاركة</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم المشاركة">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
-                        <label for="manager_id">المدير</label>
-                        <select class="form-control" wire:model="manager_id" id="manager_id">
-                            <option value="">اختر</option>
-                            @forelse($managers as $manager)
-                                <option value="{{$manager->id}}">{{$manager->name}}</option>
-                            @empty
-                            @endforelse
-                        </select>
-                        <div class="text-danger">@error('manager_id') {{ $message }} @enderror</div>
+                        <label for="exampleInputEmail1">عدد المشاركة</label>
+                        <input type="number" min="0" class="form-control @error('count') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="count" placeholder="ادخل عدد افراد المشاركة">
+                        <div class="text-danger">@error('count') {{ $message }} @enderror</div>
                     </div>
 
                 </div>
@@ -100,7 +84,7 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!--job model -->
+    <!--activity model -->
 
     <!-- /.modal-dialog delete -->
     <div wire:ignore.self class="modal fade" id="delete-model">
@@ -116,10 +100,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    {{--                    <h3></h3>--}}
                     <h4>{{$name}}</h4>
-                    @if($deleted_at )
-                        <h5 class="bg-gradient-gray">لا يمكن استرجعها مرة اخري</h5>
-                    @endif
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
@@ -135,7 +117,6 @@
 </div>
 
 @push('style')
-
 
 @endpush
 
@@ -156,7 +137,7 @@
 
         // document.addEventListener('livewire:initialized', () => {
         // @this.on('close-createBranch', (event) => {
-        //     $('#create-job').modal('hide');
+        //     $('#create-activity').modal('hide');
         // });
         // });
     </script>

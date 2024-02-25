@@ -288,6 +288,7 @@
                                 <select class="form-control select2  @error('role') is-invalid @enderror"
                                         wire:model="role">
                                     <option value="">اختر</option>
+                                    {{--                                    <option value="admin">superAdmin</option>--}}
                                     <option value="admin">admin</option>
                                     <option value="supervisor">supervisor</option>
                                     <option value="user">user</option>
