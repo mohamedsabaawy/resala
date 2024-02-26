@@ -112,7 +112,7 @@
                     {{--                    </div>--}}
                     <div class="form-group">
                         <label for="userId">متطوع</label>
-                        <select class="form-control select2" id="userId" multiple
+                        <select wire:ignore  class="form-control select2" id="userId" multiple
                                 wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                 wire:model="userId">
 {{--                            <option>اختر</option>--}}
@@ -288,6 +288,15 @@
 
 @push('script')
     <script>
+
+
+        $(function () {
+            //Initialize Select2 Elements
+            $('.select2').select2({
+                theme: 'bootstrap4'
+            })
+        })
+
 
         // $(function () {
         //     $("#example1").DataTable();

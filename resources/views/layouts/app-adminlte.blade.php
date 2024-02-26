@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="{{asset('adminlte/plugins/summernote/summernote-bs4.css')}}">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- Select2 -->
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2/css/select2.min.css')}}">
+    <link rel="stylesheet" href="{{asset('adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
     <!-- Bootstrap 4 RTL -->
 {{--    <link rel="stylesheet" href="https://cdn.rtlc   ss.com/bootstrap/v4.2.1/css/bootstrap.min.css">--}}
 <!-- Custom style for RTL -->
@@ -82,9 +85,14 @@
             {{--                                <i class="fas fa-th-large"></i>--}}
             {{--                            </a>--}}
             {{--                        </li>--}}
+            <li class="nav-admin {{(request()->is('links')? 'active' : "")}}">
+                <a class="nav-link" href="{{route('user.links')}}">
+                    <i class="fas fa-link"> روابط تهمك </i>
+                </a>
+            </li>
             @if(auth()->user()->role == 'admin' or auth()->user()->role =='superAdmin')
                 <li class="nav-admin">
-                    <a class="nav-link" href="{{route('approval')}}">
+                    <a class="nav-link {{(request()->is('user/approval')? 'active' : "")}}" href="{{route('approval')}}">
                         <i class="fas fa-th-large"> الموافقات </i>
                     </a>
                 </li>
@@ -140,7 +148,7 @@
         <!-- Brand Logo -->
         <a href="#" class="brand-link">
             <img src="{{asset('Resala-logo.png')}}" alt="Resala Logo"
-                 class="brand-image img-circle elevation-3 bg-white"
+                 class="brand-image elevation-3 bg-white"
                  style="opacity: .8">
             <span class="brand-text font-weight-light">جمعية رسالة</span>
         </a>

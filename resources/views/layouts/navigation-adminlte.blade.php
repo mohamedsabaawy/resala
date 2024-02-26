@@ -5,7 +5,7 @@
              with font-awesome or any other icon font library position -->
         @if(auth()->user()->role =='admin' or auth()->user()->role =='superAdmin')
             <li class="nav-item has-treeview">
-            <a href="#" class="nav-link {{(request()->is('admin*')? 'active' : "")}}">
+            <a href="#" class="nav-link {{(request()->is('main*')? 'active' : "")}}">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                     الهيكل
@@ -43,10 +43,16 @@
                         <p>الاحداث</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('links')}}" wire:navigatee class="nav-link {{(request()->is('admin/links')? 'active' : "")}}">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>الروابط</p>
+                    </a>
+                </li>
             </ul>
         </li>
             <li class="nav-item has-treeview">
-                <a href="#" class="nav-link {{(request()->is('admin*')? 'active' : "")}}">
+                <a href="#" class="nav-link {{(request()->is('user*')? 'active' : "")}}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>
                         المتطوعين
@@ -105,7 +111,7 @@
             </li>
         @endif
         <li class="nav-item">
-            <a href="{{route('user.home')}}" class="nav-link {{(request()->is('user/home')? 'active' : "")}}">
+            <a href="{{route('user.home')}}" class="nav-link {{(request()->is('home')? 'active' : "")}}">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                     المشاركات
