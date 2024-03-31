@@ -90,7 +90,7 @@
                     <i class="fas fa-link"> روابط تهمك </i>
                 </a>
             </li>
-            @if(auth()->user()->role == 'admin' or auth()->user()->role =='superAdmin')
+            @if(auth()->user()->role == 'admin' or auth()->user()->role =='superAdmin'or auth()->user()->role =='supervisor')
                 <li class="nav-admin">
                     <a class="nav-link {{(request()->is('user/approval')? 'active' : "")}}" href="{{route('approval')}}">
                         <i class="fas fa-th-large"> الموافقات </i>

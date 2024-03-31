@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $this->call([
-           PositionSeeder::class,
-        ]);
+//        $this->call([
+//           PositionSeeder::class,
+//        ]);
 
         User::create([
            'name'=>"مدير",

@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::view('home','user.home')->name('user.home');
     Route::get('/links', [MainController::class, 'link'])->name('user.links');
+    Route::view('users/approval','admin.approval')->name('approval');
 });
 Route::group(['middleware'=>['Admin']],function (){
     Route::group(['prefix'=>'main'],function (){
@@ -50,8 +51,10 @@ Route::group(['middleware'=>['Admin']],function (){
         Route::view('degrees','admin.degree')->name('degrees');
         Route::view('check-types','admin.checkType')->name('checkTypes');
         Route::view('users','admin.user')->name('users');
-        Route::view('approval','admin.approval')->name('approval');
+
     });
 });
+
+
 
 require __DIR__.'/auth.php';

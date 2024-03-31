@@ -40,19 +40,21 @@
         <table id="example1" class="table table-bordered table-responsive">
             <thead>
             @php
-                $start = date_format(today(),"Y-m-01");
-                $end = date_format(today(),"y-m-t");
+                $start =  $filter_from;
+                $end =$filter_to;
                 function getActivity($i,$user){
-                    if (count($user->activities->where('activity_date',"$i"))>0){
-                        if (!$user->activities->where('activity_date',"$i")->first()->apologize)
-                            return $user->activities->where('activity_date',"$i")->first()->type;
+                    if (count($user->activities->where('activity_date',$i))>0){
+                        if (!$user->activities->where('activity_date',$i)->first()->apologize)
+                            //return $user->activities->where('activity_date',$i)->first()->type;
+                            return "مشاركة";
+
                         return "عذر";
                     }
                 }
                 function getActivityEvent($i,$user){
-                    if (count($user->activities->where('activity_date',"$i"))>0){
-                        if (!$user->activities->where('activity_date',"$i")->first()->apologize)
-                            return $user->activities->where('activity_date',"$i")->first()->event->name;
+                    if (count($user->activities->where('activity_date',$i))>0){
+                        if (!$user->activities->where('activity_date',$i)->first()->apologize)
+                            return $user->activities->where('activity_date',$i)->first()->event->name;
                         return "عذر";
                     }
                 }
@@ -62,7 +64,7 @@
             <tr>
                 <th>#</th>
                 <th>الاسم</th>
-                @for($i =$filter_from ; $i<=$filter_to; $i++)
+                @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
                     <th colspan="2">{{$i}}</th>
                 @endfor
             </tr>
@@ -73,7 +75,7 @@
                 <tr>
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
-                    @for($i =$filter_from ; $i<=$filter_to; $i++)
+                    @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
                         <td>{{getActivity($i,$user)}}</td>
                         <td>{{getActivityEvent($i,$user)}}</td>
                     @endfor
@@ -143,18 +145,18 @@
                                wire:model="activity_date" placeholder="dd-mm-yyyy">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
-                    @if(!$isApologize)
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">نوع المشاركة</label>
-                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
-                                    wire:model="type">
-                                <option>اختر</option>
-                                <option value="online">online</option>
-                                <option value="offline">offline</option>
-                            </select>
-                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>
-                        </div>
-                    @endif
+{{--                    @if(!$isApologize)--}}
+{{--                        <div class="form-group">--}}
+{{--                            <label for="exampleInputEmail1">نوع المشاركة</label>--}}
+{{--                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"--}}
+{{--                                    wire:model="type">--}}
+{{--                                <option>اختر</option>--}}
+{{--                                <option value="online">online</option>--}}
+{{--                                <option value="offline">offline</option>--}}
+{{--                            </select>--}}
+{{--                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
                     <div class="form-group">
                         <label for="exampleInputEmail1">تفاصيل</label>
                         <textarea class="form-control textarea @error('comment') is-invalid @enderror"

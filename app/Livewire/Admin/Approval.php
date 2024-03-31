@@ -11,15 +11,19 @@ class Approval extends Component
 {
     use WithPagination;
 
-    public $id, $name, $manager_id = null, $count, $managers, $Filter = 0;//filter
+    public $id, $name, $manager_id = null, $count, $managers, $filter =[0],$dateFrom,$dateTo;//filter
     public $showCreate = false;
     public $isUpdate = false;
 
     public function render()
     {
-        $activities = Activity::with(['user', 'event'])->orderBy('activity_date'); // activity paginate
+        $activities = Activity::with(['user', 'event'])->whereIn('approval',$this->filter)->orderBy('activity_date'); // activity paginate
+        if (!empty($this->dateFrom))
+            $activities = $activities->where('activity_date','>=',$this->dateFrom);
+        if (!empty($this->dateTo))
+            $activities = $activities->where('activity_date','<=',$this->dateTo);
         if (auth()->user()->role == 'supervisor')
-            $activities = $activities->where('manager_id', auth()->id);
+            $activities = $activities->where('manager_id', auth()->id());
         $activities = $activities->paginate(10);
         return view('livewire.admin.approval', compact('activities'));
     }
@@ -101,5 +105,10 @@ class Approval extends Component
             'count' => 'required|numeric|min:1',
             'manager_id' => ['nullable', Rule::in($this->managers->pluck('id'))],
         ]);
+    }
+
+    public function startFilter()
+    {
+        $this->filter;
     }
 }

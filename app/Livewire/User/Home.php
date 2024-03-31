@@ -32,8 +32,13 @@ class Home extends Component
 
     public function render()
     {
+//        dd($this->filter_from);
         $this->users = User::with(['position', 'activities' => function($quary){
-            $quary->where('approval',1);
+            $quary->where([
+                ['approval',1],
+                ['activity_date', '>=',$this->filter_from],
+                ['activity_date', '<=',$this->filter_to],
+            ]);
         }])->where([
             ['branch_id', Auth::user()->branch_id],
             ['job_id', Auth::user()->job_id],
@@ -58,8 +63,8 @@ class Home extends Component
 
     public function mount()
     {
-        $this->filter_from = date_format(today(), "Y-m-01");
-        $this->filter_to = date_format(today(), "Y-m-t");
+        $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
     }
 
 
@@ -70,14 +75,14 @@ class Home extends Component
         foreach($this->userId as $userId){
             $manager = null;//
             if (User::Find($userId)->job->manager_id )
-                $manager = User::Find($userId)->team->manager_id;
+                $manager = User::Find($userId)->job->manager_id;
             $activity = Activity::create([
                 'activity_date' => $this->activity_date,
                 'comment' => $this->comment,
                 'event_id' => $this->event_id,
                 'user_id' => Auth::user()->role != "user" ? $userId : Auth::id(),
                 'add_by' => Auth::id(),
-                'type' => $this->type,
+//                'type' => $this->type,
                 'apologize' => $this->isApologize ? '1' : '0',
                 'approval' => 0,
                 'manager_id' =>$manager ,
@@ -138,7 +143,7 @@ class Home extends Component
     {
 
         $validated = $this->validate([
-            'type' => $this->isApologize ? 'nullable' : "required",
+//            'type' => $this->isApologize ? 'nullable' : "required",
             'activity_date' => ['required', new Check($this->user_id)],
             'comment' => 'required',
             'userId' => 'required',

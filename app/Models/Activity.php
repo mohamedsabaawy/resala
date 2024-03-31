@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Activity extends Model
 {
+    //approval = 0 not approve || 1 approved || 2 refused
     use HasFactory,SoftDeletes;
     protected $fillable = ['activity_date','user_id','event_id','add_by','type','apologize','comment','supervisor_comment','approval','manager_id'];
 

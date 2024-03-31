@@ -33,7 +33,7 @@ class Job extends Component
         $this->valid();
         $job = \App\Models\Job::create([
             'name'=>$this->name,
-            'manager_id'=>strlen($this->manager_id)>0 ?? null,
+            'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
         ]);
         if ($job){
             $this->resetInput();
@@ -54,12 +54,13 @@ class Job extends Component
     }
 
     public function update(){
+//        dd(strlen($this->manager_id)>0 ?? null);
         $this->valid();
         $job = \App\Models\Job::find($this->id);
         if ($job){
             $job->update([
                 'name'=>$this->name,
-                'manager_id'=>strlen($this->manager_id)>0 ?? null,
+                'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
             ]);
         }
         $this->resetInput();

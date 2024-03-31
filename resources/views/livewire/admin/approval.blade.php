@@ -5,6 +5,31 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
+        <div class="row form-inline">
+            <div class="form-group col-3">
+                <label for="dateFrom" class="form-inline">من </label>
+                <input type="date" id="dateFrom" value="0" class="form-control" wire:model="dateFrom">
+            </div>
+            <div class="form-group col-3">
+                <label for="dateTo" class="form-inline">الي </label>
+                <input type="date" id="dateTo" value="0" class="form-control" wire:model="dateTo">
+            </div>
+            <div class="form-group col-2">
+                <input type="checkbox" id="pending" value="0" class="" wire:model="filter">
+                <label for="pending">معلق</label>
+            </div>
+            <div class="form-group col-2">
+                <input type="checkbox" id="approve" value="1" class="" wire:model="filter">
+                <label for="approve">موافقة</label>
+            </div>
+            <div class="form-group col-2">
+                <input type="checkbox" id="refused" value="2" class="" wire:model="filter">
+                <label for="refused">رفض</label>
+            </div>
+            <div class="form-group col-3">
+                <button class="btn btn-info" wire:click="startFilter" >بحث</button>
+            </div>
+        </div>
         <table id="example1" class="table table-bordered table-striped table-responsive-sm">
             <thead>
             @if(count($activities)>0)

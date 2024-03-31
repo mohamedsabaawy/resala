@@ -6,7 +6,8 @@
         function getActivity($i,$user){
             if (count($user->activities->where('activity_date',"$i"))>0){
                 if (!$user->activities->where('activity_date',"$i")->first()->apologize)
-                    return $user->activities->where('activity_date',"$i")->first()->type;
+                    //return $user->activities->where('activity_date',"$i")->first()->type;
+                    return "مشاركة";
                 return "عذر";
             }
         }
@@ -24,7 +25,7 @@
         <th>الاسم</th>
         <th>اللجنة</th>
         <th>الصفة</th>
-        @for($i =$filter_from ; $i<=$filter_to; $i++)
+        @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
             <th colspan="2">{{$i}}</th>
         @endfor
     </tr>
@@ -37,7 +38,7 @@
             <td>{{$user->name}}</td>
             <td>{{$user->team->name ?? null}}</td>
             <td>{{$user->position->name ?? null}}</td>
-            @for($i =$filter_from ; $i<=$filter_to; $i++)
+            @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
                 <td>{{getActivity($i,$user)}}</td>
                 <td>{{getActivityEvent($i,$user)}}</td>
             @endfor
