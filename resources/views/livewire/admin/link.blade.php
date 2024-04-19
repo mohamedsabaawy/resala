@@ -5,9 +5,12 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+        @can('link create')
+        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()"
+                data-target="#create-model">
             اضافة رابط
         </button>
+        @endcan
         <table id="example1" class="table table-bordered table-striped">
             <thead>
             @if(count($links)>0)
@@ -27,8 +30,16 @@
                     <td>{{$link->link}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$link->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$link->id}})">تعديل</button>
+                            @can('link delete')
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
+                                    wire:click="show({{$link->id}})">مسح
+                            </button>
+                            @endcan
+                            @can('link edit')
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#create-model" wire:click="show({{$link->id}})">تعديل
+                            </button>
+                            @endcan
                         </div>
                     </td>
                 </tr>
@@ -51,7 +62,7 @@
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -64,19 +75,25 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">اسم الرابط</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الرابط">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name"
+                               placeholder="ادخل اسم الرابط">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">عنوان الرابط</label>
-                        <input type="text" min="0" class="form-control @error('link') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="link" placeholder="ادخل عنوان الرابط">
+                        <input type="text" min="0" class="form-control @error('link') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="link"
+                               placeholder="ادخل عنوان الرابط">
                         <div class="text-danger">@error('link') {{ $message }} @enderror</div>
                     </div>
 
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -89,7 +106,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -104,7 +121,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->

@@ -31,26 +31,41 @@ Route::middleware('auth')->group(function () {
     Route::view('home','user.home')->name('user.home');
     Route::get('/links', [MainController::class, 'link'])->name('user.links');
     Route::view('users/approval','admin.approval')->name('approval');
-});
-Route::group(['middleware'=>['Admin']],function (){
     Route::group(['prefix'=>'main'],function (){
-        Route::view('branches','admin.branch')->name('branches');
-        Route::view('jobs','admin.job')->name('jobs');
-        Route::view('teams','admin.team')->name('teams');
-        Route::view('positions','admin.position')->name('positions');
-        Route::view('events','admin.event')->name('events');
-        Route::view('links','admin.link')->name('links');
+        Route::view('branches','admin.branch')->name('branches')->middleware("permission:branch show");
+        Route::view('jobs','admin.job')->name('jobs')->middleware("permission:job show");
+        Route::view('teams','admin.team')->name('teams')->middleware("permission:team show");
+        Route::view('positions','admin.position')->name('positions')->middleware("permission:position show");
+        Route::view('events','admin.event')->name('events')->middleware("permission:event show");
+        Route::view('links','admin.link')->name('links')->middleware("permission:link show");
+    });
+    Route::group(['prefix'=>'roles'],function (){
+        Route::view('roles','admin.role')->name('roles')->middleware("permission:role show");
+        Route::view('roles/users','admin.userRole')->name('roles.users');
+        Route::get('permission/{name}',function (){
+//            $user = \App\Models\User::find(auth()->id());
+//            $user->assignRole('مدير');
+//            return true;
+
+            $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' show']);
+            $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' edit']);
+            $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' create']);
+            $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' delete']);
+            if ($permission)
+                return "the " . request()->name . " has been create";
+
+        });
     });
 
     Route::group(['prefix'=>'user'],function (){
-        Route::view('statuses','admin.status')->name('statuses');
-        Route::view('categories','admin.category')->name('categories');
-        Route::view('nationalities','admin.nationality')->name('nationalities');
-        Route::view('maritalStatuses','admin.maritalStatus')->name('maritalStatuses');
-        Route::view('qualifications','admin.qualification')->name('qualifications');
-        Route::view('degrees','admin.degree')->name('degrees');
-        Route::view('check-types','admin.checkType')->name('checkTypes');
-        Route::view('users','admin.user')->name('users');
+        Route::view('statuses','admin.status')->name('statuses')->middleware("permission:status show");
+        Route::view('categories','admin.category')->name('categories')->middleware("permission:category show");
+        Route::view('nationalities','admin.nationality')->name('nationalities')->middleware("permission:nationality show");
+        Route::view('maritalStatuses','admin.maritalStatus')->name('maritalStatuses')->middleware("permission:maritalStatus show");
+        Route::view('qualifications','admin.qualification')->name('qualifications')->middleware("permission:qualification show");
+        Route::view('degrees','admin.degree')->name('degrees')->middleware("permission:degree show");
+        Route::view('check-types','admin.checkType')->name('checkTypes')->middleware("permission:checkType show");
+        Route::view('users','admin.user')->name('users')->middleware("permission:user show");
 
     });
 });

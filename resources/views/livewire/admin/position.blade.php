@@ -5,16 +5,19 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-            اضافة صفة
-        </button>
+        @can('position create')
+            <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()"
+                    data-target="#create-model">
+                اضافة صفة
+            </button>
+        @endcan
         <table id="example1" class="table table-bordered table-striped">
             <thead>
             @if(count($positions)>0)
                 <tr>
                     <th>#</th>
                     <th>الاسم</th>
-{{--                    <th>النوع</th>--}}
+                    {{--                    <th>النوع</th>--}}
                     <th>اجراء</th>
                 </tr>
             @endif
@@ -24,21 +27,19 @@
                 <tr>
                     <td>{{$position->id}}</td>
                     <td>{{$position->name}}</td>
-{{--                    <td>@switch($position->role)--}}
-{{--                            @case('admin')--}}
-{{--                            مدير النظام--}}
-{{--                        @break--}}
-{{--                        @case('supervisor')--}}
-{{--                        مشرف--}}
-{{--                            @break--}}
-{{--                            @default--}}
-{{--                            مستخدم عادي--}}
-{{--                        @endswitch--}}
-{{--                    </td>--}}
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$position->id}})" >مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$position->id}})">تعديل</button>
+                            @can('position delete')
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#delete-model"
+                                        wire:click="show({{$position->id}})">مسح
+                                </button>
+                            @endcan
+                            @can('position edit')
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                        data-target="#create-model" wire:click="show({{$position->id}})">تعديل
+                                </button>
+                            @endcan
                         </div>
                     </td>
                 </tr>
@@ -61,7 +62,7 @@
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -74,24 +75,28 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">اسم الصفة</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الصفة">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name"
+                               placeholder="ادخل اسم الصفة">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
-{{--                    <div class="form-group">--}}
-{{--                        <label for="exampleInputEmail1">نوع المستخدم</label>--}}
-{{--                        <select class="form-control select2" style="width: 100%;" wire:model="role">--}}
-{{--                            <option>اختر</option>--}}
-{{--                            <option value="admin">مدير النظام</option>--}}
-{{--                            <option value="supervisor">مشرف</option>--}}
-{{--                            <option value="user">مستخدم عادي</option>--}}
-{{--                        </select>--}}
-{{--                        <div class="text-danger">@error('role') {{ $message }} @enderror</div>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="form-group">--}}
+                    {{--                        <label for="exampleInputEmail1">نوع المستخدم</label>--}}
+                    {{--                        <select class="form-control select2" style="width: 100%;" wire:model="role">--}}
+                    {{--                            <option>اختر</option>--}}
+                    {{--                            <option value="admin">مدير النظام</option>--}}
+                    {{--                            <option value="supervisor">مشرف</option>--}}
+                    {{--                            <option value="user">مستخدم عادي</option>--}}
+                    {{--                        </select>--}}
+                    {{--                        <div class="text-danger">@error('role') {{ $message }} @enderror</div>--}}
+                    {{--                    </div>--}}
 
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -104,7 +109,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -119,7 +124,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -148,7 +155,6 @@
         //         "autoWidth": false,
         //     });
         // });
-
 
 
         // document.addEventListener('livewire:initialized', () => {

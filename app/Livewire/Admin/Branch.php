@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Artisan;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -10,6 +11,7 @@ use Livewire\WithPagination;
 
 class Branch extends Component
 {
+    use AuthorizesRequests;
     use WithPagination;
     public $id;
     public string $name;
@@ -20,6 +22,12 @@ class Branch extends Component
     public bool $isUpdate=false;
     public bool $withTrash=false;
 
+//    public function mount(){
+//        middleware(['permission:category show'])->only('index' , 'show');
+//        $this->middleware(['permission:category edit'])->only('edit' , 'update');
+//        $this->middleware(['permission:category create'])->only('create' , 'store');
+//        $this->middleware(['permission:category delete'])->only('destroy');
+//    }
 
     public function render()
     {

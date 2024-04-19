@@ -7,9 +7,12 @@
     <div class="card-body">
         <div class="row">
             <div class="col-6">
-                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
+                @can('branch create')
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()"
+                        data-target="#create-model">
                     اضافة فرع
                 </button>
+                @endcan
             </div>
             <div class="form-group clearfix col-6">
                 <div class="icheck-primary">
@@ -28,23 +31,32 @@
                     <th>العنوان</th>
                     <th>اجراء</th>
                 </tr>
-                @endif
+            @endif
             </thead>
             <tbody>
             @forelse($branches as $branch)
                 <tr class="{{$branch->deleted_at ? 'bg-gradient-gray':''}}">
                     <td>{{$branch->id}}</td>
-                    <td >{{$branch->name}}</td>
+                    <td>{{$branch->name}}</td>
                     <td>{{$branch->address}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$branch->id}})" ><i class="fa fa-trash"></i>مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$branch->id}})"><i class="fa fa-edit"></i>تعديل</button>
+                            @can('branch delete')
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
+                                    wire:click="show({{$branch->id}})"><i class="fa fa-trash"></i>مسح
+                            </button>
+                            @endcan
+                            @can('branch edit')
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                        data-target="#create-model" wire:click="show({{$branch->id}})"><i
+                                        class="fa fa-edit"></i>تعديل
+                                </button>
+                            @endcan
                         </div>
                     </td>
                 </tr>
             @empty
-                    <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
+                <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
             @endforelse
             </tbody>
             <tfoot>
@@ -52,17 +64,17 @@
             </div>
             </tfoot>
         </table>
-            {{$branches->links()}}
+        {{$branches->links()}}
     </div>
     <!-- /.card-body -->
 
     <!-- start create branch model -->
 {{--    wire:ignore.self--}}
-    <!-- start branch model -->
+<!-- start branch model -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -75,18 +87,24 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">اسم الفرع</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الفرع">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name"
+                               placeholder="ادخل اسم الفرع">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">العنوان</label>
-                        <input type="text" class="form-control" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="address" placeholder="ادخل عنوان الفرع">
+                        <input type="text" class="form-control"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="address"
+                               placeholder="ادخل عنوان الفرع">
                     </div>
 
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -99,7 +117,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -116,7 +134,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -157,6 +177,6 @@
     </script>
 
     <!-- DataTables -->
-{{--    <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>--}}
-{{--    <script src="{{asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
+    {{--    <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>--}}
+    {{--    <script src="{{asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
 @endpush

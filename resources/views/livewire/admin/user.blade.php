@@ -11,6 +11,7 @@
                 اضافة متطوع
             </button>
         </div>
+        @can('user export')
         <div class="form-inline col border">
             <div class="form-group">
                 <label class="col-form-label">من</label>
@@ -28,6 +29,7 @@
                 تصدير
             </button>
         </div>
+        @endcan
         <table id="example1" class="table table-bordered table-striped ">
             <thead>
             @if(count($users)>0)

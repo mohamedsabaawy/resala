@@ -32,26 +32,15 @@ class Home extends Component
 
     public function render()
     {
-//        dd($this->filter_from);
-        $this->users = User::with(['position', 'activities' => function($quary){
+        $this->users = User::with(['position', 'activities' => function ($quary) {
             $quary->where([
-                ['approval',1],
-                ['activity_date', '>=',$this->filter_from],
-                ['activity_date', '<=',$this->filter_to],
+                ['approval', 1],
+                ['activity_date', '>=', $this->filter_from],
+                ['activity_date', '<=', $this->filter_to],
             ]);
         }])->where([
             ['branch_id', Auth::user()->branch_id],
-            ['job_id', Auth::user()->job_id],
-        ])->get(); //
-
-        //select users if user role not 'user' and check if it admin or not
-        if (Auth::user()->role == "user") {
-            $this->userId = Auth::id();
-            $this->users = $this->users->where('id', $this->userId);
-        }
-        if (Auth::user()->role == "supervisor") {
-            $this->users = $this->users->where('role', '<>', 'admin');
-        }
+        ])->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', 1)->get();
         $allUsers = $this->users;
         $this->users = $this->users->pluck('name', 'id');
         $this->events = Event::where([
@@ -72,9 +61,9 @@ class Home extends Component
     {
         $this->valid();
 
-        foreach($this->userId as $userId){
+        foreach ($this->userId as $userId) {
             $manager = null;//
-            if (User::Find($userId)->job->manager_id )
+            if (User::Find($userId)->job->manager_id)
                 $manager = User::Find($userId)->job->manager_id;
             $activity = Activity::create([
                 'activity_date' => $this->activity_date,
@@ -85,7 +74,7 @@ class Home extends Component
 //                'type' => $this->type,
                 'apologize' => $this->isApologize ? '1' : '0',
                 'approval' => 0,
-                'manager_id' =>$manager ,
+                'manager_id' => $manager,
             ]);
         }
 

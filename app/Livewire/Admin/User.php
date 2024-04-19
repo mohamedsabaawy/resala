@@ -15,6 +15,7 @@ class User extends Component
     use WithPagination, WithFileUploads;
 
     public $id, $name, $code , $phone, $national_id, $photo,$newPhoto, $password,$newPassword,$oldPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date,$filter_from,$filter_to;
+    public $roles;
     public $showCreate = false;
     public $isUpdate = false;
     public $withTrash = false;
@@ -32,10 +33,11 @@ class User extends Component
         $teams = \App\Models\Team::select('id', 'name')->get();
         $positions = \App\Models\Position::select('id', 'name')->get();
         $branches = \App\Models\Branch::select('id', 'name')->get();
-        $checkTypes = \App\Models\CheckType::select('id', 'name')->get();
+        $checkTypes = \App\Models\CheckType::select('name')->get();
         $users = $this->withTrash ? \App\Models\User::withTrashed()->with(['branch','team'])->paginate(10) : \App\Models\User::with(['branch','team'])->paginate(10); // branches paginate
+        $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
         return view('livewire.admin.user', compact([
-            'users', 'teams','jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees', 'positions', 'branches', 'checkTypes'
+            'users', 'teams','jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees', 'positions', 'branches', 'checkTypes','allRoles'
         ]));
     }
 
@@ -57,7 +59,7 @@ class User extends Component
     public function save()
     {
         $this->valid();
-        $branch = \App\Models\User::create([
+        $user = \App\Models\User::create([
             'name' => $this->name,
             'code' => $this->code,
             'phone' => $this->phone,
@@ -82,7 +84,8 @@ class User extends Component
             'birth_date' => $this->birth_date,
 
         ]);
-        if ($branch) {
+        $user->syncRoles($this->roles);
+        if ($user) {
             $this->resetInput();
             $this->dispatch('close');
             $this->dispatch('notify');
@@ -94,7 +97,8 @@ class User extends Component
     public function show($id)
     {
         $this->isUpdate = true;
-        $user = \App\Models\User::find($id);
+        $user = \App\Models\User::with('roles')->find($id);
+        $this->roles = $user->getRoleNames()->first();
         $this->id = $user->id;
         $this->name = $user->name;
         $this->phone = $user->phone;
@@ -129,6 +133,8 @@ class User extends Component
     {
         $this->valid();
         $user = \App\Models\User::find($this->id);
+//        dd($this->roles);
+        $user->syncRoles($this->roles);
         $password = $user->password;
         if ($user) {
             $user->update([
@@ -168,8 +174,8 @@ class User extends Component
 
     public function delete()
     {
-        $branch = \App\Models\User::find($this->id);
-        $branch->delete();
+        $user = \App\Models\User::find($this->id);
+        $user->delete();
         Storage::disk('public')->delete($this->photo);
         $this->dispatch('close');
         $this->dispatch('notify');
@@ -184,11 +190,11 @@ class User extends Component
     {
         $validated = $this->validate([
             'name' => "required",
-            'phone' => "required",
-            'national_id' => "required",
+            'phone' => "required|numeric",
+            'national_id' => "required|numeric",
 //            'photo' => "required",
             'password'=>$this->isUpdate ? "" : "required",
-            'join_date' => "required",
+            'join_date' => "required|date",
             'comment' => "required",
             'team_id' => "required",
             'job_id' => "required",

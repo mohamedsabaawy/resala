@@ -7,9 +7,12 @@
     <div class="card-body">
         <div class="row">
             <div class="col-6">
-                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">
-                    اضافة شهادة علمية
-                </button>
+                @can('qualification create')
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()"
+                            data-target="#create-model">
+                        اضافة شهادة علمية
+                    </button>
+                @endcan
             </div>
             <div class="form-group clearfix col-6">
                 <div class="icheck-primary">
@@ -33,11 +36,20 @@
             @forelse($qualifications as $qualification)
                 <tr class="{{$qualification->deleted_at ? 'bg-gradient-gray':''}}">
                     <td>{{$qualification->id}}</td>
-                    <td >{{$qualification->name}}</td>
+                    <td>{{$qualification->name}}</td>
                     <td>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$qualification->id}})" ><i class="fa fa-trash"></i>مسح</button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#create-model" wire:click="show({{$qualification->id}})"><i class="fa fa-edit"></i>تعديل</button>
+                            @can('qualification delete')
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
+                                    wire:click="show({{$qualification->id}})"><i class="fa fa-trash"></i>مسح
+                            </button>
+                            @endcan
+                            @can('qualification edit')
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-target="#create-model" wire:click="show({{$qualification->id}})"><i
+                                    class="fa fa-edit"></i>تعديل
+                            </button>
+                            @endcan
                         </div>
                     </td>
                 </tr>
@@ -60,7 +72,7 @@
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -73,14 +85,18 @@
 
                     <div class="form-group">
                         <label for="exampleInputEmail1">اسم الشهادة علمية</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name" placeholder="ادخل اسم الشهادة علمية">
+                        <input type="text" class="form-control @error('name') is-invalid @enderror"
+                               wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="name"
+                               placeholder="ادخل اسم الشهادة علمية">
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
 
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}" wire:loading.attr="disabled">حفظ</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -93,7 +109,7 @@
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
             <div class="modal-content bg-danger">
-                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex" >
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
                     <i class="fas fa-2x fa-sync fa-spin"></i>
                 </div>
                 <div class="modal-header">
@@ -110,7 +126,9 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-outline-light" data-dismiss="modal">اغلاق</button>
-                    <button type="button" class="btn btn-outline-light" wire:click="delete()" wire:loading.attr="disabled">تأكيد</button>
+                    <button type="button" class="btn btn-outline-light" wire:click="delete()"
+                            wire:loading.attr="disabled">تأكيد
+                    </button>
                 </div>
             </div>
             <!-- /.modal-content -->
