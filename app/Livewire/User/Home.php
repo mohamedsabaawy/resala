@@ -60,23 +60,38 @@ class Home extends Component
     public function save()
     {
         $this->valid();
-
-        foreach ($this->userId as $userId) {
-            $manager = null;//
-            if (User::Find($userId)->job->manager_id)
-                $manager = User::Find($userId)->job->manager_id;
+        $users = User::with('job')->whereIn('id',$this->userId)->get();
+        foreach ($users as $user){
+            $manager =optional($user->job)->manager_id;
             $activity = Activity::create([
                 'activity_date' => $this->activity_date,
                 'comment' => $this->comment,
                 'event_id' => $this->event_id,
-                'user_id' => Auth::user()->role != "user" ? $userId : Auth::id(),
+                'user_id' => $user->id,
                 'add_by' => Auth::id(),
 //                'type' => $this->type,
                 'apologize' => $this->isApologize ? '1' : '0',
-                'approval' => 0,
+                'approval' => $user->job->manager_id == Auth::id() ? 1 : 0,
                 'manager_id' => $manager,
             ]);
         }
+
+//        foreach ($this->userId as $userId) {
+//            $manager = null;//
+//            if (User::Find($userId)->job->manager_id)
+//                $manager = User::Find($userId)->job->manager_id;
+//            $activity = Activity::create([
+//                'activity_date' => $this->activity_date,
+//                'comment' => $this->comment,
+//                'event_id' => $this->event_id,
+//                'user_id' => Auth::user()->role != "user" ? $userId : Auth::id(),
+//                'add_by' => Auth::id(),
+////                'type' => $this->type,
+//                'apologize' => $this->isApologize ? '1' : '0',
+//                'approval' => User::Find($userId)->job->manager_id == Auth::id() ? 1 : 0,
+//                'manager_id' => $manager,
+//            ]);
+//        }
 
         if ($activity) {
             $this->resetInput();
