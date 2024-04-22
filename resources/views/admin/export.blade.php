@@ -26,7 +26,7 @@
         <th>اللجنة</th>
         <th>الصفة</th>
         @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-            <th colspan="2">{{$i}}</th>
+            <th colspan="1">{{$i}}</th>
         @endfor
     </tr>
     {{--            @endif--}}
@@ -39,7 +39,7 @@
             <td>{{$user->team->name ?? null}}</td>
             <td>{{$user->position->name ?? null}}</td>
             @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                <td>{{getActivity($i,$user)}}</td>
+{{--                <td>{{getActivity($i,$user)}}</td>--}}
                 <td>{{getActivityEvent($i,$user)}}</td>
             @endfor
         </tr>

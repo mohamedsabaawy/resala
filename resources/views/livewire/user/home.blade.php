@@ -65,7 +65,7 @@
                 <th>#</th>
                 <th>الاسم</th>
                 @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                    <th colspan="2">{{$i}}</th>
+                    <th colspan="1">{{$i}}</th>
                 @endfor
             </tr>
             {{--            @endif--}}
@@ -76,7 +76,7 @@
                     <td>{{$user->id}}</td>
                     <td>{{$user->name}}</td>
                     @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                        <td>{{getActivity($i,$user)}}</td>
+{{--                        <td>{{getActivity($i,$user)}}</td>--}}
                         <td>{{getActivityEvent($i,$user)}}</td>
                     @endfor
                 </tr>
