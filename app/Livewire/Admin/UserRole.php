@@ -97,7 +97,7 @@ class UserRole extends Component
 
 
     public function resetInput(){
-        $this->reset(['name','id','showCreate','isUpdate','deleted_at','type','permission','roles']);
+        $this->reset(['name','id','showCreate','isUpdate','deleted_at','type','permission','roles','selectedTeam']);
     }
     private function valid(){
         $validated = $this->validate([
