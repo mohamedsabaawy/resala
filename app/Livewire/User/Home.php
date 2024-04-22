@@ -40,7 +40,7 @@ class Home extends Component
             ]);
         }])->where([
             ['branch_id', Auth::user()->branch_id],
-        ])->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', 1)->get();
+        ])->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', Auth::id())->get();
         $allUsers = $this->users;
         $this->users = $this->users->pluck('name', 'id');
         $this->events = Event::where([
