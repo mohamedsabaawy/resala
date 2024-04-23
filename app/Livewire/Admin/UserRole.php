@@ -25,7 +25,7 @@ class UserRole extends Component
     {
         $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
         $allTeams = \App\Models\Team::select('id','name')->get();
-        $this->selectedTeam = Auth::user()->teams->pluck('id');
+//        $this->selectedTeam = Auth::user()->teams->pluck('id');
         if ($this->withTrash){
             $users = \App\Models\User::withTrashed()->paginate(10); // users paginate
         }else{

@@ -701,7 +701,7 @@
 {{--                                                                    {{$selectedTeam}}--}}
                                 <div class="row m-2">
                                     @foreach($allTeams as $team)
-                                        <div class="col-4 border border-gray-100">
+                                        <div class="col-6 border border-gray-100">
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" type="checkbox"
                                                    id="team-{{$team->id}}"
