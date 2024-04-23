@@ -28,7 +28,8 @@ class Home extends Component
         $event_from = null,
         $event_to = null,
         $filter_from = null, //filter
-        $filter_to = null;
+        $filter_to = null,
+        $msg = '' ;
 
     public function render()
     {
@@ -59,9 +60,14 @@ class Home extends Component
 
     public function save()
     {
+        $msg = '';
         $this->valid();
-        $users = User::with('job')->whereIn('id',$this->userId)->get();
+        $users = User::with(['job','activities'])->whereIn('id',$this->userId)->get();
         foreach ($users as $user){
+            if (count($user->activities->where('activity_date',$this->activity_date)) > 0){
+                $msg .= "- $user->name \n";
+                continue;
+            }
             $manager =optional($user->job)->manager_id;
             $activity = Activity::create([
                 'activity_date' => $this->activity_date,
@@ -94,6 +100,7 @@ class Home extends Component
 //        }
 
         if ($activity) {
+            $this->msg = $msg;
             $this->resetInput();
             $this->dispatch('close');
             $this->dispatch('notify');
@@ -140,7 +147,7 @@ class Home extends Component
 
     public function resetInput()
     {
-        $this->resetExcept(['filter_from', 'filter_to']);
+        $this->resetExcept(['filter_from', 'filter_to','msg']);
     }
 
     private function valid()

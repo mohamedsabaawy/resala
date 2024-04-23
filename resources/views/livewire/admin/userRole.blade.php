@@ -698,6 +698,7 @@
                             </div>
                             <div class="tab-pane fade" id="custom-content-below-team" role="tabpanel"
                                  aria-labelledby="custom-content-below-team-tab">
+{{--                                                                    {{$selectedTeam}}--}}
                                 <div class="row m-2">
                                     @foreach($allTeams as $team)
                                         <div class="col-4 border border-gray-100">

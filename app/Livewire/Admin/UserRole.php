@@ -53,8 +53,7 @@ class UserRole extends Component
 
     //get one user
     public function show($id){
-        $this->isUpdate=true;
-        $user = $this->withTrash ? \App\Models\User::withTrashed()->find($id) : \App\Models\User::find($id);
+        $user =  \App\Models\User::with('teams')->find($id);
         $this->roles = $user->getRoleNames()->first();
         $this->permission = $user->permissions->pluck('name');
         $this->selectedTeam = $user->teams->pluck('id');
@@ -62,6 +61,8 @@ class UserRole extends Component
         $this->name = $user->name;
         $this->type = $user->role == 'admin' ? true : false;
         $this->deleted_at = $user->deleted_at;
+        $this->isUpdate=true;
+//        dd($this->selectedTeam);
     }
 
     public function update(){

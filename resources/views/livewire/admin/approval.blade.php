@@ -51,7 +51,7 @@
                     <td>{{$activity->event->name}}</td>
                     <td>
                         <div class="btn-group">
-                            @if($activity->approval ==0)
+                            @if($activity->approval ==0 or auth()->user()->role == 'admin')
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model" wire:click="show({{$activity->id}})" >مسح</button>
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="" wire:click="approve({{$activity->id}})">تأكيد</button>
                             @endif

@@ -6,6 +6,14 @@
     <!-- /.card-header -->
     <div class="card-body">
         <div class="row">
+            @if(strlen($msg)>0)
+            <div class="col-12 alert alert-danger">
+                <h5>يوجد بالفعل مشاركة في هذا اليوم لكل من :</h5>
+                <h6>
+                    {{$msg}}
+                </h6>
+            </div>
+            @endif
             <div class="col col-6">
                 <button type="button" class="btn btn-outline-info" data-toggle="modal"
                         data-target="#create-model" wire:click="resetInput">
