@@ -38,6 +38,7 @@
                     <th>الاسم</th>
                     <th>التاريخ</th>
                     <th>الحدث</th>
+                    <th>الملاحظات</th>
                     <th>اجراء</th>
                 </tr>
             @endif
@@ -49,6 +50,7 @@
                     <td>{{$activity->user->name}}</td>
                     <td>{{$activity->activity_date}}</td>
                     <td>{{$activity->event->name}}</td>
+                    <td>{{$activity->comment}}</td>
                     <td>
                         <div class="btn-group">
                             @if($activity->approval ==0 or auth()->user()->role == 'admin')
