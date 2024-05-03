@@ -33,15 +33,13 @@ class Home extends Component
 
     public function render()
     {
-        $this->users = User::with(['position', 'activities' => function ($quary) {
+        $this->users = User::OwenUser()->with(['position', 'activities' => function ($quary) {
             $quary->where([
                 ['approval', 1],
                 ['activity_date', '>=', $this->filter_from],
                 ['activity_date', '<=', $this->filter_to],
             ]);
-        }])->where([
-            ['branch_id', Auth::user()->branch_id],
-        ])->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', Auth::id())->get();
+        }])->paginate(10);
         $allUsers = $this->users;
         $this->users = $this->users->pluck('name', 'id');
         $this->events = Event::where([

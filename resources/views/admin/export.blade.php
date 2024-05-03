@@ -4,13 +4,10 @@
         $start = date_format(today(),"Y-m-01");
         $end = date_format(today(),"y-m-t");
         function getActivity($i,$user){
-            if (count($user->activities->where('activity_date',"$i"))>0){
-                if (!$user->activities->where('activity_date',"$i")->first()->apologize)
-                    //return $user->activities->where('activity_date',"$i")->first()->type;
-                    return "مشاركة";
-                return "عذر";
-            }
-        }
+                    if (count($user->activities->where('activity_date',$i))>0){
+                        return $user->activities->where('activity_date',$i)->first()->comment;
+                    }
+                }
         function getActivityEvent($i,$user){
             if (count($user->activities->where('activity_date',"$i"))>0){
                 if (!$user->activities->where('activity_date',"$i")->first()->apologize)
@@ -21,12 +18,13 @@
     @endphp
     {{--            @if(count($activities)>0)--}}
     <tr>
-        <th>#</th>
+        <th>كود</th>
         <th>الاسم</th>
-        <th>اللجنة</th>
+        <th>تليفون</th>
+        <th>نشاط</th>
         <th>الصفة</th>
         @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-            <th colspan="1">{{$i}}</th>
+            <th colspan="2">{{$i}}</th>
         @endfor
     </tr>
     {{--            @endif--}}
@@ -34,13 +32,14 @@
     <tbody>
     @forelse($users as $user)
         <tr>
-            <td>{{$user->id}}</td>
+            <td>{{$user->code}}</td>
             <td>{{$user->name}}</td>
-            <td>{{$user->team->name ?? null}}</td>
+            <td>{{$user->phone}}</td>
+            <td>{{$user->job->name ?? null}}</td>
             <td>{{$user->position->name ?? null}}</td>
             @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-{{--                <td>{{getActivity($i,$user)}}</td>--}}
                 <td>{{getActivityEvent($i,$user)}}</td>
+                <td>{{getActivity($i,$user)}}</td>
             @endfor
         </tr>
     @empty

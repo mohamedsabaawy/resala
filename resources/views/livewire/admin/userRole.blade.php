@@ -23,7 +23,7 @@
             <thead>
             @if(count($users)>0)
                 <tr>
-                    <th>#</th>
+                    <th>كود</th>
                     <th>الكود</th>
                     <th>الاسم</th>
                     <th>مجموعة المستخدمين</th>
@@ -34,7 +34,7 @@
             <tbody>
             @forelse($users as $user)
                 <tr class="{{$user->deleted_at ? 'bg-gradient-gray':''}}">
-                    <td>{{$user->id}}</td>
+                    <td>{{$user->code}}</td>
                     <td>{{$user->code}}</td>
                     <td>{{$user->name}}</td>
                     <td>{{$user->getRoleNames()->first()}}</td>

@@ -5,8 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -45,6 +47,11 @@ class User extends Authenticatable
         'role',
         'apologize',
     ];
+
+    public function scopeOwenUser(Builder $query): void
+    {
+        $query->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', Auth::id());
+    }
 
     /**
      * The attributes that should be hidden for serialization.

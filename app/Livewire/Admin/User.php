@@ -34,7 +34,7 @@ class User extends Component
         $positions = \App\Models\Position::select('id', 'name')->get();
         $branches = \App\Models\Branch::select('id', 'name')->get();
         $checkTypes = \App\Models\CheckType::select('name')->get();
-        $users = $this->withTrash ? \App\Models\User::withTrashed()->with(['branch','team'])->paginate(10) : \App\Models\User::with(['branch','team'])->paginate(10); // branches paginate
+        $users = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->with(['branch','team'])->paginate(10) : \App\Models\User::OwenUser()->with(['branch','team'])->paginate(10); // branches paginate
         $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
         return view('livewire.admin.user', compact([
             'users', 'teams','jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees', 'positions', 'branches', 'checkTypes','allRoles'
@@ -46,7 +46,7 @@ class User extends Component
         $filter_from=$this->filter_from?? date_format(today(),"Y-m-01");
         $filter_to=$this->filter_to?? date_format(today(),"Y-m-t");
 //        dd($filter_from);
-        $users = \App\Models\User::with(['team','position','activities'=>function ($query) use ($filter_from){
+        $users = \App\Models\User::OwenUser()->with(['team','position','activities'=>function ($query) use ($filter_from){
             $query->where([
                 ['activity_date','>=',$filter_from],
                 ['approval',1]

