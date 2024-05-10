@@ -7,94 +7,124 @@
     <div class="card-body">
         <div class="row">
             @if(strlen($msg)>0)
-            <div class="col-12 alert alert-danger">
-                <h5>يوجد بالفعل مشاركة في هذا اليوم لكل من :</h5>
-                <h6>
-                    {{$msg}}
-                </h6>
-            </div>
+                <div class="col-12 alert alert-danger">
+                    <h5>يوجد بالفعل مشاركة في هذا اليوم لكل من :</h5>
+                    <h6>
+                        {{$msg}}
+                    </h6>
+                </div>
             @endif
-            <div class="col col-6">
-                <button type="button" class="btn btn-outline-info" data-toggle="modal"
+            <div class="col col-lg-6 btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#create-model" wire:click="resetInput">
                     اضافة مشاركة
                 </button>
-                <button type="button" class="btn btn-outline-info" data-toggle="modal"
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                         data-target="#create-model" wire:click="createApologize">
                     اضافة عذر
                 </button>
             </div>
-            <div class="col col-3">
-            </div>
-            <div class="col col-3">
-                <div class="row">
-                    <div class="col-1">
-                        <label class="col-form-label">من</label>
+            <div class="col-12 accordion">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-blue">
+                            <button class="btn btn-link collapsed text-lg w-100" data-toggle="collapse"
+                                    data-target="#filter" aria-expanded="true" aria-controls="filter">
+                                بحث وتصفية
+                            </button>
+                        </h5>
                     </div>
-                    <div class="col-10">
-                        <input class="form-control" dir="rtl" type="date" wire:model.live="filter_from" >
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-1">
-                        <label class="col-form-label">الي</label>
-                    </div>
-                    <div class="col-10">
-                        <input class="form-control" dir="rtl" type="date" wire:model.live="filter_to" >
+                    <div class="collapse show" id="filter" aria-labelledby="filter">
+                        <div class="card-body row">
+                            <div class="col-sm-12 col-lg-2">
+                                <div class="form-group">
+                                    <label class="text-red">بحث</label>
+                                    <input class="form-control text-primary" dir="rtl" type="text"
+                                           wire:model.live="search" placeholder="كود , فون , اسم , ميل">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2">
+                                <div class="form-group">
+                                    <label class="text-red">نشاط</label>
+                                    <select class="form-control text-primary" wire:model.live="job">
+                                        <option></option>
+                                        @foreach($jobs as $job)
+                                            <option value="{{$job->id}}">{{$job->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2">
+                                <div class="form-group">
+                                    <label class="text-red">من</label>
+                                    <input class="form-control text-primary" dir="rtl" type="date"
+                                           wire:model.live="filter_from">
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-2">
+                                <div class="form-group">
+                                    <label class="text-red">الي</label>
+                                    <input class="form-control text-primary" dir="rtl" type="date"
+                                           wire:model.live="filter_to">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <table id="example1" class="table table-bordered table-responsive ">
-            <thead>
-            @php
-                $start =  $filter_from;
-                $end =$filter_to;
-                function getActivity($i,$user){
-                    if (count($user->activities->where('activity_date',$i))>0){
-                        return $user->activities->where('activity_date',$i)->first()->comment;
+        <div class="table-responsive text-nowrap text-center">
+            <table id="example1" class="table table-bordered table-hover">
+                <thead class="thead-light">
+                @php
+                    $start =  $filter_from;
+                    $end =$filter_to;
+                    function getActivity($i,$user){
+                        if (count($user->activities->where('activity_date',$i))>0){
+                            return $user->activities->where('activity_date',$i)->first()->comment;
+                        }
                     }
-                }
-                function getActivityEvent($i,$user){
-                    if (count($user->activities->where('activity_date',$i))>0){
-                        if (!$user->activities->where('activity_date',$i)->first()->apologize)
-                            return $user->activities->where('activity_date',$i)->first()->event->name;
-                        return "عذر";
+                    function getActivityEvent($i,$user){
+                        if (count($user->activities->where('activity_date',$i))>0){
+                            if (!$user->activities->where('activity_date',$i)->first()->apologize)
+                                return $user->activities->where('activity_date',$i)->first()->event->name;
+                            return "عذر";
+                        }
                     }
-                }
-            @endphp
-            {{session('role')}}
-            {{--            @if(count($activities)>0)--}}
-            <tr>
-                <th>كود</th>
-                <th>الاسم</th>
-                <th>تليفون</th>
-                @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                    <th colspan="2">{{$i}}</th>
-                @endfor
-            </tr>
-            {{--            @endif--}}
-            </thead>
-            <tbody>
-            @forelse($allUsers as $user)
+                @endphp
+                {{session('role')}}
+                {{--            @if(count($activities)>0)--}}
                 <tr>
-                    <td class="">{{$user->code}}</td>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->phone}}</td>
+                    <th>كود</th>
+                    <th>الاسم</th>
+                    <th>تليفون</th>
                     @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                        <td>{{getActivityEvent($i,$user)}}</td>
-                        <td>{{getActivity($i,$user)}}</td>
+                        <th colspan="2">{{$i}}</th>
                     @endfor
                 </tr>
-            @empty
-                <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
-            @endforelse
-            </tbody>
-            <tfoot>
-            <div>
-            </div>
-            </tfoot>
-        </table>
+                {{--            @endif--}}
+                </thead>
+                <tbody>
+                @forelse($allUsers as $user)
+                    <tr>
+                        <td class="" scope="row">{{$user->code}}</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->phone}}</td>
+                        @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
+                            <td>{{getActivityEvent($i,$user)}}</td>
+                            <td>{{getActivity($i,$user)}}</td>
+                        @endfor
+                    </tr>
+                @empty
+                    <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
+                @endforelse
+                </tbody>
+                <tfoot>
+                <div>
+                </div>
+                </tfoot>
+            </table>
+        </div>
         {{$allUsers->links()}}
     </div>
     <!-- /.card-body -->
@@ -121,10 +151,10 @@
                     {{--                    </div>--}}
                     <div class="form-group">
                         <label for="userId">متطوع</label>
-                        <select wire:ignore  class="form-control select2" id="userId" multiple
+                        <select wire:ignore class="form-control select2" id="userId" multiple
                                 wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
                                 wire:model="userId">
-{{--                            <option>اختر</option>--}}
+                            {{--                            <option>اختر</option>--}}
                             @foreach($users as $key=>$value)
                                 <option value="{{$key}}">{{$value}}</option>
                             @endforeach
@@ -135,7 +165,7 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1">الاحداث</label>
                         <select class="form-control select2-blue"
-{{--                                {{$isUpdate ? "update()" : "save()"}}  --}}
+                                {{--                                {{$isUpdate ? "update()" : "save()"}}  --}}
                                 wire:keydown.outside="check()"
                                 wire:model.live="event_id" id="event_id">
                             <option>اختر</option>
@@ -147,23 +177,24 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">تاريخ المشاركة</label>
-                        <input type="date" min="{{$event_from}}" max="{{$event_to}}" class="form-control @error('date') is-invalid @enderror"
-{{--                               wire:click="check"--}}
+                        <input type="date" min="{{$event_from}}" max="{{$event_to}}"
+                               class="form-control @error('date') is-invalid @enderror"
+                               {{--                               wire:click="check"--}}
                                wire:model.live="activity_date" placeholder="dd-mm-yyyy">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
-{{--                    @if(!$isApologize)--}}
-{{--                        <div class="form-group">--}}
-{{--                            <label for="exampleInputEmail1">نوع المشاركة</label>--}}
-{{--                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"--}}
-{{--                                    wire:model="type">--}}
-{{--                                <option>اختر</option>--}}
-{{--                                <option value="online">online</option>--}}
-{{--                                <option value="offline">offline</option>--}}
-{{--                            </select>--}}
-{{--                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
+                    {{--                    @if(!$isApologize)--}}
+                    {{--                        <div class="form-group">--}}
+                    {{--                            <label for="exampleInputEmail1">نوع المشاركة</label>--}}
+                    {{--                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"--}}
+                    {{--                                    wire:model="type">--}}
+                    {{--                                <option>اختر</option>--}}
+                    {{--                                <option value="online">online</option>--}}
+                    {{--                                <option value="offline">offline</option>--}}
+                    {{--                            </select>--}}
+                    {{--                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>--}}
+                    {{--                        </div>--}}
+                    {{--                    @endif--}}
                     <div class="form-group">
                         <label for="exampleInputEmail1">تفاصيل</label>
                         <textarea class="form-control textarea @error('comment') is-invalid @enderror"

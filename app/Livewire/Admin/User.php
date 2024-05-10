@@ -14,11 +14,12 @@ class User extends Component
 {
     use WithPagination, WithFileUploads;
 
-    public $id, $name, $code , $phone, $national_id, $photo,$newPhoto, $password,$newPassword,$oldPassword , $join_date, $comment, $team_id, $position_id, $status="active", $branch_id,$role="user",$category_id,$degree_id,$job_id,$marital_status_id,$qualification_id,$nationality_id,$status_id ,$gender,$email,$address,$birth_date,$filter_from,$filter_to;
-    public $roles;
+    public $id, $name, $code, $phone, $national_id, $photo, $newPhoto, $password, $newPassword, $oldPassword, $join_date, $comment, $team_id, $position_id, $status = "active", $branch_id, $role = "user", $category_id, $degree_id, $job_id, $marital_status_id, $qualification_id, $nationality_id, $status_id, $gender, $email, $address, $birth_date, $filter_from, $filter_to;
+    public $roles, $search,$job;
     public $showCreate = false;
     public $isUpdate = false;
     public $withTrash = false;
+
 // activity
     public function render()
     {
@@ -34,25 +35,27 @@ class User extends Component
         $positions = \App\Models\Position::select('id', 'name')->get();
         $branches = \App\Models\Branch::select('id', 'name')->get();
         $checkTypes = \App\Models\CheckType::select('name')->get();
-        $users = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->with(['branch','team'])->paginate(10) : \App\Models\User::OwenUser()->with(['branch','team'])->paginate(10); // branches paginate
+        $users = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->with(['branch', 'team']) : \App\Models\User::OwenUser()->with(['branch', 'team']);
+        $this->customFilter($users);
+        $users = $users->paginate(10);
         $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
         return view('livewire.admin.user', compact([
-            'users', 'teams','jobs','categories','statuses','qualifications','nationalities','maritalStatuses','degrees', 'positions', 'branches', 'checkTypes','allRoles'
+            'users', 'teams', 'jobs', 'categories', 'statuses', 'qualifications', 'nationalities', 'maritalStatuses', 'degrees', 'positions', 'branches', 'checkTypes', 'allRoles'
         ]));
     }
 
     public function export()
     {
-        $filter_from=$this->filter_from?? date_format(today(),"Y-m-01");
-        $filter_to=$this->filter_to?? date_format(today(),"Y-m-t");
+        $filter_from = $this->filter_from ?? date_format(today(), "Y-m-01");
+        $filter_to = $this->filter_to ?? date_format(today(), "Y-m-t");
 //        dd($filter_from);
-        $users = \App\Models\User::OwenUser()->with(['team','position','activities'=>function ($query) use ($filter_from){
+        $users = \App\Models\User::OwenUser()->with(['team', 'position', 'activities' => function ($query) use ($filter_from) {
             $query->where([
-                ['activity_date','>=',$filter_from],
-                ['approval',1]
+                ['activity_date', '>=', $filter_from],
+                ['approval', 1]
             ]);
         }])->get()->sortBy('team_id');
-        return Excel::download(new UsersExport($users,$filter_from,$filter_to), 'users.xlsx');
+        return Excel::download(new UsersExport($users, $filter_from, $filter_to), 'users.xlsx');
     }
 
 
@@ -64,7 +67,7 @@ class User extends Component
             'code' => $this->code,
             'phone' => $this->phone,
             'national_id' => $this->national_id,
-            'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
+            'photo' => $this->newPhoto ? $this->newPhoto->store('users', 'public') : $this->photo,
             'password' => $this->password,
             'join_date' => $this->join_date,
             'comment' => $this->comment,
@@ -110,18 +113,18 @@ class User extends Component
         $this->position_id = $user->position_id;
         $this->branch_id = $user->branch_id;
         $this->code = $user->code;
-        $this->category_id =$user->category_id;
-        $this->status_id =$user->status_id;
-        $this->qualification_id =$user->qualification_id;
-        $this->nationality_id =$user->nationality_id;
-        $this->degree_id =$user->degree_id;
-        $this->gender =$user->gender;
-        $this->email =$user->email;
-        $this->address =$user->address;
-        $this->birth_date =$user->birth_date;
-        $this->role =$user->role;
-        $this->oldPassword =$user->password;
-        $this->job_id =$user->job_id;
+        $this->category_id = $user->category_id;
+        $this->status_id = $user->status_id;
+        $this->qualification_id = $user->qualification_id;
+        $this->nationality_id = $user->nationality_id;
+        $this->degree_id = $user->degree_id;
+        $this->gender = $user->gender;
+        $this->email = $user->email;
+        $this->address = $user->address;
+        $this->birth_date = $user->birth_date;
+        $this->role = $user->role;
+        $this->oldPassword = $user->password;
+        $this->job_id = $user->job_id;
         $this->marital_status_id = $user->marital_status_id;
 //        dd($this->role);
         //$gender,$email,$address,$birth_date
@@ -142,8 +145,8 @@ class User extends Component
                 'code' => $this->code,
                 'phone' => $this->phone,
                 'national_id' => $this->national_id,
-                'photo' => $this->newPhoto ? $this->newPhoto->store('users','public'): $this->photo,
-                'password' => $this->newPassword ? bcrypt($this->newPassword):$this->oldPassword,
+                'photo' => $this->newPhoto ? $this->newPhoto->store('users', 'public') : $this->photo,
+                'password' => $this->newPassword ? bcrypt($this->newPassword) : $this->oldPassword,
                 'join_date' => $this->join_date,
                 'comment' => $this->comment,
                 'team_id' => $this->team_id,
@@ -163,7 +166,7 @@ class User extends Component
                 'role' => $this->role,
             ]);
 
-            if(isset($this->newPhoto) and isset($this->photo)){
+            if (isset($this->newPhoto) and isset($this->photo)) {
                 Storage::disk('public')->delete($this->photo);
             }
         }
@@ -189,22 +192,22 @@ class User extends Component
     private function valid()
     {
         $validated = $this->validate([
-            'name' => "required",
-            'phone' => "required|numeric",
-            'national_id' => "required|numeric",
+                'name' => "required",
+                'phone' => "required|numeric",
+                'national_id' => "required|numeric",
 //            'photo' => "required",
-            'password'=>$this->isUpdate ? "" : "required",
-            'join_date' => "required|date",
-            'comment' => "required",
-            'team_id' => "required",
-            'job_id' => "required",
-            'position_id' => "required",
-            'branch_id' => "required",
-            'status' => "required",
-            'code' => ["required",
-                $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')
+                'password' => $this->isUpdate ? "" : "required",
+                'join_date' => "required|date",
+                'comment' => "required",
+                'team_id' => "required",
+                'job_id' => "required",
+                'position_id' => "required",
+                'branch_id' => "required",
+                'status' => "required",
+                'code' => ["required",
+                    $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')
                 ],
-        ]
+            ]
 //            ,
 //            [
 //            'name.required' => 'برجاء ادخل اسم الفريق',
@@ -213,5 +216,20 @@ class User extends Component
 //            'phone.required' => 'هذا الحقل مطلوب ',
 //        ]
         );
+    }
+
+    protected function customFilter($users)
+    {
+        if (strlen($this->search) > 0) {
+            $users = $users->Where('code', 'like', "%$this->search%")
+                ->orWhere('name', 'like', "%$this->search%")
+                ->orWhere('phone', 'like', "%$this->search%")
+                ->orWhere('email', 'like', "%$this->search%");
+        }
+
+        if ($this->job)
+            $users = $users->where('job_id', $this->job);
+
+        return $users;
     }
 }

@@ -2,18 +2,18 @@
 
 namespace App\Livewire\User;
 
+use App\Exports\UsersExport;
 use App\Models\Activity;
 use App\Models\Event;
-use App\Models\Position;
+use App\Models\Job;
 use App\Models\User;
 use App\Rules\Check;
 use Carbon\Carbon;
-use Closure;
-use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Home extends Component
 {
@@ -29,24 +29,28 @@ class Home extends Component
         $event_to = null,
         $filter_from = null, //filter
         $filter_to = null,
-        $msg = '' ;
+        $msg = '',
+        $job,
+        $search;
 
     public function render()
     {
-        $this->users = User::OwenUser()->with(['position', 'activities' => function ($quary) {
+        $jobs = Job::select('name', 'id')->get();
+        $users = User::OwenUser()->with(['position', 'activities' => function ($quary) {
             $quary->where([
                 ['approval', 1],
                 ['activity_date', '>=', $this->filter_from],
                 ['activity_date', '<=', $this->filter_to],
             ]);
-        }])->paginate(10);
-        $allUsers = $this->users;
-        $this->users = $this->users->pluck('name', 'id');
+        }])->orderBy('code');
+        $this->customFilter($users);
+        $this->users = $users->pluck('name', 'id');
+        $allUsers = $users->paginate(10);
         $this->events = Event::where([
             ['from', '>=', ($this->activity_date ?? today())],
             ['active', 1]
         ])->orWhere([['type', 1], ['active', 1]])->get();
-        return view('livewire.user.home', compact(['allUsers']));
+        return view('livewire.user.home', compact(['allUsers','jobs']));
     }
 
     public function mount()
@@ -54,19 +58,31 @@ class Home extends Component
         $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
         $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
     }
-
+    public function export()
+    {
+        $filter_from = $this->filter_from ?? date_format(today(), "Y-m-01");
+        $filter_to = $this->filter_to ?? date_format(today(), "Y-m-t");
+//        dd($filter_from);
+        $users = \App\Models\User::OwenUser()->with(['team', 'position', 'activities' => function ($query) use ($filter_from) {
+            $query->where([
+                ['activity_date', '>=', $filter_from],
+                ['approval', 1]
+            ]);
+        }])->get()->sortBy('team_id');
+        return Excel::download(new UsersExport($users, $filter_from, $filter_to), 'users.xlsx');
+    }
 
     public function save()
     {
         $msg = '';
         $this->valid();
-        $users = User::with(['job','activities'])->whereIn('id',$this->userId)->get();
-        foreach ($users as $user){
-            if (count($user->activities->where('activity_date',$this->activity_date)) > 0){
+        $users = User::with(['job', 'activities'])->whereIn('id', $this->userId)->get();
+        foreach ($users as $user) {
+            if (count($user->activities->where('activity_date', $this->activity_date)) > 0) {
                 $msg .= "- $user->name \n";
                 continue;
             }
-            $manager =optional($user->job)->manager_id;
+            $manager = optional($user->job)->manager_id;
             $activity = Activity::create([
                 'activity_date' => $this->activity_date,
                 'comment' => $this->comment,
@@ -145,7 +161,7 @@ class Home extends Component
 
     public function resetInput()
     {
-        $this->resetExcept(['filter_from', 'filter_to','msg']);
+        $this->resetExcept(['filter_from', 'filter_to', 'msg']);
     }
 
     private function valid()
@@ -174,6 +190,20 @@ class Home extends Component
                 $this->event_from = $event->from;
                 $this->event_to = $event->to;
             }
+    }
+
+    protected function customFilter($users){
+        if (strlen($this->search) > 0) {
+            $users = $users->Where('code', 'like', "%$this->search%")
+                ->orWhere('name', 'like', "%$this->search%")
+                ->orWhere('phone', 'like', "%$this->search%")
+                ->orWhere('email', 'like', "%$this->search%");
+        }
+
+        if ($this->job)
+            $users = $users->where('job_id',$this->job);
+
+        return $users;
     }
 
 

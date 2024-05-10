@@ -11,6 +11,38 @@
                 اضافة متطوع
             </button>
         </div>
+        <div class="col-12 accordion">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="text-blue">
+                        <button class="btn btn-link collapsed text-lg w-100" data-toggle="collapse" data-target="#filter" aria-expanded="true" aria-controls="filter">
+                            بحث وتصفية
+                        </button>
+                    </h5>
+                </div>
+                <div  class="collapse show" id="filter" aria-labelledby="filter">
+                    <div class="card-body row">
+                        <div class="col-sm-12 col-lg-2">
+                            <div class="form-group">
+                                <label class="text-red">بحث</label>
+                                <input class="form-control text-primary" dir="rtl" type="text" wire:model.live="search" placeholder="كود , فون , اسم , ميل" >
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-lg-2">
+                            <div class="form-group">
+                                <label class="text-red">نشاط</label>
+                                <select class="form-control text-primary" wire:model.live="job">
+                                    <option></option>
+                                    @foreach($jobs as $job)
+                                        <option value="{{$job->id}}">{{$job->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @can('user export')
         <div class="form-inline col border">
             <div class="form-group">
@@ -30,6 +62,7 @@
             </button>
         </div>
         @endcan
+        <div class="table-responsive text-nowrap text-center">
         <table id="example1" class="table table-bordered table-striped ">
             <thead>
             @if(count($users)>0)
@@ -73,6 +106,7 @@
             </div>
             </tfoot>
         </table>
+            </div>
         {{$users->links()}}
     </div>
     <!-- /.card-body -->
