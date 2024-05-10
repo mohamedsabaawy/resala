@@ -170,6 +170,7 @@ class User extends Component
                 Storage::disk('public')->delete($this->photo);
             }
         }
+        $this->skipRender();
         $this->resetInput();
         $this->dispatch('close');
         $this->dispatch('notify');
