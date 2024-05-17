@@ -36,14 +36,21 @@
                     </div>
                     <div class="collapse show" id="filter" aria-labelledby="filter">
                         <div class="card-body row">
-                            <div class="col-sm-12 col-lg-2">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                                 <div class="form-group">
-                                    <label class="text-red">بحث</label>
+                                    <label class="text-red">كود</label>
                                     <input class="form-control text-primary" dir="rtl" type="text"
-                                           wire:model.live="search" placeholder="كود , فون , اسم , ميل">
+                                           wire:model.live="searchCode" placeholder="كود">
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-lg-2">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                                <div class="form-group">
+                                    <label class="text-red">الاسم</label>
+                                    <input class="form-control text-primary" dir="rtl" type="text"
+                                           wire:model.live="searchName" placeholder="اسم">
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                                 <div class="form-group">
                                     <label class="text-red">نشاط</label>
                                     <select class="form-control text-primary" wire:model.live="job">
@@ -81,14 +88,14 @@
                     $end =$filter_to;
                     function getActivity($i,$user){
                         if (count($user->activities->where('activity_date',$i))>0){
-                            return $user->activities->where('activity_date',$i)->first()->comment;
+                            return optional($user->activities)->where('activity_date',$i)->first()->comment;
                         }
                     }
                     function getActivityEvent($i,$user){
                         if (count($user->activities->where('activity_date',$i))>0){
                             if (!$user->activities->where('activity_date',$i)->first()->apologize)
-                                return $user->activities->where('activity_date',$i)->first()->event->name;
-                            return "عذر";
+                                return optional($user->activities->where('activity_date',$i)->first()->event)->name ?? "تم مسح الحدث";
+                            return "عذر عن : " .(optional($user->activities->where('activity_date',$i)->first()->event)->name  ?? "تم مسح الحدث" );
                         }
                     }
                 @endphp
@@ -111,8 +118,8 @@
                         <td>{{$user->name}}</td>
                         <td>{{$user->phone}}</td>
                         @for($i =$start ; $i<=$end; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                            <td>{{getActivityEvent($i,$user)}}</td>
-                            <td>{{getActivity($i,$user)}}</td>
+                            <td class="{{str_contains(getActivityEvent($i,$user),'عذر')?'bg-yellow': ''}}">{{getActivityEvent($i,$user)}}</td>
+                            <td class="{{str_contains(getActivityEvent($i,$user),'عذر')?'bg-yellow': ''}}">{{getActivity($i,$user)}}</td>
                         @endfor
                     </tr>
                 @empty

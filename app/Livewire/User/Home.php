@@ -31,7 +31,8 @@ class Home extends Component
         $filter_to = null,
         $msg = '',
         $job,
-        $search;
+        $searchCode,
+        $searchName;
 
     public function render()
     {
@@ -193,16 +194,14 @@ class Home extends Component
     }
 
     protected function customFilter($users){
-        if (strlen($this->search) > 0) {
-            $users = $users->Where('code', 'like', "%$this->search%")
-                ->orWhere('name', 'like', "%$this->search%")
-                ->orWhere('phone', 'like', "%$this->search%")
-                ->orWhere('email', 'like', "%$this->search%");
+        if (strlen($this->searchCode) > 0) {
+            $users = $users->Where('code', 'like', "%$this->searchCode%");
         }
-
+        if (strlen($this->searchName) > 0) {
+            $users = $users->Where('name', 'like', "%$this->searchName%");
+        }
         if ($this->job)
-            $users = $users->where('job_id',$this->job);
-
+            $users = $users->where('job_id', $this->job);
         return $users;
     }
 

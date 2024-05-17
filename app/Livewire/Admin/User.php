@@ -15,7 +15,7 @@ class User extends Component
     use WithPagination, WithFileUploads;
 
     public $id, $name, $code, $phone, $national_id, $photo, $newPhoto, $password, $newPassword, $oldPassword, $join_date, $comment, $team_id, $position_id, $status = "active", $branch_id, $role = "user", $category_id, $degree_id, $job_id, $marital_status_id, $qualification_id, $nationality_id, $status_id, $gender, $email, $address, $birth_date, $filter_from, $filter_to;
-    public $roles, $search,$job;
+    public $roles, $searchName, $searchCode, $job;
     public $showCreate = false;
     public $isUpdate = false;
     public $withTrash = false;
@@ -31,7 +31,6 @@ class User extends Component
         $nationalities = \App\Models\Nationality::select('id', 'name')->get();
         $maritalStatuses = \App\Models\MaritalStatus::select('id', 'name')->get();
         $degrees = \App\Models\Degree::select('id', 'name')->get();
-        $teams = \App\Models\Team::select('id', 'name')->get();
         $positions = \App\Models\Position::select('id', 'name')->get();
         $branches = \App\Models\Branch::select('id', 'name')->get();
         $checkTypes = \App\Models\CheckType::select('name')->get();
@@ -198,7 +197,8 @@ class User extends Component
                 'national_id' => "required|numeric",
 //            'photo' => "required",
                 'password' => $this->isUpdate ? "" : "required",
-                'join_date' => "required|date",
+                'join_date' => "required|date:'dd-mm-yy'",
+                'birth_date' => "required|date:'dd-mm-yy'",
                 'comment' => "required",
                 'team_id' => "required",
                 'job_id' => "required",
@@ -221,16 +221,15 @@ class User extends Component
 
     protected function customFilter($users)
     {
-        if (strlen($this->search) > 0) {
-            $users = $users->Where('code', 'like', "%$this->search%")
-                ->orWhere('name', 'like', "%$this->search%")
-                ->orWhere('phone', 'like', "%$this->search%")
-                ->orWhere('email', 'like', "%$this->search%");
+        if (strlen($this->searchCode) > 0) {
+            $users = $users->Where('code', 'like', "%$this->searchCode%");
         }
-
+        if (strlen($this->searchName) > 0) {
+            $users = $users->Where('name', 'like', "%$this->searchName%");
+        }
         if ($this->job)
             $users = $users->where('job_id', $this->job);
-
         return $users;
     }
+
 }

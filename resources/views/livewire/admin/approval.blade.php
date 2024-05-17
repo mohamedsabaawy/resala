@@ -49,7 +49,7 @@
                     <td>{{$loop->index+1}}</td>
                     <td>{{$activity->user->name}}</td>
                     <td>{{$activity->activity_date}}</td>
-                    <td>{{$activity->event->name}}</td>
+                    <td>{{optional($activity->event)->name}}</td>
                     <td>{{$activity->comment}}</td>
                     <td>
                         <div class="btn-group">

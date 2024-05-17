@@ -11,8 +11,8 @@
         function getActivityEvent($i,$user){
             if (count($user->activities->where('activity_date',"$i"))>0){
                 if (!$user->activities->where('activity_date',"$i")->first()->apologize)
-                    return $user->activities->where('activity_date',"$i")->first()->event->name;
-                return "عذر";
+                    return optional($user->activities->where('activity_date',$i)->first()->event)->name ?? "تم مسح الحدث";
+                return "عذر عن : " .(optional($user->activities->where('activity_date',$i)->first()->event)->name  ?? "تم مسح الحدث" );
             }
         }
     @endphp
@@ -38,8 +38,8 @@
             <td>{{$user->job->name ?? null}}</td>
             <td>{{$user->position->name ?? null}}</td>
             @for($i =$filter_from ; $i<=$filter_to; $i = \Carbon\Carbon::parse($i)->addDay()->format('Y-m-d'))
-                <td>{{getActivityEvent($i,$user)}}</td>
-                <td>{{getActivity($i,$user)}}</td>
+                <td class="{{str_contains(getActivityEvent($i,$user),'عذر')?'bg-yellow': ''}}">{{getActivityEvent($i,$user)}}</td>
+                <td class="{{str_contains(getActivityEvent($i,$user),'عذر')?'bg-yellow': ''}}">{{getActivity($i,$user)}}</td>
             @endfor
         </tr>
     @empty
