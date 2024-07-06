@@ -13,6 +13,7 @@ class UserRole extends Component
     public string $name;
     public $roles;
     public $type;
+    public $need_approve;
     public $permission=[];
     public $selectedTeam=[];
     public $deleted_at;
@@ -38,6 +39,7 @@ class UserRole extends Component
         $user = \App\Models\User::create([
             'name'=>$this->name,
             'role'=>$this->type  ? 'admin' : 'user',
+            'need_approve'=>$this->need_approve  ? 1 : 0,
         ]);
         $user->teams()->sync($this->selectedTeam);
         $user->syncRoles($this->roles);
@@ -59,6 +61,7 @@ class UserRole extends Component
         $this->id = $user->id;
         $this->name = $user->name;
         $this->type = $user->role == 'admin' ? true : false;
+        $this->need_approve = $user->need_approve ? true : false;
         $this->deleted_at = $user->deleted_at;
         $this->isUpdate=true;
 //        dd($this->selectedTeam);
@@ -71,6 +74,7 @@ class UserRole extends Component
             $user->update([
                 'name'=>$this->name,
                 'role'=>$this->type  ? 'admin' : 'user',
+                'need_approve'=>$this->need_approve  ? 1 : 0,
             ]);
             $user->syncRoles($this->roles);
             $user->syncPermissions($this->permission);
@@ -97,7 +101,7 @@ class UserRole extends Component
 
 
     public function resetInput(){
-        $this->reset(['name','id','showCreate','isUpdate','deleted_at','type','permission','roles','selectedTeam']);
+        $this->reset(['name','id','showCreate','isUpdate','deleted_at','type','permission','roles','selectedTeam','need_approve']);
     }
     private function valid(){
         $validated = $this->validate([

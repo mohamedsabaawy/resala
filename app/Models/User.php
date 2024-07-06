@@ -46,6 +46,7 @@ class User extends Authenticatable
         'category_id',
         'role',
         'apologize',
+        'need_approve',
     ];
 
     public function scopeOwenUser(Builder $query): void

@@ -92,7 +92,7 @@ class Home extends Component
                 'add_by' => Auth::id(),
 //                'type' => $this->type,
                 'apologize' => $this->isApologize ? '1' : '0',
-                'approval' => $user->job->manager_id == Auth::id() ? 1 : 0,
+                'approval' => $user->job->manager_id == Auth::id() ? 1 : (Auth::id() == $user->id && $user->need_approve == 1 ? 1 : 0),
                 'manager_id' => $manager,
             ]);
         }

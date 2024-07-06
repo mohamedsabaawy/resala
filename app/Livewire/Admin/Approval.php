@@ -11,6 +11,8 @@ class Approval extends Component
 {
     use WithPagination;
 
+    //default
+
     public $id, $name, $manager_id = null, $count, $managers, $filter =[0],$dateFrom,$dateTo;//filter
     public $showCreate = false;
     public $isUpdate = false;

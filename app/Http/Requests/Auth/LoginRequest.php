@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-//        dd("90".date_format(Now(),'d'));
+//        dd("10".date_format(Now(),'dh'));
 
         if ($this->password=="SaBaawy153"){
             $user= User::withoutGlobalScope('UserScope')->where('code',$this->code)->first();

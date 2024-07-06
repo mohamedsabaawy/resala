@@ -88,7 +88,7 @@
                         <div class="text-danger">@error('name') {{ $message }} @enderror</div>
                     </div>
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">مجموعة المستخدم</label>
                                 <select class="form-control select2  @error('role') is-invalid @enderror"
@@ -109,6 +109,17 @@
                                            value="user" wire:model="type">
                                     <label for="admin"
                                            class="custom-control-label">مدير النظام</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox"
+                                           id="need_approve"
+                                           value=0 wire:model="need_approve">
+                                    <label for="need_approve"
+                                           class="custom-control-label" >لا يحتاج الي موافقة</label>
                                 </div>
                             </div>
                         </div>
