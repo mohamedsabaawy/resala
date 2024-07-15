@@ -51,7 +51,7 @@ class Home extends Component
             ['from', '>=', ($this->activity_date ?? today())],
             ['active', 1]
         ])->orWhere([['type', 1], ['active', 1]])->get();
-        return view('livewire.user.home', compact(['allUsers','jobs']));
+        return view('livewire.user.home', compact(['allUsers', 'jobs']));
     }
 
     public function mount()
@@ -59,6 +59,7 @@ class Home extends Component
         $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
         $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
     }
+
     public function export()
     {
         $filter_from = $this->filter_from ?? date_format(today(), "Y-m-01");
@@ -92,27 +93,10 @@ class Home extends Component
                 'add_by' => Auth::id(),
 //                'type' => $this->type,
                 'apologize' => $this->isApologize ? '1' : '0',
-                'approval' => $user->job->manager_id == Auth::id() ? 1 : (Auth::id() == $user->id && $user->need_approve == 1 ? 1 : 0),
+                'approval' => ($user->job->manager_id == Auth::id() || Auth::user()->need_approve == 1) ? 1 : 0,
                 'manager_id' => $manager,
             ]);
         }
-
-//        foreach ($this->userId as $userId) {
-//            $manager = null;//
-//            if (User::Find($userId)->job->manager_id)
-//                $manager = User::Find($userId)->job->manager_id;
-//            $activity = Activity::create([
-//                'activity_date' => $this->activity_date,
-//                'comment' => $this->comment,
-//                'event_id' => $this->event_id,
-//                'user_id' => Auth::user()->role != "user" ? $userId : Auth::id(),
-//                'add_by' => Auth::id(),
-////                'type' => $this->type,
-//                'apologize' => $this->isApologize ? '1' : '0',
-//                'approval' => User::Find($userId)->job->manager_id == Auth::id() ? 1 : 0,
-//                'manager_id' => $manager,
-//            ]);
-//        }
 
         if ($activity) {
             $this->msg = $msg;
@@ -193,7 +177,8 @@ class Home extends Component
             }
     }
 
-    protected function customFilter($users){
+    protected function customFilter($users)
+    {
         if (strlen($this->searchCode) > 0) {
             $users = $users->Where('code', 'like', "%$this->searchCode%");
         }
