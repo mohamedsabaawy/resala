@@ -52,7 +52,8 @@ class Meeting extends Component
             $meetings = \App\Models\Meeting::with(['user','position','team','branch'])->whereBetween('date',[$this->filter_from,$this->filter_to]); // meetings paginate
         }
         $meetings = $meetings->orderBy('date')->get();
-        return Excel::download(new MeetingsExport($meetings), 'users.xlsx');
+        $fileName = "اجتماعات من " .$this->filter_from." الي ".$this->filter_to;
+        return Excel::download(new MeetingsExport($meetings), $fileName.'.xlsx');
     }
 
 
