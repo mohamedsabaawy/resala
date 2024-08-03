@@ -146,6 +146,9 @@
                                             <a class="nav-link" id="vert-tabs-role-tab" data-toggle="pill"
                                                href="#vert-tabs-role" role="tab" aria-controls="vert-tabs-role"
                                                aria-selected="true">صلاحيات</a>
+                                            <a class="nav-link" id="vert-tabs-meeting-tab" data-toggle="pill"
+                                               href="#vert-tabs-meeting" role="tab" aria-controls="vert-tabs-meeting"
+                                               aria-selected="true">الاجتماعات</a>
                                         </div>
                                     </div>
                                     <div class="col-5 col-sm-6">
@@ -340,6 +343,31 @@
                                                     <input class="custom-control-input" type="checkbox" id="role-delete"
                                                            value="role delete" wire:model="permission">
                                                     <label for="role-delete" class="custom-control-label">مسح</label>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="vert-tabs-meeting" role="tabpanel"
+                                                 aria-labelledby="vert-tabs-meeting-tab">
+                                                <h5>الاجتماعات</h5>
+                                                <hr>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="meeting-create"
+                                                           value="meeting create" wire:model="permission">
+                                                    <label for="meeting-create" class="custom-control-label">انشاء</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="meeting-show"
+                                                           value="meeting show" wire:model="permission">
+                                                    <label for="meeting-show" class="custom-control-label">عرض</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="meeting-edit"
+                                                           value="meeting edit" wire:model="permission">
+                                                    <label for="meeting-edit" class="custom-control-label">تعديل</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" id="meeting-delete"
+                                                           value="meeting delete" wire:model="permission">
+                                                    <label for="meeting-delete" class="custom-control-label">مسح</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::view('home','user.home')->name('user.home');
+    Route::view('meeting','admin.meeting')->name('user.meeting');
     Route::get('/links', [MainController::class, 'link'])->name('user.links');
     Route::view('users/approval','admin.approval')->name('approval');
     Route::group(['prefix'=>'main'],function (){

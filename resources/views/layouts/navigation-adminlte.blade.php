@@ -3,7 +3,7 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library position -->
-{{--        @if(auth()->user()->role =='admin' or auth()->user()->role =='superAdmin')--}}
+        {{--        @if(auth()->user()->role =='admin' or auth()->user()->role =='superAdmin')--}}
         @can('main menu show')
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link {{(request()->is('main*')? 'active' : "")}}">
@@ -154,42 +154,51 @@
                 </ul>
             </li>
         @endcan
-            @can('role menu show')
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link {{(request()->is('roles*')? 'active' : "")}}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            الصلاحيات
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
+        @can('role menu show')
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link {{(request()->is('roles*')? 'active' : "")}}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>
+                        الصلاحيات
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
 
-                        <li class="nav-item">
-                            <a href="{{route('roles')}}" wire:navigatee
-                               class="nav-link {{(request()->is('roles/roles')? 'active' : "")}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>انواع المستخدمين</p>
-                            </a>
-                        </li>
+                    <li class="nav-item">
+                        <a href="{{route('roles')}}" wire:navigatee
+                           class="nav-link {{(request()->is('roles/roles')? 'active' : "")}}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>انواع المستخدمين</p>
+                        </a>
+                    </li>
 
-                        <li class="nav-item">
-                            <a href="{{route('roles.users')}}" wire:navigatee
-                               class="nav-link {{(request()->is('roles/users')? 'active' : "")}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>المستخدمين</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            @endcan
-{{--        @endif--}}
+                    <li class="nav-item">
+                        <a href="{{route('roles.users')}}" wire:navigatee
+                           class="nav-link {{(request()->is('roles/users')? 'active' : "")}}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>المستخدمين</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endcan
+        {{--        @endif--}}
         <li class="nav-item">
             <a href="{{route('user.home')}}" class="nav-link {{(request()->is('home')? 'active' : "")}}">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
                     المشاركات
                     {{--                    <span class="right badge badge-danger">New</span>--}}
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{route('user.meeting')}}" class="nav-link {{(request()->is('meeting')? 'active' : "")}}">
+                <i class="nav-icon fa fa-th"></i>
+                <p>
+                    الاجتماعات
+                    <span class="right badge badge-danger">جديد</span>
                 </p>
             </a>
         </li>

@@ -86,17 +86,23 @@
                 @php
                     $start =  $filter_from;
                     $end =$filter_to;
-                    function getActivity($i,$user){
+                    if (!function_exists('getActivity'))
+                    {
+                        function getActivity($i,$user){
                         if (count($user->activities->where('activity_date',$i))>0){
                             return optional($user->activities)->where('activity_date',$i)->first()->comment;
                         }
                     }
-                    function getActivityEvent($i,$user){
+                    }
+                    if(!function_exists('getActivityEvent'))
+                    {
+                        function getActivityEvent($i,$user){
                         if (count($user->activities->where('activity_date',$i))>0){
                             if (!$user->activities->where('activity_date',$i)->first()->apologize)
                                 return optional($user->activities->where('activity_date',$i)->first()->event)->name ?? "تم مسح الحدث";
                             return "عذر عن : " .(optional($user->activities->where('activity_date',$i)->first()->event)->name  ?? "تم مسح الحدث" );
                         }
+                    }
                     }
                 @endphp
                 {{session('role')}}
