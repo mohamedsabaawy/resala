@@ -102,4 +102,10 @@ class User extends Authenticatable
     public function activities(){
         return $this->hasMany(Activity::class);
     }
+    public function category(){
+        return $this->hasMany(Category::class);
+    }
+    public function status(){
+        return $this->hasMany(Status::class);
+    }
 }
