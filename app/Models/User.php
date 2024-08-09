@@ -105,10 +105,10 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Activity::class);
     }
     public function category(){
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
     public function status(){
-        return $this->hasMany(Status::class);
+        return $this->belongsTo(Status::class);
     }
 
     public function canAccessPanel(Panel $panel): bool

@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\BranchRelationManager;
+use App\Filament\Resources\UserResource\RelationManagers\TeamRelationManager;
 use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Degree;
@@ -39,41 +41,42 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Section::make('المعلومات الشخصية')
                     ->schema([
-                    Forms\Components\TextInput::make('code')
-                        ->numeric()->required()->label('كود'),
-                    Forms\Components\TextInput::make('name')
-                        ->required()
-                        ->maxLength(191)
-                        ->label('الاسم'),
-                    Forms\Components\TextInput::make('address')
-                        ->maxLength(191)
-                        ->required()
-                        ->label('العنوان'),
-                    Forms\Components\TextInput::make('email')
-                        ->email()
-                        ->required()
-                        ->maxLength(191)
-                        ->label('البريد الالكتروني'),
-                    Forms\Components\TextInput::make('gender')
-                        ->required()
-                        ->label('النوع'),
-                    Forms\Components\TextInput::make('phone')
-                        ->tel()
-                        ->maxLength(15)->label('رقم الهاتف'),
-                    Forms\Components\FileUpload::make('photo'),
-                    Forms\Components\TextInput::make('password')
-                        ->password()
-                        ->maxLength(191)
-                        ->dehydrateStateUsing(fn(string $state): string => bcrypt($state))
-                        ->default('123456'),//$2y$10$ymU.94CThqb.YlhVFRDBB.Z0xK0JX7cWBpPADkaKoC3Zpa7aBEv86
-                    Forms\Components\DatePicker::make('join_date')
-                        ->native(false)
-                        ->displayFormat('d/m/Y'),
-                    Forms\Components\DatePicker::make('birth_date')
-                        ->native(false)
-                        ->displayFormat('d/m/Y')
-                        ->default(now()),
-                ])->columns(4),
+                        Forms\Components\TextInput::make('code')
+                            ->numeric()->required()->label('كود'),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(191)
+                            ->label('الاسم'),
+                        Forms\Components\TextInput::make('address')
+                            ->maxLength(191)
+                            ->required()
+                            ->label('العنوان'),
+                        Forms\Components\FileUpload::make('photo'),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(191)
+                            ->label('البريد الالكتروني'),
+                        Forms\Components\Select::make('gender')
+                            ->options(['male' => 'ذكر', 'female' => 'انثي'])
+                            ->required()
+                            ->label('النوع'),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->maxLength(15)->label('رقم الهاتف'),
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->maxLength(191)
+                            ->dehydrateStateUsing(fn(string $state): string => bcrypt($state))
+                            ->default('123456'),//$2y$10$ymU.94CThqb.YlhVFRDBB.Z0xK0JX7cWBpPADkaKoC3Zpa7aBEv86
+                        Forms\Components\DatePicker::make('join_date')
+                            ->native(false)
+                            ->displayFormat('d/m/Y'),
+                        Forms\Components\DatePicker::make('birth_date')
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->default(now()),
+                    ])->columns(4),
 
 
                 Forms\Components\RichEditor::make('comment')
@@ -125,43 +128,42 @@ class UserResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('marital_status.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('qualification.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('nationality_id')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('branch.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('job.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('team.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('position.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('degree.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('status.name')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('status_id')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->numeric()
+                    ->default('')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('role')
@@ -198,7 +200,8 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BranchRelationManager::class,
+            TeamRelationManager::class
         ];
     }
 
@@ -207,7 +210,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            //'view' => Pages\ViewUser::route('/{record}'),
+            'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
@@ -223,12 +226,13 @@ class UserResource extends Resource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist->schema([
-            TextEntry::make('name'),
-            TextEntry::make('branch.name'),
-            TextEntry::make('team.name'),
-            TextEntry::make('job.name'),
-            TextEntry::make('Category.name'),
-            ImageEntry::make('photo')->square(),
+            ImageEntry::make('photo')->square()->label('الصورة'),
+            TextEntry::make('name')->label('الاسم'),
+            TextEntry::make('branch.name')->label('اسم الفرع'),
+            TextEntry::make('team.name')->label('اسم اللجنة'),
+            TextEntry::make('job.name')->label('اسم النشاط'),
+            TextEntry::make('Category.name')->label('التصنيف'),
+            TextEntry::make('comment')->label('ملاحظات')->columnSpanFull()->Html(),
         ])->columns(3);
     }
 }
