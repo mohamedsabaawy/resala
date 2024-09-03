@@ -48,7 +48,8 @@ class Home extends Component
         $this->users = $users->pluck('name', 'id');
         $allUsers = $users->paginate(10);
         $this->events = Event::where([
-            ['from', '>=', ($this->activity_date ?? today())],
+            ['from', '<=', ($this->activity_date ?? today())],
+            ['to', '>=', ($this->activity_date ?? today())],
             ['active', 1]
         ])->orWhere([['type', 1], ['active', 1]])->get();
         return view('livewire.user.home', compact(['allUsers', 'jobs']));
