@@ -42,7 +42,7 @@ class Home extends Component
                 ['approval', 1],
                 ['activity_date', '>=', $this->filter_from],
                 ['activity_date', '<=', $this->filter_to],
-            ]);
+            ])
         }])->orderBy('code');
         $this->customFilter($users);
         $this->users = $users->pluck('name', 'id');
