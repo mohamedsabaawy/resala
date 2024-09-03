@@ -13,7 +13,7 @@ class Event extends Component
     public $isUpdate=false;
     public function render()
     {
-        $events = \App\Models\Event::paginate(10)->orderby('from'); // branches paginate
+        $events = \App\Models\Event::orderBy('from')->paginate(10); // branches paginate
         return view('livewire.admin.event',compact('events'));
     }
 
