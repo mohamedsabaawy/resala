@@ -31,8 +31,8 @@ class Meeting extends Component
 
     public function render()
     {
-        $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
+//        $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
+//        $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
         $this->users = \App\Models\User::OwenUser()->pluck('name', 'id');
 //        dd($this->users);
         if ($this->withTrash) {
@@ -42,6 +42,12 @@ class Meeting extends Component
         }
         $meetings = $meetings->orderBy('date')->paginate(10);
         return view('livewire.admin.meeting', compact('meetings'));
+    }
+
+    public function mount()
+    {
+        $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
     }
 
     public function export()
