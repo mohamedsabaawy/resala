@@ -5,67 +5,102 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        {{--        <div class="row">--}}
-        {{--            <div class="col-6">--}}
-        {{--                <button type="button" class="btn btn-outline-info" data-toggle="modal" wire:click="resetInput()" data-target="#create-model">--}}
-        {{--                    اضافة مستخدم--}}
-        {{--                </button>--}}
-        {{--            </div>--}}
-        {{--            <div class="form-group clearfix col-6">--}}
-        {{--                <div class="icheck-primary">--}}
-        {{--                    <input type="checkbox" id="checkboxPrimary1" wire:model.live="withTrash">--}}
-        {{--                    <label for="checkboxPrimary1" class="float-right">--}}
-        {{--                    </label>--}}
-        {{--                </div>--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
-        <table id="example1" class="table table-bordered table-striped">
-            <thead>
-            @if(count($users)>0)
-                <tr>
-                    <th>كود</th>
-                    <th>الكود</th>
-                    <th>الاسم</th>
-                    <th>مجموعة المستخدمين</th>
-                    <th>اجراء</th>
-                </tr>
-            @endif
-            </thead>
-            <tbody>
-            @forelse($users as $user)
-                <tr class="{{$user->deleted_at ? 'bg-gradient-gray':''}}">
-                    <td>{{$user->code}}</td>
-                    <td>{{$user->code}}</td>
-                    <td>{{$user->name}}</td>
-                    <td>{{$user->getRoleNames()->first()}}</td>
-                    <td>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-model"
-                                    wire:click="show({{$user->id}})"><i class="fa fa-trash"></i>مسح
-                            </button>
-                            <button type="button" class="btn btn-warning" data-toggle="modal"
-                                    data-target="#create-model" wire:click="show({{$user->id}})"><i
-                                    class="fa fa-edit"></i>تعديل
-                            </button>
+        <div class="col-12 accordion">
+            <div class="card">
+                <div class="card-header">
+                    بحث
+                </div>
+                <div class="collapse show" id="filter" aria-labelledby="filter">
+                    <div class="card-body row">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <div class="form-group">
+                                <label class="text-red">كود</label>
+                                <input class="form-control text-primary" dir="rtl" type="text"
+                                       wire:model.live="searchCode" placeholder="كود">
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            @empty
-                <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
-            @endforelse
-            </tbody>
-            <tfoot>
-            <div>
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-2">
+                            <div class="form-group">
+                                <label class="text-red">الاسم</label>
+                                <input class="form-control text-primary" dir="rtl" type="text"
+                                       wire:model.live="searchName" placeholder="اسم">
+                            </div>
+                        </div>
+{{--                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">--}}
+{{--                            <div class="form-group">--}}
+{{--                                <label class="text-red">نشاط</label>--}}
+{{--                                <select class="form-control text-primary" wire:model.live="job">--}}
+{{--                                    <option></option>--}}
+{{--                                    @foreach($jobs as $job)--}}
+{{--                                        <option value="{{$job->id}}">{{$job->name}}</option>--}}
+{{--                                    @endforeach--}}
+{{--                                </select>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                    </div>
+                </div>
             </div>
-            </tfoot>
-        </table>
+        </div>
+
+
+        <div class="table-responsive text-nowrap text-center">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                @if(count($users)>0)
+                    <tr>
+                        <th>كود</th>
+                        <th>الكود</th>
+                        <th>الاسم</th>
+                        <th>مجموعة المستخدمين</th>
+                        <th>يحتاج موافقة</th>
+                        <th>اجراء</th>
+                    </tr>
+                @endif
+                </thead>
+                <tbody>
+                @forelse($users as $user)
+                    <tr class="{{$user->deleted_at ? 'bg-gradient-gray':''}}">
+                        <td>{{$user->code}}</td>
+                        <td>{{$user->code}}</td>
+                        <td>{{$user->name}}</td>
+                        <td>{{$user->getRoleNames()->first()}}</td>
+                        <td>
+                            @if($user->need_approve=='1')
+                                <span class="badge badge-success">لا</span>
+                            @else
+                                <span class="badge badge-danger">نعم</span>
+                            @endif
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                        data-target="#delete-model"
+                                        wire:click="show({{$user->id}})"><i class="fa fa-trash"></i>مسح
+                                </button>
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                        data-target="#create-model" wire:click="show({{$user->id}})"><i
+                                        class="fa fa-edit"></i>تعديل
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <h3 class="text-center">لا يوجد بيانات لعرضها</h3>
+                @endforelse
+                </tbody>
+                <tfoot>
+                <div>
+                </div>
+                </tfoot>
+            </table>
+        </div>
         {{$users->links()}}
     </div>
     <!-- /.card-body -->
 
     <!-- start create user model -->
-{{--    wire:ignore.self--}}
-<!-- start user model -->
+    {{--    wire:ignore.self--}}
+    <!-- start user model -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -119,7 +154,7 @@
                                            id="need_approve"
                                            value=0 wire:model="need_approve">
                                     <label for="need_approve"
-                                           class="custom-control-label" >لا يحتاج الي موافقة</label>
+                                           class="custom-control-label">لا يحتاج الي موافقة</label>
                                 </div>
                             </div>
                         </div>
@@ -393,22 +428,27 @@
                                                 <h5>الاجتماعات</h5>
                                                 <hr>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="meeting-create"
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="meeting-create"
                                                            value="meeting create" wire:model="permission">
-                                                    <label for="meeting-create" class="custom-control-label">انشاء</label>
+                                                    <label for="meeting-create"
+                                                           class="custom-control-label">انشاء</label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="meeting-show"
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="meeting-show"
                                                            value="meeting show" wire:model="permission">
                                                     <label for="meeting-show" class="custom-control-label">عرض</label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="meeting-edit"
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="meeting-edit"
                                                            value="meeting edit" wire:model="permission">
                                                     <label for="meeting-edit" class="custom-control-label">تعديل</label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
-                                                    <input class="custom-control-input" type="checkbox" id="meeting-delete"
+                                                    <input class="custom-control-input" type="checkbox"
+                                                           id="meeting-delete"
                                                            value="meeting delete" wire:model="permission">
                                                     <label for="meeting-delete" class="custom-control-label">مسح</label>
                                                 </div>
@@ -676,7 +716,8 @@
                                                 <div class="custom-control custom-checkbox">
                                                     <input class="custom-control-input" type="checkbox" id="user-export"
                                                            value="user export" wire:model="permission">
-                                                    <label for="user-export" class="custom-control-label">تصدير اكسيل</label>
+                                                    <label for="user-export" class="custom-control-label">تصدير
+                                                        اكسيل</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -738,17 +779,17 @@
                             </div>
                             <div class="tab-pane fade" id="custom-content-below-team" role="tabpanel"
                                  aria-labelledby="custom-content-below-team-tab">
-{{--                                                                    {{$selectedTeam}}--}}
+                                {{--                                                                    {{$selectedTeam}}--}}
                                 <div class="row m-2">
                                     @foreach($allTeams as $team)
                                         <div class="col-6 border border-gray-100">
-                                        <div class="custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox"
-                                                   id="team-{{$team->id}}"
-                                                   value="{{$team->id}}" wire:model="selectedTeam">
-                                            <label for="team-{{$team->id}}"
-                                                   class="custom-control-label">{{$team->name}}</label>
-                                        </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox"
+                                                       id="team-{{$team->id}}"
+                                                       value="{{$team->id}}" wire:model="selectedTeam">
+                                                <label for="team-{{$team->id}}"
+                                                       class="custom-control-label">{{$team->name}}</label>
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>

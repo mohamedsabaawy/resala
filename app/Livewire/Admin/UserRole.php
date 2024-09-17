@@ -20,6 +20,8 @@ class UserRole extends Component
     public bool $showCreate=false;
     public bool $isUpdate=false;
     public bool $withTrash=false;
+    public $searchCode;
+    public $searchName;
 
 
     public function render()
@@ -27,10 +29,12 @@ class UserRole extends Component
         $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
         $allTeams = \App\Models\Team::select('id','name')->get();
         if ($this->withTrash){
-            $users = \App\Models\User::withTrashed()->paginate(10); // users paginate
+            $users = \App\Models\User::with(['roles'])->withTrashed(); // users paginate
         }else{
-            $users = \App\Models\User::paginate(10); // users paginate
+            $users = \App\Models\User::with(['roles']); // users paginate
         }
+        $this->customFilter($users);
+        $users = $users->paginate(10);
         return view('livewire.admin.userRole',compact(['users','allRoles','allTeams']));
     }
 
@@ -61,20 +65,21 @@ class UserRole extends Component
         $this->id = $user->id;
         $this->name = $user->name;
         $this->type = $user->role == 'admin' ? true : false;
-        $this->need_approve = $user->need_approve ? true : false;
+        $this->need_approve = $user->need_approve== '1' ? true : false;
         $this->deleted_at = $user->deleted_at;
         $this->isUpdate=true;
 //        dd($this->selectedTeam);
     }
 
     public function update(){
+//        dd($this->need_approve);
         $this->valid();
         $user = \App\Models\User::find($this->id);
         if ($user){
             $user->update([
                 'name'=>$this->name,
                 'role'=>$this->type  ? 'admin' : 'user',
-                'need_approve'=>$this->need_approve  ? 1 : 0,
+                'need_approve'=>$this->need_approve  ? '1' : '0',
             ]);
             $user->syncRoles($this->roles);
             $user->syncPermissions($this->permission);
@@ -107,5 +112,16 @@ class UserRole extends Component
         $validated = $this->validate([
             'name' => 'required|min:3',
         ]);
+    }
+
+    protected function customFilter($users)
+    {
+        if (strlen($this->searchCode) > 0) {
+            $users = $users->Where('code', 'like', "%$this->searchCode%");
+        }
+        if (strlen($this->searchName) > 0) {
+            $users = $users->Where('name', 'like', "%$this->searchName%");
+        }
+        return $users;
     }
 }
