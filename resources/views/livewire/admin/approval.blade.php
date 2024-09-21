@@ -113,6 +113,115 @@
     </div>
     <!--activity model -->
 
+
+
+
+
+
+
+
+
+
+
+    <div wire:ignore.self class="modal fade" id="create-model_old">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="overlay d-none justify-content-center align-items-center hide" wire:loading.class="d-flex">
+                    <i class="fas fa-2x fa-sync fa-spin"></i>
+                </div>
+                <div class="modal-header">
+                    <h4 class="modal-title">{{$isUpdate ? "تعديل مشاركة" :"انشاء مشاركة جديد"}}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{--                    <div class="form-check">--}}
+                    {{--                        <input type="checkbox" wire:model.live="isApologize" class="form-check-input" id="apologize">--}}
+                    {{--                        <label for="apologize" class="form-check-label">عذر</label>--}}
+                    {{--                    </div>--}}
+                    <div class="form-group">
+                        <label for="userId">متطوع</label>
+                        <select wire:ignore class="form-control select2" id="userId" multiple
+                                wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"
+                                wire:model="userId">
+                            {{--                            <option>اختر</option>--}}
+                            @foreach($users as $key=>$value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">@error('userId') {{ $message }} @enderror</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الاحداث</label>
+                        <select class="form-control select2-blue"
+                                {{--                                {{$isUpdate ? "update()" : "save()"}}  --}}
+                                wire:keydown.outside="check()"
+                                wire:model.live="event_id" id="event_id">
+                            <option>اختر</option>
+                            @foreach($events as $event)
+                                <option value="{{$event->id}}">{{$event->name}}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">@error('event_id') {{ $message }} @enderror</div>
+                    </div>
+                    <div class="form-group">
+                        <label>تاريخ المشاركة</label>
+                        <input type="date" min="{{$event_from}}" max="{{$event_to}}"
+                               class="form-control @error('date') is-invalid @enderror"
+                               wire:click="check"
+                               wire:model.live="activity_date" placeholder="dd-mm-yyyy">
+                        <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
+                    </div>
+                    {{--                    @if(!$isApologize)--}}
+                    {{--                        <div class="form-group">--}}
+                    {{--                            <label for="exampleInputEmail1">نوع المشاركة</label>--}}
+                    {{--                            <select class="form-control @error('type') is-invalid @enderror" wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}"--}}
+                    {{--                                    wire:model="type">--}}
+                    {{--                                <option>اختر</option>--}}
+                    {{--                                <option value="online">online</option>--}}
+                    {{--                                <option value="offline">offline</option>--}}
+                    {{--                            </select>--}}
+                    {{--                            <div class="text-danger">@error('type') {{ $message }} @enderror</div>--}}
+                    {{--                        </div>--}}
+                    {{--                    @endif--}}
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">تفاصيل</label>
+                        <textarea class="form-control textarea @error('comment') is-invalid @enderror"
+                                  wire:model="comment"></textarea>
+                        <div class="text-danger">@error('comment') {{ $message }} @enderror</div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">اغلاق</button>
+                    <button type="button" class="btn btn-primary" wire:click="{{$isUpdate ? "update()" : "save()"}}"
+                            wire:loading.attr="disabled">حفظ
+                    </button>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- /.modal-dialog delete -->
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">

@@ -140,11 +140,12 @@
         </div>
         {{$allUsers->links()}}
     </div>
+
     <!-- /.card-body -->
 
     <!-- start create activity model -->
-{{--    wire:ignore.self--}}
-<!-- start activity model   wire:ignore.self -->
+    {{--    wire:ignore.self--}}
+    <!-- start activity model   wire:ignore.self -->
     <div wire:ignore.self class="modal fade" id="create-model">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -179,7 +180,7 @@
                         <label for="exampleInputEmail1">الاحداث</label>
                         <select class="form-control select2-blue"
                                 {{--                                {{$isUpdate ? "update()" : "save()"}}  --}}
-                                wire:keydown.outside="check()"
+{{--                                wire:keydown.outside="check()"--}}
                                 wire:model.live="event_id" id="event_id">
                             <option>اختر</option>
                             @foreach($events as $event)
@@ -189,10 +190,10 @@
                         <div class="text-danger">@error('event_id') {{ $message }} @enderror</div>
                     </div>
                     <div class="form-group">
-                        <label >تاريخ المشاركة</label>
+                        <label>تاريخ المشاركة</label>
                         <input type="date" min="{{$event_from}}" max="{{$event_to}}"
                                class="form-control @error('date') is-invalid @enderror"
-                               {{--                               wire:click="check"--}}
+                               wire:click="check"
                                wire:model.live="activity_date" placeholder="dd-mm-yyyy">
                         <div class="text-danger">@error('activity_date') {{ $message }} @enderror</div>
                     </div>
@@ -231,6 +232,9 @@
     </div>
     <!--activity model -->
 
+
+
+
     <!-- /.modal-dialog delete -->
     <div wire:ignore.self class="modal fade" id="delete-model">
         <div class="modal-dialog">
@@ -262,45 +266,3 @@
     <!-- /.modal-dialog delete -->
 
 </div>
-@push('style')
-
-
-@endpush
-
-@push('script')
-    <script>
-
-
-        $(function () {
-            //Initialize Select2 Elements
-            // $('.select2').select2({
-            //     theme: 'bootstrap4'
-            // })
-        })
-
-
-        // $(function () {
-        //     $("#example1").DataTable();
-        //     $('#example2').DataTable({
-        //         "paging": true,
-        //         "lengthChange": false,
-        //         "searching": false,
-        //         "ordering": true,
-        //         "info": true,
-        //         "autoWidth": false,
-        //     });
-        // });
-
-
-        // document.addEventListener('livewire:initialized', () => {
-        // @this.on('close-createBranch', (event) => {
-        //     $('#create-activity').modal('hide');
-        // });
-        // });
-    </script>
-
-    <!-- DataTables -->
-    {{--    <script src="{{asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>--}}
-    {{--    <script src="{{asset('adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>--}}
-@endpush
-
