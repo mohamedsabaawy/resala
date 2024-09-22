@@ -94,7 +94,7 @@
                         <td>{{$user->branch->name ?? ""}}</td>
                         <td>{{$user->team->name ?? ""}}</td>
                         <td>
-                            <img src="{{asset($user->photo)}}" width="150px">
+                            <img src="{{asset($user->photo)}}" style="max-width: 100px; max-height: 80px ">
                         </td>
                         <td>
                             <div class="btn-group">

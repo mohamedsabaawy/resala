@@ -23,6 +23,7 @@ class User extends Component
 // activity
     public function render()
     {
+
         $teams = \App\Models\Team::select('id', 'name')->get();
         $jobs = \App\Models\Job::select('id', 'name')->get();
         $categories = \App\Models\Category::select('id', 'name')->get();
