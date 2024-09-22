@@ -17,7 +17,7 @@ class Meeting extends Component
     use AuthorizesRequests;
     use WithPagination;
 
-    public $id, $title, $date, $count, $comment, $status, $user_id, $add_by, $position_id, $team_id, $branch_id, $deleted_at,$users,$filter_from,$filter_to,$meets;
+    public $id, $title, $date, $count, $comment, $status='0', $user_id, $add_by, $position_id, $team_id, $branch_id, $deleted_at,$users,$filter_from,$filter_to,$meets,$jobs,$job_id;
     public bool $showCreate = false;
     public bool $isUpdate = false;
     public bool $withTrash = false;
@@ -31,10 +31,10 @@ class Meeting extends Component
 
     public function render()
     {
-//        $this->filter_from = Carbon::now()->startOfMonth()->format('Y-m-d');
-//        $this->filter_to = Carbon::now()->endOfMonth()->format('Y-m-d');
         $this->users = \App\Models\User::OwenUser()->pluck('name', 'id');
-//        dd($this->users);
+        $this->user_id = auth()->id();
+        $this->jobs = \App\Models\Job::pluck('name', 'id');
+        $this->date = today()->format('Y-m-d');
         if ($this->withTrash) {
             $meetings = \App\Models\Meeting::whereBetween('date',[$this->filter_from,$this->filter_to])->withTrashed(); // meetings paginate
         } else {
@@ -53,7 +53,7 @@ class Meeting extends Component
     public function export()
     {
         if ($this->withTrash) {
-            $meetings = \App\Models\Meeting::with(['user','position','team','branch'])->whereBetween('date',[$this->filter_from,$this->filter_to])->withTrashed(); // meetings paginate
+            $meetings = \App\Models\Meeting::with(['user','position','team','branch','job'])->whereBetween('date',[$this->filter_from,$this->filter_to])->withTrashed(); // meetings paginate
         } else {
             $meetings = \App\Models\Meeting::with(['user','position','team','branch'])->whereBetween('date',[$this->filter_from,$this->filter_to]); // meetings paginate
         }
@@ -78,6 +78,7 @@ class Meeting extends Component
             'position_id' => $user->position_id,
             'team_id' => $user->team_id,
             'branch_id' => $user->branch_id,
+            'job_id' => $user->job_id,
         ]);
         if ($meeting) {
             $this->resetInput();
@@ -99,6 +100,7 @@ class Meeting extends Component
         $this->count = $meeting->count;
         $this->status = $meeting->status;
         $this->user_id = $meeting->user_id;
+        $this->job_id = $meeting->job_id;
     }
 
     public function update()
@@ -142,8 +144,8 @@ class Meeting extends Component
 
     public function resetInput()
     {
-//        $this->reset(['title','date','count','comment','status','user_id','add_by','position_id','team_id','branch_id']);
-        $this->reset();
+        $this->reset(['title','date','count','comment','status','user_id','add_by','position_id','team_id','branch_id','job_id']);
+//        $this->reset();
     }
 
     private function valid()

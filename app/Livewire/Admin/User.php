@@ -47,14 +47,14 @@ class User extends Component
     {
         $filter_from = $this->filter_from ?? date_format(today(), "Y-m-01");
         $filter_to = $this->filter_to ?? date_format(today(), "Y-m-t");
-//        dd($filter_from);
         $users = \App\Models\User::OwenUser()->with(['team', 'position', 'activities' => function ($query) use ($filter_from) {
             $query->where([
                 ['activity_date', '>=', $filter_from],
                 ['approval', 1]
             ]);
         }])->get()->sortBy('team_id');
-        return Excel::download(new UsersExport($users, $filter_from, $filter_to), 'users.xlsx');
+        $filename = 'مشاركات من '.$filter_from.' الي '.$filter_to;
+        return Excel::download(new UsersExport($users, $filter_from, $filter_to), $filename.'.xlsx');
     }
 
 

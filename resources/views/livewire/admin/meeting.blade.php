@@ -111,7 +111,7 @@
                         <div class="text-danger">@error('title') {{ $message }} @enderror</div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-sm-6">
                             <label for="exampleInputEmail1">رئيس الاجتماع</label>
                             <select class="form-control @error('user_id') is-invalid @enderror" wire:model="user_id">
                                 <option value=null>اختر</option>
@@ -121,7 +121,17 @@
                             </select>
                             <div class="text-danger">@error('user_id') {{ $message }} @enderror</div>
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-sm-6">
+                            <label for="exampleInputEmail1">النشاط</label>
+                            <select class="form-control @error('job_id') is-invalid @enderror" wire:model="job_id">
+                                <option value=null>اختر</option>
+                                @foreach($jobs as $key =>$value)
+                                    <option value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                            <div class="text-danger">@error('job_id') {{ $message }} @enderror</div>
+                        </div>
+                        <div class="form-group col-12 col-sm-4">
                             <label for="exampleInputEmail1">نوع المشاركة</label>
                             <select class="form-control @error('status') is-invalid @enderror" wire:model="status">
                                 <option value=0>اوفلاين</option>
@@ -129,14 +139,14 @@
                             </select>
                             <div class="text-danger">@error('status') {{ $message }} @enderror</div>
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-sm-4">
                             <label for="exampleInputEmail1">تاريخ الاجتماع</label>
                             <input type="date" class="form-control @error('date') is-invalid @enderror"
                                    wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="date"
                                    placeholder="ادخل تاريخ الاجتماع">
                             <div class="text-danger">@error('date') {{ $message }} @enderror</div>
                         </div>
-                        <div class="form-group col-6">
+                        <div class="form-group col-12 col-sm-4">
                             <label for="exampleInputEmail1">عدد الحاضرين</label>
                             <input type="number" class="form-control @error('count') is-invalid @enderror"
                                    wire:keydown.enter="{{$isUpdate ? "update()" : "save()"}}" wire:model="count"

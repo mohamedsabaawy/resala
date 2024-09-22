@@ -4,6 +4,7 @@
         <tr>
             <th>تاريخ الاجتماع</th>
             <th>اسم الفرع</th>
+            <th>اسم النشاط</th>
             <th>اللجنة</th>
             <th>رئيس الاجتماع</th>
             <th>وظيفة رئيس الاجتماع</th>
@@ -19,6 +20,7 @@
         <tr class="{{$meeting->deleted_at ? 'bg-gradient-gray':''}}">
             <td>{{$meeting->date}}</td>
             <td>{{$meeting->branch->name}}</td>
+            <td>{{$meeting->job?->name}}</td>
             <td>{{$meeting->team->name}}</td>
             <td>{{$meeting->user->name}}</td>
             <td>{{$meeting->position->name}}</td>
