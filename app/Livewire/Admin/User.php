@@ -37,7 +37,7 @@ class User extends Component
         $checkTypes = \App\Models\CheckType::select('name')->get();
         $users = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->with(['branch', 'team']) : \App\Models\User::OwenUser()->with(['branch', 'team']);
         $this->customFilter($users);
-        $users = $users->paginate(10);
+        $users = $users->orderBy('code')->paginate(10);
         $allRoles = \App\Models\Role::select('name')->get();
         return view('livewire.admin.user', compact([
             'users', 'teams', 'jobs', 'categories', 'statuses', 'qualifications', 'nationalities', 'maritalStatuses', 'degrees', 'positions', 'checkTypes', 'allRoles'
