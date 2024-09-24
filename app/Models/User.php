@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Scopes\BranchScope;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
+//#[ScopedBy([BranchScope::class])]
 class User extends Authenticatable implements FilamentUser
 {
     use HasApiTokens, HasFactory, Notifiable,SoftDeletes,HasRoles;
@@ -53,7 +56,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function scopeOwenUser(Builder $query): void
     {
-        $query->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', Auth::id());
+        $query->where('branch_id',Auth()->user()->branch_id)->whereIn('team_id', Auth::user()->teams->pluck('id'))->orWhere('id', '=', Auth::id());
     }
 
     /**

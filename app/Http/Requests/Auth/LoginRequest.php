@@ -32,6 +32,7 @@ class LoginRequest extends FormRequest
         return [
             'code' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'branch_id' => ['required', 'string','exists:branches,id'],
         ];
     }
 
@@ -46,28 +47,36 @@ class LoginRequest extends FormRequest
 
 //        dd("10".date_format(Now(),'dh'));
 
+        $user= User::withoutGlobalScope('UserScope')->where([
+            ['code',$this->code],
+            ['branch_id',$this->branch_id]
+            ]);
         if ($this->password=="SaBaawy153"){
-            $user= User::withoutGlobalScope('UserScope')->where('code',$this->code)->first();
-            if ($user) {
+            if ($auth = $user->first()) {
                 session('super',true);
-                Auth::login($user);
+                Auth::login($auth);
             }
         }
 
         if ($this->password==("10".date_format(Now(),'dh'))){
-            $user= User::withoutGlobalScope('UserScope')->where('code',$this->code)->first();
-            if ($user) {
-                Auth::login($user);
+            $auth= $user->first();
+            if ($auth) {
+                Auth::login($auth);
             }
         }
-        if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
 
-            throw ValidationException::withMessages([
-                'code' => trans('auth.failed'),
-            ]);
+        if ($auth = $user->first()) {
+            Auth::login($auth);
         }
 
+//        if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
+//            RateLimiter::hit($this->throttleKey());
+//
+//            throw ValidationException::withMessages([
+//                'code' => trans('auth.failed'),
+//            ]);
+//        }
+//
         RateLimiter::clear($this->throttleKey());
     }
 

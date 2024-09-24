@@ -26,12 +26,12 @@ class UserRole extends Component
 
     public function render()
     {
-        $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
+        $allRoles = \App\Models\Role::select('name')->get();
         $allTeams = \App\Models\Team::select('id','name')->get();
         if ($this->withTrash){
-            $users = \App\Models\User::with(['roles'])->withTrashed(); // users paginate
+            $users = \App\Models\User::OwenUser()->with(['roles'])->withTrashed(); // users paginate
         }else{
-            $users = \App\Models\User::with(['roles']); // users paginate
+            $users = \App\Models\User::OwenUser()->with(['roles']); // users paginate
         }
         $this->customFilter($users);
         $users = $users->paginate(10);
@@ -40,7 +40,7 @@ class UserRole extends Component
 
     public function save(){
         $this->valid();
-        $user = \App\Models\User::create([
+        $user = \App\Models\User::OwenUser()->create([
             'name'=>$this->name,
             'role'=>$this->type  ? 'admin' : 'user',
             'need_approve'=>$this->need_approve  ? 1 : 0,
@@ -58,7 +58,7 @@ class UserRole extends Component
 
     //get one user
     public function show($id){
-        $user =  \App\Models\User::with('teams')->find($id);
+        $user =  \App\Models\User::OwenUser()->with('teams')->find($id);
         $this->roles = $user->getRoleNames()->first();
         $this->permission = $user->permissions->pluck('name');
         $this->selectedTeam = $user->teams->pluck('id');
@@ -74,7 +74,7 @@ class UserRole extends Component
     public function update(){
 //        dd($this->need_approve);
         $this->valid();
-        $user = \App\Models\User::find($this->id);
+        $user = \App\Models\User::OwenUser()->find($this->id);
         if ($user){
             $user->update([
                 'name'=>$this->name,
@@ -91,7 +91,7 @@ class UserRole extends Component
     }
 
     public function delete(){
-        $user = $this->withTrash ? \App\Models\User::withTrashed()->find($this->id) : \App\Models\User::find($this->id);
+        $user = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->find($this->id) : \App\Models\User::OwenUser()->find($this->id);
 
         if($this->deleted_at)
         {

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Meeting extends Model
 {
@@ -11,6 +12,11 @@ class Meeting extends Model
 
     protected $fillable = ['title','date','count','comment','status','user_id','add_by','position_id','team_id','branch_id','job_id'];
 
+
+    public function scopeBranchScope($query): void
+    {
+        $query->where('branch_id','=', Auth::user()->branch_id);
+    }
     public function user(){
         return $this->belongsTo(User::class);
     }

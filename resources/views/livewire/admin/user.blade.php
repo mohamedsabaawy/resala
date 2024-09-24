@@ -201,18 +201,18 @@
                                        placeholder="عنوان المتطوع">
                                 <div class="text-danger">@error('address') {{ $message }} @enderror</div>
                             </div>
-                            <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">
-                                <label for="exampleInputEmail1">الفرع</label>
-                                <select class="form-control select2  @error('branch_id') is-invalid @enderror"
-                                        wire:model="branch_id">
-                                    <option>اختر فرع</option>
-                                    @forelse($branches as $branch)
-                                        <option value="{{$branch->id}}">{{$branch->name}}</option>
-                                    @empty
-                                    @endforelse
-                                </select>
-                                <div class="text-danger">@error('branch_id') {{ $message }} @enderror</div>
-                            </div>
+{{--                            <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3">--}}
+{{--                                <label for="exampleInputEmail1">الفرع</label>--}}
+{{--                                <select class="form-control select2  @error('branch_id') is-invalid @enderror"--}}
+{{--                                        wire:model="branch_id">--}}
+{{--                                    <option>اختر فرع</option>--}}
+{{--                                    @forelse($branches as $branch)--}}
+{{--                                        <option value="{{$branch->id}}">{{$branch->name}}</option>--}}
+{{--                                    @empty--}}
+{{--                                    @endforelse--}}
+{{--                                </select>--}}
+{{--                                <div class="text-danger">@error('branch_id') {{ $message }} @enderror</div>--}}
+{{--                            </div>--}}
                             <div class="form-group col-12 col-sm-6 col-md-4 col-lg-2">
                                 <label for="exampleInputEmail1">النشاط</label>
                                 <select class="form-control select2  @error('job_id') is-invalid @enderror"

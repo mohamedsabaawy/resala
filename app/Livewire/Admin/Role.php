@@ -4,7 +4,7 @@ namespace App\Livewire\Admin;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Permission\Models\Permission;
+use App\Models\Permission;
 
 class Role extends Component
 {
@@ -21,15 +21,16 @@ class Role extends Component
     public function render()
     {
 
-            $roles = \Spatie\Permission\Models\Role::with('permissions')->paginate(10); // role paginate
+            $roles = \App\Models\Role::with('permissions')->paginate(10); // role paginate
 //        dd($roles);
         return view('livewire.admin.role',compact('roles'));
     }
 
     public function save(){
         $this->valid();
-        $role = \Spatie\Permission\Models\Role::create([
+        $role = \App\Models\Role::create([
             'name'=>$this->name,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         $role->syncPermissions($this->permission);
         if ($role){
@@ -43,7 +44,7 @@ class Role extends Component
     //get one role
     public function show($id){
         $this->isUpdate=true;
-        $role = \Spatie\Permission\Models\Role::find($id);
+        $role = \App\Models\Role::find($id);
         $this->permission = $role->permissions->pluck('name');
         $this->id = $role->id;
         $this->name = $role->name;
@@ -52,10 +53,11 @@ class Role extends Component
 
     public function update(){
         $this->valid();
-        $role = \Spatie\Permission\Models\Role::find($this->id);
+        $role = \App\Models\Role::find($this->id);
         if ($role){
             $role->update([
                 'name'=>$this->name,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
             $role->syncPermissions($this->permission);
         }
@@ -65,7 +67,7 @@ class Role extends Component
     }
 
     public function delete(){
-        $role = \Spatie\Permission\Models\Role::find($this->id);
+        $role = \App\Models\Role::find($this->id);
 
         if($this->deleted_at)
         {

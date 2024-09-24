@@ -27,6 +27,7 @@ class Event extends Component
             'to'=>$this->to,
             'type'=>$this->type,
             'active'=>$this->active,
+            'branch_id'=>auth()->user()->branch_id,
 //            'team_id'=>$this->team_id,
         ]);
         if ($branch){
@@ -61,6 +62,7 @@ class Event extends Component
                 'to'=>$this->to,
                 'type'=>$this->type,
                 'active'=>$this->active,
+                'branch_id'=>auth()->user()->branch_id,
 //                'team_id'=>$this->team_id,
             ]);
         }

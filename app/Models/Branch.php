@@ -11,4 +11,7 @@ class Branch extends Model
     use HasFactory,SoftDeletes;
     protected $fillable =['name','address','manager_id'];
 
+    public function jobs(){
+        return $this->hasMany(Job::class);
+    }
 }

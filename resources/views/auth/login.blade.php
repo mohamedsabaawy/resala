@@ -15,8 +15,19 @@
                 </p>
                 <form method="POST" action="{{ route('login') }}" autocomplete="off">
                     @csrf
+                    <div class="mb-3">
+                        <select class="form-control" name="branch_id" required autofocus>
+                            <option>اختر فرع</option>
+                            @foreach($branches as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
+                        </select>
+                        @error('branch_id')
+                        <div>{{$message}}</div>
+                        @enderror
+                    </div>
                     <div class="input-group mb-3">
-                        <input type="code" class="form-control" placeholder="code" required autofocus name="code">
+                        <input type="code" class="form-control" placeholder="code" required name="code">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>

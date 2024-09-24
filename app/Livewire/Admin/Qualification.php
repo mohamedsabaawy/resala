@@ -30,6 +30,7 @@ class Qualification extends Component
         $this->valid();
         $qualification = \App\Models\Qualification::create([
             'name'=>$this->name,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($qualification){
             $this->resetInput();
@@ -54,6 +55,7 @@ class Qualification extends Component
         if ($qualification){
             $qualification->update([
                 'name'=>$this->name,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->resetInput();

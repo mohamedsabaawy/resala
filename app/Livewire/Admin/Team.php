@@ -27,6 +27,7 @@ class Team extends Component
         $branch = \App\Models\Team::create([
             'name'=>$this->name,
             'count'=>$this->count,
+            'branch_id'=>auth()->user()->branch_id,
             'manager_id'=>strlen($this->manager_id)>0 ?? null,
         ]);
         if ($branch){

@@ -33,14 +33,14 @@ class User extends Component
         $maritalStatuses = \App\Models\MaritalStatus::select('id', 'name')->get();
         $degrees = \App\Models\Degree::select('id', 'name')->get();
         $positions = \App\Models\Position::select('id', 'name')->get();
-        $branches = \App\Models\Branch::select('id', 'name')->get();
+//        $branches = \App\Models\Branch::select('id', 'name')->get();
         $checkTypes = \App\Models\CheckType::select('name')->get();
         $users = $this->withTrash ? \App\Models\User::OwenUser()->withTrashed()->with(['branch', 'team']) : \App\Models\User::OwenUser()->with(['branch', 'team']);
         $this->customFilter($users);
         $users = $users->paginate(10);
-        $allRoles = \Spatie\Permission\Models\Role::select('name')->get();
+        $allRoles = \App\Models\Role::select('name')->get();
         return view('livewire.admin.user', compact([
-            'users', 'teams', 'jobs', 'categories', 'statuses', 'qualifications', 'nationalities', 'maritalStatuses', 'degrees', 'positions', 'branches', 'checkTypes', 'allRoles'
+            'users', 'teams', 'jobs', 'categories', 'statuses', 'qualifications', 'nationalities', 'maritalStatuses', 'degrees', 'positions', 'checkTypes', 'allRoles'
         ]));
     }
 
@@ -73,7 +73,7 @@ class User extends Component
             'comment' => $this->comment,
             'team_id' => $this->team_id,
             'position_id' => $this->position_id,
-            'branch_id' => $this->branch_id,
+            'branch_id' => auth()->user()->branch_id,
             'status_id' => $this->status_id,
             'job_id' => $this->job_id,
             'category_id' => $this->category_id,
@@ -151,7 +151,7 @@ class User extends Component
                 'comment' => $this->comment,
                 'team_id' => $this->team_id,
                 'position_id' => $this->position_id,
-                'branch_id' => $this->branch_id,
+                'branch_id'=>auth()->user()->branch_id,
                 'status_id' => $this->status_id,
                 'job_id' => $this->job_id,
                 'category_id' => $this->category_id,
@@ -204,7 +204,7 @@ class User extends Component
                 'team_id' => "required",
                 'job_id' => "required",
                 'position_id' => "required",
-                'branch_id' => "required",
+//                'branch_id' => "required",
                 'status' => "required",
                 'code' => ["required",
                     $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')

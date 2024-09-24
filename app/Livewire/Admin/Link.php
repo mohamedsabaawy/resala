@@ -24,6 +24,7 @@ class Link extends Component
         $link = \App\Models\Link::create([
             'name'=>$this->name,
             'link'=>$this->link,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($link){
             $this->resetInput();

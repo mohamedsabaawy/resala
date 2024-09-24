@@ -30,6 +30,7 @@ class MaritalStatus extends Component
         $this->valid();
         $maritalStatus = \App\Models\MaritalStatus::create([
             'name'=>$this->name,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($maritalStatus){
             $this->resetInput();
@@ -54,6 +55,7 @@ class MaritalStatus extends Component
         if ($maritalStatus){
             $maritalStatus->update([
                 'name'=>$this->name,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->resetInput();

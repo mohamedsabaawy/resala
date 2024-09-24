@@ -23,6 +23,7 @@ class CheckType extends Component
         $branch = \App\Models\CheckType::create([
             'name'=>$this->name,
             'active'=>$this->active,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($branch){
             $this->resetInput();
@@ -47,6 +48,7 @@ class CheckType extends Component
             $barnch->update([
                 'name'=>$this->name,
                 'active'=>$this->active,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->dispatch('close');

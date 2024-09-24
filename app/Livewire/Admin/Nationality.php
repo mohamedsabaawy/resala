@@ -2,9 +2,12 @@
 
 namespace App\Livewire\Admin;
 
+use App\Models\Scopes\BranchScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+#[ScopedBy([BranchScope::class])]
 class Nationality extends Component
 {
     use WithPagination;
@@ -30,6 +33,7 @@ class Nationality extends Component
         $this->valid();
         $nationality = \App\Models\Nationality::create([
             'name'=>$this->name,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($nationality){
             $this->resetInput();
@@ -54,6 +58,7 @@ class Nationality extends Component
         if ($nationality){
             $nationality->update([
                 'name'=>$this->name,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->resetInput();

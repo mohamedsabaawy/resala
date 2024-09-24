@@ -112,7 +112,7 @@
                         <img src="{{asset(auth()->user()->photo)}}" class="img-circle elevation-2" alt="User Image">
 
                         <p>
-                            {{auth()->user()->name}} - {{auth()->user()->position->name}}
+                            {{auth()->user()->name}} - {{auth()->user()->position?->name}}
                             <small> تم الانضمام منذ {{auth()->user()->join_date}}</small>
                         </p>
                     </li>

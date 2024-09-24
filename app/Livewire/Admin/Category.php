@@ -30,6 +30,7 @@ class Category extends Component
         $this->valid();
         $category = \App\Models\Category::create([
             'name'=>$this->name,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($category){
             $this->resetInput();
@@ -54,6 +55,7 @@ class Category extends Component
         if ($category){
             $category->update([
                 'name'=>$this->name,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->resetInput();

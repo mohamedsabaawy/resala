@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin;
 
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -18,6 +19,7 @@ class Job extends Component
 
     public function render()
     {
+
         if ($this->withTrash){
             $jobs = \App\Models\Job::with('manager')->withTrashed()->paginate(10); // jobs paginate
         }else{
@@ -34,6 +36,7 @@ class Job extends Component
         $job = \App\Models\Job::create([
             'name'=>$this->name,
             'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
+            'branch_id'=>auth()->user()->branch_id,
         ]);
         if ($job){
             $this->resetInput();
@@ -61,6 +64,7 @@ class Job extends Component
             $job->update([
                 'name'=>$this->name,
                 'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
+                'branch_id'=>auth()->user()->branch_id,
             ]);
         }
         $this->resetInput();
