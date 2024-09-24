@@ -207,7 +207,10 @@ class User extends Component
 //                'branch_id' => "required",
                 'status' => "required",
                 'code' => ["required",
-                    $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')
+                    Rule::unique('users')->where(function ($query) {
+                        return $query->where('branch_id', auth()->user()->branch_id);
+                    })->ignore($this->id)
+//                    $this->isUpdate ? Rule::unique('users')->ignore($this->id) : Rule::unique('users')
                 ],
             ]
 //            ,
