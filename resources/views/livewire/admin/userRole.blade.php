@@ -26,17 +26,17 @@
                                        wire:model.live="searchName" placeholder="اسم">
                             </div>
                         </div>
-{{--                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">--}}
-{{--                            <div class="form-group">--}}
-{{--                                <label class="text-red">نشاط</label>--}}
-{{--                                <select class="form-control text-primary" wire:model.live="job">--}}
-{{--                                    <option></option>--}}
-{{--                                    @foreach($jobs as $job)--}}
-{{--                                        <option value="{{$job->id}}">{{$job->name}}</option>--}}
-{{--                                    @endforeach--}}
-{{--                                </select>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        {{--                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">--}}
+                        {{--                            <div class="form-group">--}}
+                        {{--                                <label class="text-red">نشاط</label>--}}
+                        {{--                                <select class="form-control text-primary" wire:model.live="job">--}}
+                        {{--                                    <option></option>--}}
+                        {{--                                    @foreach($jobs as $job)--}}
+                        {{--                                        <option value="{{$job->id}}">{{$job->name}}</option>--}}
+                        {{--                                    @endforeach--}}
+                        {{--                                </select>--}}
+                        {{--                            </div>--}}
+                        {{--                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -138,11 +138,13 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                    <select class="form-control" id="admin"  wire:model="type">
-                                        <option value="user">مستخدم</option>
-                                        <option value="admin">مدير نظام</option>
+                                <select class="form-control" id="admin" wire:model="type">
+                                    <option value="user">مستخدم</option>
+                                    <option value="admin">مدير نظام</option>
+                                    @if(auth()->user()->role == 'superAdmin')
                                         <option value="superAdmin">مدير نظام عام</option>
-                                    </select>
+                                    @endif
+                                </select>
                             </div>
                         </div>
                         <div class="col-6">
