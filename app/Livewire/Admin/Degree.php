@@ -30,7 +30,7 @@ class Degree extends Component
         $this->valid();
         $degree = \App\Models\Degree::create([
             'name'=>$this->name,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         if ($degree){
             $this->resetInput();
@@ -55,7 +55,7 @@ class Degree extends Component
         if ($barnch){
             $barnch->update([
                 'name'=>$this->name,
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
         }
         $this->resetInput();

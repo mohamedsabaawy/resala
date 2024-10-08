@@ -30,7 +30,7 @@ class Role extends Component
         $this->valid();
         $role = \App\Models\Role::create([
             'name'=>$this->name,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         $role->syncPermissions($this->permission);
         if ($role){
@@ -57,7 +57,7 @@ class Role extends Component
         if ($role){
             $role->update([
                 'name'=>$this->name,
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
             $role->syncPermissions($this->permission);
         }

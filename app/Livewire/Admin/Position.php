@@ -22,7 +22,7 @@ class Position extends Component
         $this->valid();
         $branch = \App\Models\Position::create([
             'name'=>$this->name,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         if ($branch){
             $this->resetInput();
@@ -48,7 +48,7 @@ class Position extends Component
             $barnch->update([
                 'name'=>$this->name,
                 'role'=>'user',
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
         }
         $this->dispatch('close');

@@ -30,7 +30,7 @@ class Status extends Component
         $this->valid();
         $status = \App\Models\Status::create([
             'name'=>$this->name,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         if ($status){
             $this->resetInput();
@@ -55,7 +55,7 @@ class Status extends Component
         if ($status){
             $status->update([
                 'name'=>$this->name,
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
         }
         $this->resetInput();

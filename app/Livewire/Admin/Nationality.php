@@ -33,7 +33,7 @@ class Nationality extends Component
         $this->valid();
         $nationality = \App\Models\Nationality::create([
             'name'=>$this->name,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         if ($nationality){
             $this->resetInput();
@@ -58,7 +58,7 @@ class Nationality extends Component
         if ($nationality){
             $nationality->update([
                 'name'=>$this->name,
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
         }
         $this->resetInput();

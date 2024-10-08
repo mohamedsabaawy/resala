@@ -36,7 +36,7 @@ class Job extends Component
         $job = \App\Models\Job::create([
             'name'=>$this->name,
             'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
         if ($job){
             $this->resetInput();
@@ -64,7 +64,7 @@ class Job extends Component
             $job->update([
                 'name'=>$this->name,
                 'manager_id'=>strlen($this->manager_id)>0 ? $this->manager_id: null,
-                'branch_id'=>auth()->user()->branch_id,
+                'branch_id'=>session('branch_id'),
             ]);
         }
         $this->resetInput();
