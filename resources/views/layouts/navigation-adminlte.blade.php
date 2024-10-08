@@ -142,15 +142,7 @@
                     {{--                            <p>انواع الاختبارات</p>--}}
                     {{--                        </a>--}}
                     {{--                    </li>--}}
-                    @can('user show')
-                        <li class="nav-item">
-                            <a href="{{route('users')}}" wire:navigatee
-                               class="nav-link {{(request()->is('user/users')? 'active' : "")}}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>المتطوعين</p>
-                            </a>
-                        </li>
-                    @endcan
+
                 </ul>
             </li>
         @endcan
@@ -183,7 +175,18 @@
                 </ul>
             </li>
         @endcan
-        {{--        @endif--}}
+
+        @can('user show')
+            <li class="nav-item">
+
+                <a href="{{route('users')}}" wire:navigatee
+                   class="nav-link {{(request()->is('user/users')? 'active' : "")}}">
+                    <i class="fa fa-hands nav-icon"></i>
+                    <p>المتطوعين</p>
+                </a>
+            </li>
+        @endcan
+
         <li class="nav-item">
             <a href="{{route('user.home')}}" class="nav-link {{(request()->is('home')? 'active' : "")}}">
                 <i class="nav-icon fas fa-th"></i>

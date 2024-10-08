@@ -11,12 +11,14 @@ class Link extends Component
 
     use WithPagination;
     public $id, $name, $link,$photo;
+    public $jobs=[];
     public $showCreate=false;
     public $isUpdate=false;
     public function render()
     {
-        $links = \App\Models\Link::paginate(10); // link paginate
-        return view('livewire.admin.link',compact('links'));
+        $links = \App\Models\Link::with('jobs')->paginate(10); // link paginate
+        $allJobs = \App\Models\Job::pluck('name','id');
+        return view('livewire.admin.link',compact('links','allJobs'));
     }
 
     public function save(){
@@ -24,8 +26,9 @@ class Link extends Component
         $link = \App\Models\Link::create([
             'name'=>$this->name,
             'link'=>$this->link,
-            'branch_id'=>auth()->user()->branch_id,
+            'branch_id'=>session('branch_id'),
         ]);
+        $link->jobs()->sync($this->jobs);
         if ($link){
             $this->resetInput();
             $this->dispatch('close');
@@ -37,8 +40,9 @@ class Link extends Component
     //get one link
     public function show($id){
         $this->isUpdate=true;
-        $link = \App\Models\Link::find($id);
+        $link = \App\Models\Link::with('jobs')->find($id);
         $this->id = $link->id;
+        $this->jobs = $link->jobs->pluck('id');
         $this->name = $link->name;
         $this->link = $link->link;
     }
@@ -51,6 +55,7 @@ class Link extends Component
                 'name'=>$this->name,
                 'link'=>$this->link,
             ]);
+            $link->jobs()->sync($this->jobs);
         }
         $this->dispatch('close');
         $this->dispatch('notify');
@@ -68,6 +73,7 @@ class Link extends Component
         $this->name = "";
         $this->link = "";
         $this->photo = "";
+        $this->jobs =[];
     }
     private function valid(){
         $validated = $this->validate([

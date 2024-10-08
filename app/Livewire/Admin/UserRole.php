@@ -42,7 +42,7 @@ class UserRole extends Component
         $this->valid();
         $user = \App\Models\User::OwenUser()->create([
             'name'=>$this->name,
-            'role'=>$this->type  ? 'admin' : 'user',
+            'role'=>$this->type ,
             'need_approve'=>$this->need_approve  ? 1 : 0,
         ]);
         $user->teams()->sync($this->selectedTeam);
@@ -64,7 +64,7 @@ class UserRole extends Component
         $this->selectedTeam = $user->teams->pluck('id');
         $this->id = $user->id;
         $this->name = $user->name;
-        $this->type = $user->role == 'admin' ? true : false;
+        $this->type = $user->role;
         $this->need_approve = $user->need_approve== '1' ? true : false;
         $this->deleted_at = $user->deleted_at;
         $this->isUpdate=true;
@@ -78,7 +78,7 @@ class UserRole extends Component
         if ($user){
             $user->update([
                 'name'=>$this->name,
-                'role'=>$this->type  ? 'admin' : 'user',
+                'role'=>$this->type ,
                 'need_approve'=>$this->need_approve  ? '1' : '0',
             ]);
             $user->syncRoles($this->roles);

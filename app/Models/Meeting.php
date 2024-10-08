@@ -2,21 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\BranchScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-
+#[ScopedBy([BranchScope::class])]
 class Meeting extends Model
 {
     use HasFactory;//meeting
 
     protected $fillable = ['title','date','count','comment','status','user_id','add_by','position_id','team_id','branch_id','job_id'];
 
-
-    public function scopeBranchScope($query): void
-    {
-        $query->where('branch_id','=', Auth::user()->branch_id);
-    }
     public function user(){
         return $this->belongsTo(User::class);
     }

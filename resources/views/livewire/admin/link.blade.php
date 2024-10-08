@@ -87,6 +87,16 @@
                                placeholder="ادخل عنوان الرابط">
                         <div class="text-danger">@error('link') {{ $message }} @enderror</div>
                     </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">الانشطة</label>
+                        <select multiple class="form-control @error('jobs') is-invalid @enderror" wire:model="jobs">
+                            <option>اختر</option>
+                            @foreach($allJobs as $k =>$v)
+                                <option value="{{$k}}">{{$v}}</option>
+                            @endforeach
+                        </select>
+                        <div class="text-danger">@error('jobs') {{ $message }} @enderror</div>
+                    </div>
 
                 </div>
                 <div class="modal-footer justify-content-between">

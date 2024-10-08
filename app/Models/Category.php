@@ -14,9 +14,4 @@ class Category extends Model
 {
     use HasFactory,SoftDeletes;
     protected $fillable = ['name','branch_id'];
-
-//    public function scopeBranchScope($query): void
-//    {
-//        $query->where('branch_id','=', Auth::user()->branch_id);
-//    }
 }

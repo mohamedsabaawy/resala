@@ -14,6 +14,6 @@ class BranchScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where('branch_id','=', Auth::user()->branch_id);
+        $builder->where('branch_id','=', session('branch_id'));
     }
 }

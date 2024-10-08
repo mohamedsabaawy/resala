@@ -24,8 +24,9 @@ class Approval extends Component
             $activities = $activities->where('activity_date','>=',$this->dateFrom);
         if (!empty($this->dateTo))
             $activities = $activities->where('activity_date','<=',$this->dateTo);
-        if (auth()->user()->role <> 'admin')
+        if (in_array(auth()->user()->role, ['admin','superAdmin'])){} {
             $activities = $activities->where('manager_id', auth()->id());
+        }
         $activities = $activities->paginate(10);
         return view('livewire.admin.approval', compact('activities'));
     }

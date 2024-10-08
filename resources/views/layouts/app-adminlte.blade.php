@@ -1,3 +1,4 @@
+@inject("branchs","App\Models\Branch")
 <!DOCTYPE html>
 <html>
 <head>
@@ -76,6 +77,28 @@
 
     <!-- Right navbar links -->
         <ul class="navbar-nav mr-auto-navbav">
+
+            @if(auth()->user()->role == 'superAdmin')
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-home"></i>
+                        {{$branchs->find(session('branch_id'))->name}}
+                        <span class="badge badge-warning navbar-badge"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
+                        <div class="dropdown-divider"></div>
+                        @foreach($branchs->get() as $branch)
+                            <a href="{{route('branch_change',$branch->id)}}" class="dropdown-item {{session('branch_id')==$branch->id ? 'bg-primary':''}}">
+                                <i class="fa fa-home mr-2"></i> {{$branch->name}}
+                            </a>
+                            <div class="dropdown-divider"></div>
+                        @endforeach
+                    </div>
+                </li>
+            @endif
+
+
             <!-- Messages Dropdown Menu -->
 
             <!-- Notifications Dropdown Menu -->
@@ -100,6 +123,8 @@
                     </li>
                 @endcan
 {{--            @endif--}}
+
+
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                     <img src="{{asset(auth()->user()->photo)}}" class="user-image img-circle elevation-2"

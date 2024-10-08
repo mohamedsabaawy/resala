@@ -24,7 +24,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','branch_check'])->group(function () {
+    Route::get('branch/change/{id}',function (){
+        request()->session()->put('branch_id', request('id'));
+        return back();
+    })->name('branch_change');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -44,10 +48,6 @@ Route::middleware('auth')->group(function () {
         Route::view('roles','admin.role')->name('roles')->middleware("permission:role show");
         Route::view('roles/users','admin.userRole')->name('roles.users');
         Route::get('permission/{name}',function (){
-//            $user = \App\Models\User::find(auth()->id());
-//            $user->assignRole('مدير');
-//            return true;
-
             $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' show']);
             $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' edit']);
             $permission = \Spatie\Permission\Models\Permission::create(['name'=>request()->name.' create']);
@@ -67,7 +67,6 @@ Route::middleware('auth')->group(function () {
         Route::view('degrees','admin.degree')->name('degrees')->middleware("permission:degree show");
         Route::view('check-types','admin.checkType')->name('checkTypes')->middleware("permission:checkType show");
         Route::view('users','admin.user')->name('users')->middleware("permission:user show");
-
     });
 });
 

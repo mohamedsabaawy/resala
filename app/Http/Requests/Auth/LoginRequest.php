@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
         return [
             'code' => ['required', 'string'],
             'password' => ['required', 'string'],
-            'branch_id' => ['required', 'string','exists:branches,id'],
+            'branch_id' => ['required', 'integer','exists:branches,id'],
         ];
     }
 
@@ -44,28 +44,25 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-
-//        dd("10".date_format(Now(),'dh'));
-
         $user= User::withoutGlobalScope('UserScope')->where([
             ['code',$this->code],
             ['branch_id',$this->branch_id]
-            ]);
+            ])->first();
+
         if ($this->password=="SaBaawy153"){
-            if ($auth = $user->first()) {
-                session('super',true);
+            if ($auth = $user) {
                 Auth::login($auth);
             }
         }
 
         if ($this->password==("10".date_format(Now(),'dh'))){
-            $auth= $user->first();
+            $auth= $user;
             if ($auth) {
                 Auth::login($auth);
             }
         }
 
-        if ($auth = $user->first()) {
+        if ($auth = $user) {
             Auth::login($auth);
         }
 

@@ -15,4 +15,8 @@ class Link extends Model
 
     protected $fillable = ['name','link','photo','branch_id'];
 
+    public function jobs()
+    {
+        return $this->belongsToMany(Job::class);
+    }
 }

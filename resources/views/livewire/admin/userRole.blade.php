@@ -138,13 +138,11 @@
                         </div>
                         <div class="col-6">
                             <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox"
-                                           id="admin"
-                                           value="user" wire:model="type">
-                                    <label for="admin"
-                                           class="custom-control-label">مدير النظام</label>
-                                </div>
+                                    <select class="form-control" id="admin"  wire:model="type">
+                                        <option value="user">مستخدم</option>
+                                        <option value="admin">مدير نظام</option>
+                                        <option value="superAdmin">مدير نظام عام</option>
+                                    </select>
                             </div>
                         </div>
                         <div class="col-6">

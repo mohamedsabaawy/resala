@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Job;
 use App\Models\Link;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -18,7 +19,11 @@ class MainController extends Controller
      */
     public function link(Request $request): View
     {
-        $links = Link::all();
+        $links = Link::whereHas('jobs',function($query){
+            $query->where('job_id',auth()->user()->job_id);
+        })->get();
+//        $links = Job::with(['links'])->where('id',auth()->user()->job_id)->get();
+//        dd($links);
         return view('user.link', compact('links'));
     }
 
