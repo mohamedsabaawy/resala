@@ -61,8 +61,15 @@ class LoginRequest extends FormRequest
                 Auth::login($auth);
             }
         }
+        // $this->only('code', 'password','branch_id')
 
-       if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
+        // [
+        //     'code'=>$this->code,
+        //     'password'=>$this->password,
+        //     'branch_id'=>$this->branch_id,
+        //    ]
+
+       if (! Auth::attempt($this->only('code', 'password','branch_id'), $this->boolean('remember'))) {
            RateLimiter::hit($this->throttleKey());
 
            throw ValidationException::withMessages([
