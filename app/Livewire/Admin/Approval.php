@@ -22,6 +22,7 @@ class Approval extends Component
 
     public function render()
     {
+        dd(651656);
         $activities = Activity::with(['user', 'event'])
         ->whereHas('user',function($q){
             return $q->where('branch_id',session('branch_id'));
