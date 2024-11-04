@@ -22,10 +22,10 @@
                 <input type="checkbox" id="approve" value="1" class="" wire:model="filter">
                 <label for="approve">موافقة</label>
             </div>
-            <div class="form-group col-2">
+            {{-- <div class="form-group col-2">
                 <input type="checkbox" id="refused" value="2" class="" wire:model="filter">
                 <label for="refused">رفض</label>
-            </div>
+            </div> --}}
             <div class="form-group col-3">
                 <button class="btn btn-info" wire:click="startFilter">بحث</button>
             </div>
@@ -53,13 +53,15 @@
                     <td>{{$activity->comment}}</td>
                     <td>
                         <div class="btn-group">
-                            @if($activity->approval ==0 or auth()->user()->role == 'admin')
+                            @if($activity->approval ==0 or in_array(auth()->user()->role, ['admin','superAdmin']))
                                 <button type="button" class="btn btn-danger" data-toggle="modal"
                                         data-target="#delete-model" wire:click="show({{$activity->id}})">مسح
                                 </button>
+                                @if($activity->approval ==0)
                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target=""
                                         wire:click="approve({{$activity->id}})">تأكيد
                                 </button>
+                                @endif
                             @endif
                         </div>
                     </td>

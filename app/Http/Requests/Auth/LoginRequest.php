@@ -62,17 +62,13 @@ class LoginRequest extends FormRequest
             }
         }
 
-        if ($auth = $user) {
-            Auth::login($auth);
-        }
+       if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
+           RateLimiter::hit($this->throttleKey());
 
-//        if (! Auth::attempt($this->only('code', 'password'), $this->boolean('remember'))) {
-//            RateLimiter::hit($this->throttleKey());
-//
-//            throw ValidationException::withMessages([
-//                'code' => trans('auth.failed'),
-//            ]);
-//        }
+           throw ValidationException::withMessages([
+               'code' => trans('auth.failed'),
+           ]);
+       }
 //
         RateLimiter::clear($this->throttleKey());
     }

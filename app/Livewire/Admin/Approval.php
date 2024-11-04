@@ -2,10 +2,13 @@
 
 namespace App\Livewire\Admin;
 
-use App\Models\Activity;
-use Illuminate\Validation\Rule;
+use Carbon\Carbon;
+use App\Models\User;
 use Livewire\Component;
+use App\Models\Activity;
 use Livewire\WithPagination;
+use Illuminate\Validation\Rule;
+
 
 class Approval extends Component
 {
@@ -19,12 +22,16 @@ class Approval extends Component
 
     public function render()
     {
-        $activities = Activity::with(['user', 'event'])->whereIn('approval',$this->filter)->orderBy('activity_date'); // activity paginate
+        $activities = Activity::with(['user', 'event'])
+        ->whereHas('user',function($q){
+            return $q->where('branch_id',session('branch_id'));
+        })
+        ->whereIn('approval',$this->filter)->orderBy('activity_date'); // activity paginate
         if (!empty($this->dateFrom))
             $activities = $activities->where('activity_date','>=',$this->dateFrom);
         if (!empty($this->dateTo))
             $activities = $activities->where('activity_date','<=',$this->dateTo);
-        if (in_array(auth()->user()->role, ['admin','superAdmin'])){} {
+        if (in_array(auth()->user()->role, ['admin'])){} {
             $activities = $activities->where('manager_id', auth()->id());
         }
         $activities = $activities->paginate(10);
@@ -33,7 +40,9 @@ class Approval extends Component
 
     public function mount()
     {
-        $this->managers = \App\Models\User::all();
+        $this->dateFrom = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $this->dateTo=Carbon::now()->endOfMonth()->format('Y-m-d');
+        // $this->managers = \App\Models\User::all();
     }
 
     public function save()
