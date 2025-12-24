@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',150);
             $table->enum('role',['admin','supervisor','user'])->default('user');
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

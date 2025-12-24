@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name',150);
-            $table->integer('manager_id')->nullable();
+            $table->unsignedBigInteger('manager_id')->nullable();
+            $table->unsignedBigInteger('branch_id')->nullable();
             $table->tinyInteger('count')->nullable();
             $table->timestamps();
             $table->softDeletes();
